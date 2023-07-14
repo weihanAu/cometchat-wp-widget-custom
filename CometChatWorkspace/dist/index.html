@@ -1,0 +1,46 @@
+<html>
+
+<head>
+</head>
+
+<body>
+    <div id="cometchat"></div>
+    <script defer type="module">
+        window.addEventListener('DOMContentLoaded', async(event) => {
+
+            const {default:CometChatWidget} = await import('./index.js');
+
+            window.CometChatWidget = CometChatWidget
+
+             CometChatWidget.init({
+            "appID": "242053eed084c85d",
+            "appRegion": "us",
+            "authKey": "3b23a44d08990491dd8ad335f585121465c8ba02"
+            }).then(response => {
+            console.log("Initialization completed successfully");
+            //You can now call login function.
+            CometChatWidget.login({
+                "uid": "27"
+            }).then(response => {
+                CometChatWidget.launch({
+                    "widgetID": "019886dc-0a20-400c-bf9b-f02c9a5325de",
+                    "target": "#cometchat",
+                    "roundedCorners": "true",
+                    "height": "600px",
+                    "width": "800px",
+                    "defaultID": 'superhero1', //default UID (user) or GUID (group) to show,
+                    "defaultType": 'user' //user or group
+                });
+            }, error => {
+                console.log("User login failed with error:", error);
+                //Check the reason for error and take appropriate action.
+            });
+        }, error => {
+            console.log("Initialization failed with error:", error);
+            //Check the reason for error and take appropriate action.
+        });
+        })
+    </script>
+</body>
+
+</html>

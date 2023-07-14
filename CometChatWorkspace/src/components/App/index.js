@@ -8,7 +8,7 @@ import { CometChat } from "@cometchat-pro/chat";
 
 import { EVENTS, CONSTANTS } from "../../util/enums";
 
-import { CometChatIncomingCall, CometChatOutgoingCall, CometChatOutgoingDirectCall, CometChatIncomingDirectCall, CometChatErrorBoundary } from "UIKit/CometChatWorkspace/src/components";
+import { CometChatIncomingCall, CometChatOutgoingCall, CometChatOutgoingDirectCall, CometChatIncomingDirectCall } from "UIKit/CometChatWorkspace/src/components";
 
 import { CometChatContextProvider } from "UIKit/CometChatWorkspace/src/util/CometChatContext.js";
 import * as enums from "UIKit/CometChatWorkspace/src/util/enums.js";
