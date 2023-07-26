@@ -9,6 +9,7 @@ export class MessageListManager {
 	parentMessageId = null;
 	messageRequest = null;
 	limit = 30;
+    timestamp = 1602221371;
 
 	msgListenerId = "message_" + new Date().getTime();
 	groupListenerId = "group_" + new Date().getTime();
@@ -59,7 +60,6 @@ export class MessageListManager {
 						}
 						resolve(this.messageRequest);
 					} else if (this.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
-                        const time = 1602221371;
 						if (this.parentMessageId) {
 							this.messageRequest = new CometChat.MessagesRequestBuilder()
 								.setGUID(this.item.guid)
@@ -68,7 +68,7 @@ export class MessageListManager {
 								.setTypes(types)
 								.hideDeletedMessages(hideDeletedMessages)
 								.setLimit(this.limit)
-                                .setTimestamp(time)
+                                .setTimestamp(this.timestamp)
 								.build();
 						} else {
 							this.messageRequest = new CometChat.MessagesRequestBuilder()
@@ -78,7 +78,7 @@ export class MessageListManager {
 								.hideReplies(true)
 								.hideDeletedMessages(hideDeletedMessages)
 								.setLimit(this.limit)
-                                .setTimestamp(time)
+                                .setTimestamp(this.timestamp)
 								.build();
 						}
 						resolve(this.messageRequest);
