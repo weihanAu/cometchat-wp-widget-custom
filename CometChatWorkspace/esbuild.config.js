@@ -1,33 +1,31 @@
 const esbuild = require('esbuild');
 const path = require('path');
 
-void async function()
-{  
+void async function ()
+{
     const ctx = await esbuild.context({
-        entryPoints:['src/index.js'],
-        outdir:'dist',
-        bundle:true,
-        platform:'browser',
-        format:'esm',
-        assetNames:'assets/[name]-[hash]',
-        loader:{
+        entryPoints: ['src/index.js'],
+        outdir: 'dist',
+        bundle: true,
+        platform: 'browser',
+        format: 'esm',
+        assetNames: 'assets/[name]-[hash]',
+        loader: {
             '.png': 'file',
             '.svg': 'file',
             '.jpg': 'file',
             '.wav': 'file',
-            '.js' : 'jsx'
+            '.js': 'jsx'
         },
-        alias:{
-            UIKit:path.resolve('src/cometchat-pro-react-ui-kit/'),
+        alias: {
+            UIKit: path.resolve('src/cometchat-pro-react-ui-kit/'),
         },
-    })
+    });
 
-    await ctx.watch({})
+    await ctx.watch({});
 
     ctx.serve({
-        port:9000,
-        servedir:'dist'
-    })
-}()
-
-
+        port: 9000,
+        servedir: 'dist'
+    });
+}();
