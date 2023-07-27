@@ -14,19 +14,7 @@
 
             const { CometChat } = CometChatWidget;
 
-
             const UID = '27';
-
-
-            /**
-             * @type {MessagesRequestBuilder}
-             */
-            const messagesRequest = new CometChat.MessagesRequestBuilder()
-                .setUID('1')
-                .setLimit(1)
-                .setTypes([CometChat.MESSAGE_TYPE.TEXT])
-                .build();
-
 
             CometChatWidget.init({
                 "appID": "242053eed084c85d",
