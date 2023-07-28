@@ -5,6 +5,7 @@
 
 <body>
     <div id="cometchat"></div>
+    <div id="livestream"></div>
     <script defer type="module">
         window.addEventListener('DOMContentLoaded', async (event) =>
         {
@@ -14,7 +15,7 @@
 
             const { CometChat } = CometChatWidget;
 
-            const UID = '27';
+            const UID = '1';
 
             CometChatWidget.init({
                 "appID": "242053eed084c85d",
@@ -33,9 +34,10 @@
                         "target": "#cometchat",
                         "roundedCorners": "true",
                         "height": "600px",
-                        "width": "800px",
+                        "width": "600px",
                         "defaultID": 'superhero1', //default UID (user) or GUID (group) to show,
-                        "defaultType": 'user' //user or group
+                        "defaultType": 'user', //user or group,
+                        "docked":true
                     });
                 }, error =>
                 {

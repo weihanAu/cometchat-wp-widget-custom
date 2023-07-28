@@ -44,6 +44,7 @@ footer, header, hgroup, menu, nav, section {
 
 body {
 	line-height: 1;
+
 }
 
 ol, ul {
@@ -334,7 +335,7 @@ body {
   margin:0;
   padding:0;
   font-family: "Inter", sans-serif;
-  background-color: #fff;
+  // background-color: #fff;
 }
 
 a { 
