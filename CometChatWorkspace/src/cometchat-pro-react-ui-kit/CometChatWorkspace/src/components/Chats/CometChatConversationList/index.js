@@ -1087,7 +1087,7 @@ class CometChatConversationList extends React.Component {
 						className='header__title'
 						dir={Translator.getDirection(this.props.lang)}
 					>
-						{Translator.translate("CHATS", this.props.lang)}
+						{Translator.translate("LW chat", this.props.lang)}
 					</h4>
 				</div>
 				{messageContainer}
