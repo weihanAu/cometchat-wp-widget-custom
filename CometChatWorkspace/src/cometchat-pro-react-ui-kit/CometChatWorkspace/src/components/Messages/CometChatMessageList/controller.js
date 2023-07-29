@@ -105,7 +105,12 @@ export class MessageListManager
 
     fetchPreviousMessages()
     {
-        if (this.type === CometChat.ACTION_TYPE.TYPE_GROUP)
+        console.log(this.item.metadata.delete);
+
+        if (
+            this.type === CometChat.ACTION_TYPE.TYPE_GROUP &&
+            this.item.metadata.delete
+        )
         {
             return this.messageRequest.fetchNext();
         }
