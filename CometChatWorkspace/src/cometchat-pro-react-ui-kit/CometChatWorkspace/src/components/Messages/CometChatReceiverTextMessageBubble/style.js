@@ -74,7 +74,7 @@ export const messageTxtWrapperStyle = (context) => {
     display: "inline-block",
     borderRadius: "12px",
     backgroundColor: iframeAdded
-      ? "transparent"
+      ? "rgba(0, 0, 0, 0.2)"
       : `${context.theme.backgroundColor.secondary}`,
     padding: "8px 16px",
     width: "auto",
@@ -136,7 +136,7 @@ export const messageTxtStyle = (showVariation, count, context) => {
     width: "auto",
     color: iframeAdded ? "white" : `${context.theme.color.primary}`,
     lineHeight: "20px",
-    fontWeight: "400",
+    fontWeight: iframeAdded?"900":"400",
     " a": {
       color: iframeAdded ? "white" : "#0432FF",
       "&:hover": {

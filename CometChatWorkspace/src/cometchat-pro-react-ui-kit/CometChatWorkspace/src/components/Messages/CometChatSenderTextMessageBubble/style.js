@@ -26,7 +26,7 @@ export const messageTxtWrapperStyle = (context) => {
   return {
     display: "inline-block",
     borderRadius: "12px",
-    backgroundColor: `${context.theme.primaryColor}`,
+    backgroundColor:iframeAdded?"rgba(0, 0, 0, 0.2)": `${context.theme.primaryColor}`,
     color: `${context.theme.color.white}`,
     padding: "8px 16px",
     width: "auto",

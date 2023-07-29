@@ -87,11 +87,12 @@ export const inputInnerStyle = (props, state, context) => {
     position: "relative",
     outline: "none",
     border: `1px solid ${context.theme.borderColor.primary}`,
-    backgroundColor: `${context.theme.backgroundColor.white}`,
+    backgroundColor: iframeAdded?'transparent':`${context.theme.backgroundColor.white}`,
     display: "flex",
     flexDirection: "column",
     width: "100%",
     minHeight: "85px",
+    color:iframeAdded?'white':'',
     ...borderRadiusVal,
   };
 };

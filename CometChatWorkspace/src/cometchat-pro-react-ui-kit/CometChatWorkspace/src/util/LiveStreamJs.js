@@ -8,7 +8,7 @@ export async function liveStreamClickHandler() {
 
   // configure iframe
   iframe.src =
-    "https://player.vimeo.com/video/303752260?h=a6494d36d8&color=fdfdfd";
+    "https://player.vimeo.com/video/22439234?h=a6494d36d8&color=fdfdfd";
   iframe.style.width = "100%";
   iframe.style.height = "100%";
   iframe.title = "Embedded Iframe";
@@ -27,5 +27,7 @@ export async function liveStreamClickHandler() {
   } else {
     livestream.innerHTML = "";
     iframeAdded = false;
+    await CometChatWidget.openOrCloseChat(false);
+    CometChatWidget.openOrCloseChat(true);
   }
 }

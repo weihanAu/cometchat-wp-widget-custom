@@ -31,7 +31,7 @@ export const listWrapperStyle = () => {
 export const messageDateContainerStyle = () => {
   return {
     marginBottom: "16px",
-    display: "flex",
+    display:iframeAdded?"none":"flex",
     alignItems: "center",
     justifyContent: "center",
     height: "35px",
