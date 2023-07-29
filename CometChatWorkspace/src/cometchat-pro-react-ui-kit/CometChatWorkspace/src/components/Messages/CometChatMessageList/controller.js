@@ -76,26 +76,52 @@ export class MessageListManager
                     {
                         if (this.parentMessageId)
                         {
-                            this.messageRequest = new CometChat.MessagesRequestBuilder()
-                                .setGUID(this.item.guid)
-                                .setParentMessageId(this.parentMessageId)
-                                .setCategories(categories)
-                                .setTypes(types)
-                                .hideDeletedMessages(hideDeletedMessages)
-                                .setLimit(this.limit)
-                                .setTimestamp(this.timestamp)
-                                .build();
+                            if (this.item.metadata && this.item.metadata.delete)
+                            {
+                                this.messageRequest = new CometChat.MessagesRequestBuilder()
+                                    .setGUID(this.item.guid)
+                                    .setParentMessageId(this.parentMessageId)
+                                    .setCategories(categories)
+                                    .setTypes(types)
+                                    .hideDeletedMessages(hideDeletedMessages)
+                                    .setLimit(this.limit)
+                                    .setTimestamp(this.timestamp)
+                                    .build();
+                            } else
+                            {
+                                this.messageRequest = new CometChat.MessagesRequestBuilder()
+                                    .setGUID(this.item.guid)
+                                    .setParentMessageId(this.parentMessageId)
+                                    .setCategories(categories)
+                                    .setTypes(types)
+                                    .hideDeletedMessages(hideDeletedMessages)
+                                    .setLimit(this.limit)
+                                    .build();
+                            }
                         } else
                         {
-                            this.messageRequest = new CometChat.MessagesRequestBuilder()
-                                .setGUID(this.item.guid)
-                                .setCategories(categories)
-                                .setTypes(types)
-                                .hideReplies(true)
-                                .hideDeletedMessages(hideDeletedMessages)
-                                .setLimit(this.limit)
-                                .setTimestamp(this.timestamp)
-                                .build();
+                            if (this.item.metadata && this.item.metadata.delete)
+                            {
+                                this.messageRequest = new CometChat.MessagesRequestBuilder()
+                                    .setGUID(this.item.guid)
+                                    .setCategories(categories)
+                                    .setTypes(types)
+                                    .hideReplies(true)
+                                    .hideDeletedMessages(hideDeletedMessages)
+                                    .setLimit(this.limit)
+                                    .setTimestamp(this.timestamp)
+                                    .build();
+                            } else
+                            {
+                                this.messageRequest = new CometChat.MessagesRequestBuilder()
+                                    .setGUID(this.item.guid)
+                                    .setCategories(categories)
+                                    .setTypes(types)
+                                    .hideReplies(true)
+                                    .hideDeletedMessages(hideDeletedMessages)
+                                    .setLimit(this.limit)
+                                    .build();
+                            }
                         }
                         resolve(this.messageRequest);
                     }
@@ -105,14 +131,15 @@ export class MessageListManager
 
     fetchPreviousMessages()
     {
-        
-
-        if (
-            this.type === CometChat.ACTION_TYPE.TYPE_GROUP &&
-            this.item.metadata.delete
-        )
+        if (this.type === CometChat.ACTION_TYPE.TYPE_GROUP)
         {
-            return this.messageRequest.fetchNext();
+            if (this.item.metadata && this.item.metadata.delete)
+            {
+                return this.messageRequest.fetchNext();
+            } else
+            {
+                return this.messageRequest.fetchPrevious();
+            }
         }
         return this.messageRequest.fetchPrevious();
     }
