@@ -130,7 +130,7 @@ export const embedSidebarStyle = (props, state) => {
       bottom: "0",
       width: "100%!important",
       zIndex: "2",
-      backgroundColor: `${props.theme.backgroundColor.white}`,
+      backgroundColor:iframeAdded?"transparent": `${props.theme.backgroundColor.white}`,
       transition: "all .3s ease-out",
       ...sidebarView,
     },
