@@ -4,11 +4,12 @@ export const chatHeaderStyle = (context) => {
   return {
     padding: "16px",
     width: "100%",
-    backgroundColor:iframeAdded?'transparent': `${context.theme.backgroundColor.white}`,
+    backgroundColor:`${context.theme.backgroundColor.white}`,
     zIndex: "1",
     borderBottom: `1px solid ${context.theme.borderColor.primary}`,
     display: "flex",
     flexDirection: "row",
+    opacity:iframeAdded?0:1
   };
 };
 

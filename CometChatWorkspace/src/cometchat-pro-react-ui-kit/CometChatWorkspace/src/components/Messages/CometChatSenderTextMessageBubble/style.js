@@ -95,9 +95,9 @@ export const messageTxtStyle = (props, showVariation, count) => {
     width: "auto",
     ...heightProp,
     " a": {
-      color: "#0432FF",
+      color: iframeAdded?"white":"#04009D",
       "&:hover": {
-        color: "#04009D",
+        color: iframeAdded?"white":"#04009D",
       },
     },
     " a[href^='mailto:']": {

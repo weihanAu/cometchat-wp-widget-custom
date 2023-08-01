@@ -29,7 +29,7 @@ export const embedWrapperStyle = (props) => {
         responsiveData.dockedIconHeight + responsiveData.dockedBottomPadding * 2
       }px`,
       right: `${responsiveData.dockedHorizontalPadding}px`,
-      boxShadow: "rgba(0, 0, 0, 0.11) 0px 5px 40px",
+      boxShadow:iframeAdded? "none":"rgba(0, 0, 0, 0.11) 0px 5px 40px",
     };
   }
 
