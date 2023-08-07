@@ -16,7 +16,7 @@ export async function liveStreamClickHandler() {
   iframe.allowfullscreen = true;
   iframe.style.backgroundColor = "#1a1b1c";
   //get chat_list
-  const liveCloseButton = document.getElementById("liveCloseButton");
+  const button = document.createElement("liveStreamtoggleButton");
   //add iframe into div
   if (!iframeAdded) {
     await CometChatWidget.openOrCloseChat(false);

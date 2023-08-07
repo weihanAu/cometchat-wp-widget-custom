@@ -1,25 +1,33 @@
 <html>
 
 <head>
-    <script>
-        async function closeLiveHandler(){
-            await CometChatWidget.openOrCloseChat(false);
-            CometChatWidget.openOrCloseChat(true);
-            iframeAdded = false;
-            const livestream = document.getElementById("livestream");
-            const player = document.getElementById("player");
-            const liveCloseButton = document.getElementById("liveCloseButton");
-            if(livestream){
-                livestream.innerHTML='';
-                liveCloseButton.style.display='none';
-            }
+    <style>
+        #cometchat__widget {
+            position: absolute;
+            top: 0;
+            left: 0;
         }
-    </script>
+        .add_widget
+        {
+            position: fixed;
+            bottom: 120px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 24px;
+            z-index: 999999999;
+        }
+    </style>
+    <script src="html.js"></script>
 </head>
 
 <body>
     <div id="cometchat"></div>
+    <div id="livestream"></div>
+    <!-- <button class="add_widget">+</button> -->
     <script defer type="module">
+        const widgets = [];
         window.addEventListener('DOMContentLoaded', async (event) =>
         {
             const { default: CometChatWidget } = await import('./index.js');
@@ -30,43 +38,58 @@
 
             const UID = '27';
 
-            CometChatWidget.init({
-                "appID": "242053eed084c85d",
-                "appRegion": "us",
-                "authKey": "3b23a44d08990491dd8ad335f585121465c8ba02"
-            }).then(response =>
+            const init = () =>
             {
-                console.log("Initialization completed successfully");
-                //You can now call login function.
-                CometChatWidget.login({
-                    "uid": UID
+                CometChatWidget.init({
+                    "appID": "242053eed084c85d",
+                    "appRegion": "us",
+                    "authKey": "3b23a44d08990491dd8ad335f585121465c8ba02"
                 }).then(response =>
                 {
-                    CometChatWidget.launch({
-                        "widgetID": "019886dc-0a20-400c-bf9b-f02c9a5325de",
-                        "target": "#cometchat",
-                        "roundedCorners": "true",
-                        "height": "37.5rem",
-                        "width": "37.5rem",
-                        "defaultID": 'superhero1', //default UID (user) or GUID (group) to show,
-                        "defaultType": 'user', //user or group,
-                        "docked":true
+                    console.log("Initialization completed successfully");
+                    //You can now call login function.
+                    CometChatWidget.login({
+                        "uid": UID
+                    }).then(response =>
+                    {
+                        CometChatWidget.launch({
+                            "widgetID": "019886dc-0a20-400c-bf9b-f02c9a5325de",
+                            "target": "#cometchat",
+                            "roundedCorners": "true",
+                            "height": "37.5rem",
+                            "width": "37.5rem",
+                            "defaultID": 'superhero1', //default UID (user) or GUID (group) to show,
+                            "defaultType": 'user', //user or group,
+                            "docked": true,
+                        });
+
+                        widgets.push(response);
+                    }, error =>
+                    {
+                        console.log("User login failed with error:", error);
+                        //Check the reason for error and take appropriate action.
                     });
                 }, error =>
                 {
-                    console.log("User login failed with error:", error);
+                    console.log("Initialization failed with error:", error);
                     //Check the reason for error and take appropriate action.
                 });
-            }, error =>
-            {
-                console.log("Initialization failed with error:", error);
-                //Check the reason for error and take appropriate action.
-            });
+            };
+
+            init();
+
+            // document.querySelector('.add_widget').addEventListener('click', e=>{
+            //     init();
+
+            //     for(const [i,el] of document.querySelectorAll('.app__launcher').entries())
+            //     {
+            //         el.style.right = `${(i + 1) * 100}px`
+
+            //         console.log(el)
+            //     }
+            // })
         })
     </script>
-    <div id="livestream">
-        <div style="width: 100%;"><button id="liveCloseButton" onclick="closeLiveHandler()">&#10008;</button></div>
-    </div>
 </body>
 
 </html>
