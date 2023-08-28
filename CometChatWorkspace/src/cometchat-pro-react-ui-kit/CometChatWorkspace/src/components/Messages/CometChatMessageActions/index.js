@@ -236,6 +236,21 @@ class CometChatMessageActions extends React.PureComponent {
 		);
 	};
 
+	moderateMessage = () => {
+		const receiverId = this.context.item.guid;
+		const receiverType = CometChat.RECEIVER_TYPE.GROUP;
+
+		const textMessage = new CometChat.TextMessage(
+			receiverId,
+			this.props.message.metadata.url,
+			receiverType
+		);
+
+		textMessage.setId(this.props.message.id);
+
+		this.props.actionGenerated(enums.ACTIONS["EDIT_MESSAGE"], textMessage);
+	};
+
 	translateMessage = () => {
 		this.props.actionGenerated(
 			enums.ACTIONS["TRANSLATE_MESSAGE"],
@@ -430,28 +445,37 @@ class CometChatMessageActions extends React.PureComponent {
 		 */
 		let moderationMessage = null;
 
-		console.log(this.context);
-
-		if (this.state.loggedInUser) {
-			if (this.state.loggedInUser.role === "admin") {
-				moderationMessage = (
-					<li css={actionGroupStyle()} className="action__group">
-						<button
-							type="button"
-							onMouseEnter={(event) =>
-								this.toggleTooltip(event, true)
-							}
-							onMouseLeave={(event) =>
-								this.toggleTooltip(event, false)
-							}
-							css={groupButtonStyle(privateIcon, this.context)}
-							data-title={Translator.translate(
-								"Moderation message",
-								this.context.language
-							)}
-						/>
-					</li>
-				);
+		if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
+			if (this.props.message.metadata.url) {
+				if (this.state.loggedInUser) {
+					if (this.state.loggedInUser.role === "admin") {
+						moderationMessage = (
+							<li
+								css={actionGroupStyle()}
+								className="action__group"
+							>
+								<button
+									type="button"
+									onMouseEnter={(event) =>
+										this.toggleTooltip(event, true)
+									}
+									onMouseLeave={(event) =>
+										this.toggleTooltip(event, false)
+									}
+									css={groupButtonStyle(
+										privateIcon,
+										this.context
+									)}
+									data-title={Translator.translate(
+										"Moderation message",
+										this.context.language
+									)}
+									onClick={this.moderateMessage}
+								/>
+							</li>
+						);
+					}
+				}
 			}
 		}
 

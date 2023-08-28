@@ -125,6 +125,8 @@ class CometChatMessageComposer extends React.PureComponent {
 		this.enableEmojis();
 		this.enableCollaborativeDocument();
 		this.enableCollaborativeWhiteboard();
+
+		this.messageInputRef.current?.focus();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -204,6 +206,12 @@ class CometChatMessageComposer extends React.PureComponent {
 		this.enableEmojis();
 		this.enableCollaborativeDocument();
 		this.enableCollaborativeWhiteboard();
+
+		if (prevProps.messageToBeEdited !== this.props.messageToBeEdited) {
+			this.setState({
+				messageInput: this.messageInputRef.current.textContent,
+			});
+		}
 	}
 
 	/**
@@ -644,12 +652,8 @@ class CometChatMessageComposer extends React.PureComponent {
 		if (event.keyCode === 13 && !event.shiftKey) {
 			event.preventDefault();
 
-			const value = this.state.messageInput.trim();
+			this.sendTextMessage();
 
-			if (/(http|https):\/\//g.test(value)) {
-				console.log(value);
-			}
-			// this.sendTextMessage();
 			return true;
 		}
 	};
@@ -686,6 +690,14 @@ class CometChatMessageComposer extends React.PureComponent {
 		textMessage.setText(messageInput);
 		textMessage._composedAt = getUnixTimestamp();
 		textMessage._id = ID();
+
+		if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
+			if (/(http|https|HTTPS|HTTP):\/\//g.test(messageInput)) {
+				textMessage.setText("*".repeat(messageInput.length));
+
+				textMessage.setMetadata({ url: messageInput });
+			}
+		}
 
 		this.props.actionGenerated(enums.ACTIONS["MESSAGE_COMPOSED"], [
 			textMessage,
