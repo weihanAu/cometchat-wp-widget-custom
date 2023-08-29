@@ -5,6 +5,6 @@ CometChatWorkspace/node_modules/
 
 */dist/*
 
-!*/dist/index.html
+!*/dist/**.html
 
 .vscode

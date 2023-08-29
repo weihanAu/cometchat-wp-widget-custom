@@ -58,6 +58,7 @@
 		"singleQuote": false,
 		"jsxSingleQuote": false,
 		"tabWidth": 4,
-		"useTabs": true
+		"useTabs": true,
+		"printWidth": 100
 	}
 }
