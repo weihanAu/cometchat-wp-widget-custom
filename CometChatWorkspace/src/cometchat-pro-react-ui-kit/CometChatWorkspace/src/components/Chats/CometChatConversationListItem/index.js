@@ -5,18 +5,11 @@ import { jsx } from "@emotion/react";
 import PropTypes from "prop-types";
 import { CometChat } from "@cometchat-pro/chat";
 
-import {
-	CometChatAvatar,
-	CometChatBadgeCount,
-	CometChatUserPresence,
-} from "../../Shared";
+import { CometChatAvatar, CometChatBadgeCount, CometChatUserPresence } from "../../Shared";
 import { CometChatConversationListActions } from "../CometChatConversationListActions";
 
 import * as enums from "../../../util/enums.js";
-import {
-	checkMessageForExtensionsData,
-	getTimeStampForLastMessage,
-} from "../../../util/common";
+import { checkMessageForExtensionsData, getTimeStampForLastMessage } from "../../../util/common";
 import { CometChatContext } from "../../../util/CometChatContext";
 
 import { theme } from "../../../resources/theme";
@@ -93,10 +86,7 @@ class CometChatConversationListItem extends React.PureComponent {
 								"YOU_DELETED_THIS_MESSAGE",
 								this.context.language
 						  )}`
-						: `${Translator.translate(
-								"THIS_MESSAGE_DELETED",
-								this.context.language
-						  )}`;
+						: `${Translator.translate("THIS_MESSAGE_DELETED", this.context.language)}`;
 			}
 		} else {
 			switch (lastMessage.category) {
@@ -130,8 +120,7 @@ class CometChatConversationListItem extends React.PureComponent {
 
 		if (
 			this.props.conversation.lastMessage.hasOwnProperty("sentAt") === false &&
-			this.props.conversation.lastMessage.hasOwnProperty("_composedAt") ===
-				false
+			this.props.conversation.lastMessage.hasOwnProperty("_composedAt") === false
 		) {
 			return false;
 		}
@@ -237,10 +226,7 @@ class CometChatConversationListItem extends React.PureComponent {
 		}
 
 		//profanity extensions data
-		const profaneData = checkMessageForExtensionsData(
-			message,
-			"profanity-filter"
-		);
+		const profaneData = checkMessageForExtensionsData(message, "profanity-filter");
 		if (
 			profaneData &&
 			profaneData.hasOwnProperty("profanity") &&
@@ -296,10 +282,7 @@ class CometChatConversationListItem extends React.PureComponent {
 				break;
 			case CometChat.MESSAGE_TYPE.FILE:
 				{
-					const fileMessage = Translator.translate(
-						"MESSAGE_FILE",
-						this.context.language
-					);
+					const fileMessage = Translator.translate("MESSAGE_FILE", this.context.language);
 					message =
 						lastMessage.receiverType === CometChat.RECEIVER_TYPE.GROUP
 							? `${sender} ${fileMessage}`
@@ -359,10 +342,7 @@ class CometChatConversationListItem extends React.PureComponent {
 		switch (lastMessage.type) {
 			case CometChat.MESSAGE_TYPE.VIDEO:
 				{
-					const videoMessage = Translator.translate(
-						"VIDEO_CALL",
-						this.context.language
-					);
+					const videoMessage = Translator.translate("VIDEO_CALL", this.context.language);
 					message =
 						lastMessage.receiverType === CometChat.RECEIVER_TYPE.GROUP
 							? `${sender} ${videoMessage}`
@@ -371,10 +351,7 @@ class CometChatConversationListItem extends React.PureComponent {
 				break;
 			case CometChat.MESSAGE_TYPE.AUDIO:
 				{
-					const audioMessage = Translator.translate(
-						"AUDIO_CALL",
-						this.context.language
-					);
+					const audioMessage = Translator.translate("AUDIO_CALL", this.context.language);
 					message =
 						lastMessage.receiverType === CometChat.RECEIVER_TYPE.GROUP
 							? `${sender} ${audioMessage}`
@@ -408,10 +385,7 @@ class CometChatConversationListItem extends React.PureComponent {
 		}
 
 		if (message.action === CometChat.ACTION_TYPE.MEMBER_SCOPE_CHANGED) {
-			if (
-				message.hasOwnProperty("data") &&
-				message.data.hasOwnProperty("extras")
-			) {
+			if (message.hasOwnProperty("data") && message.data.hasOwnProperty("extras")) {
 				if (message.data.extras.hasOwnProperty("scope")) {
 					if (message.data.extras.scope.hasOwnProperty("new") === false) {
 						return actionMessage;
@@ -490,10 +464,7 @@ class CometChatConversationListItem extends React.PureComponent {
 				actionMessage = `${byString} ${Translator.translate(
 					"MADE",
 					this.context.language
-				)} ${forString} ${Translator.translate(
-					newScope,
-					this.context.language
-				)}`;
+				)} ${forString} ${Translator.translate(newScope, this.context.language)}`;
 				break;
 			}
 			default:
@@ -563,49 +534,35 @@ class CometChatConversationListItem extends React.PureComponent {
 		let lastMessageTimeStamp = null;
 		if (this.state.lastMessage) {
 			lastMessageTimeStamp = (
-				<span
-					css={itemLastMsgTimeStyle(this.props)}
-					className='item__details__timestamp'
-				>
+				<span css={itemLastMsgTimeStyle(this.props)} className="item__details__timestamp">
 					{this.state.lastMessageTimestamp}
 				</span>
 			);
 		}
 
 		let presence;
-		if (
-			this.props.conversation.conversationType === CometChat.RECEIVER_TYPE.USER
-		) {
+		if (this.props.conversation.conversationType === CometChat.RECEIVER_TYPE.USER) {
 			const status = this.props.conversation.conversationWith.status;
 			presence = (
 				<CometChatUserPresence
 					status={status}
+					user={this.props.conversation.conversationWith}
 					borderColor={this.props.theme.borderColor.primary}
 				/>
 			);
 		}
 
 		let avatar = null;
-		if (
-			this.props.conversation.conversationType === CometChat.RECEIVER_TYPE.USER
-		) {
-			avatar = (
-				<CometChatAvatar user={this.props.conversation.conversationWith} />
-			);
-		} else if (
-			this.props.conversation.conversationType === CometChat.RECEIVER_TYPE.GROUP
-		) {
-			avatar = (
-				<CometChatAvatar group={this.props.conversation.conversationWith} />
-			);
+		if (this.props.conversation.conversationType === CometChat.RECEIVER_TYPE.USER) {
+			avatar = <CometChatAvatar user={this.props.conversation.conversationWith} />;
+		} else if (this.props.conversation.conversationType === CometChat.RECEIVER_TYPE.GROUP) {
+			avatar = <CometChatAvatar group={this.props.conversation.conversationWith} />;
 		}
 
 		let unreadCount = null;
 		if (this.state.enableUnreadCount) {
 			unreadCount = (
-				<CometChatBadgeCount
-					count={this.props.conversation.unreadMessageCount}
-				/>
+				<CometChatBadgeCount count={this.props.conversation.unreadMessageCount} />
 			);
 		}
 
@@ -622,24 +579,24 @@ class CometChatConversationListItem extends React.PureComponent {
 		return (
 			<div
 				css={listItem(this.props)}
-				className='list__item'
+				className="list__item"
 				onMouseEnter={() => this.handleMouseHover(true)}
 				onMouseLeave={() => this.handleMouseHover(false)}
 				onClick={() => this.props.handleClick(this.props.conversation)}
 			>
-				<div css={itemThumbnailStyle()} className='list__item__thumbnail'>
+				<div css={itemThumbnailStyle()} className="list__item__thumbnail">
 					{avatar}
 					{presence}
 				</div>
 				<div
 					css={itemDetailStyle()}
-					className='list__item__details'
+					className="list__item__details"
 					dir={Translator.getDirection(this.context.language)}
 				>
-					<div css={itemRowStyle()} className='item__details_block_one'>
+					<div css={itemRowStyle()} className="item__details_block_one">
 						<div
 							css={itemNameStyle(this.props)}
-							className='item__details__name'
+							className="item__details__name"
 							onMouseEnter={(event) => this.toggleTooltip(event, true)}
 							onMouseLeave={(event) => this.toggleTooltip(event, false)}
 						>
@@ -647,10 +604,10 @@ class CometChatConversationListItem extends React.PureComponent {
 						</div>
 						{lastMessageTimeStamp}
 					</div>
-					<div css={itemRowStyle()} className='item__details_block_two'>
+					<div css={itemRowStyle()} className="item__details_block_two">
 						<div
 							css={itemLastMsgStyle(this.props)}
-							className='item__details__last-message'
+							className="item__details__last-message"
 							onMouseEnter={(event) => this.toggleTooltip(event, true)}
 							onMouseLeave={(event) => this.toggleTooltip(event, false)}
 						>

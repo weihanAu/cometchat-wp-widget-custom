@@ -42,17 +42,14 @@
 						authKey: "3b23a44d08990491dd8ad335f585121465c8ba02",
 					}).then(
 						(response) => {
-							console.log(
-								"Initialization completed successfully"
-							);
+							console.log("Initialization completed successfully");
 							//You can now call login function.
 							CometChatWidget.login({
 								uid: UID,
 							}).then(
 								(response) => {
 									CometChatWidget.launch({
-										widgetID:
-											"019886dc-0a20-400c-bf9b-f02c9a5325de",
+										widgetID: "019886dc-0a20-400c-bf9b-f02c9a5325de",
 										target: "#cometchat",
 										roundedCorners: "true",
 										height: "37.5rem",
@@ -65,19 +62,13 @@
 									widgets.push(response);
 								},
 								(error) => {
-									console.log(
-										"User login failed with error:",
-										error
-									);
+									console.log("User login failed with error:", error);
 									//Check the reason for error and take appropriate action.
 								}
 							);
 						},
 						(error) => {
-							console.log(
-								"Initialization failed with error:",
-								error
-							);
+							console.log("Initialization failed with error:", error);
 							//Check the reason for error and take appropriate action.
 						}
 					);
