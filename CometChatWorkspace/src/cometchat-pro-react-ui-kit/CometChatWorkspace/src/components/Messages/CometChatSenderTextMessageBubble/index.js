@@ -58,7 +58,8 @@ class CometChatSenderTextMessageBubble extends React.Component {
 			currentMessageStr !== nextMessageStr ||
 			this.state.isHovering !== nextState.isHovering ||
 			this.state.translatedMessage !== nextState.translatedMessage ||
-			this.state.enableLargerSizeEmojis !== nextState.enableLargerSizeEmojis
+			this.state.enableLargerSizeEmojis !==
+				nextState.enableLargerSizeEmojis
 		) {
 			return true;
 		}
@@ -144,11 +145,11 @@ class CometChatSenderTextMessageBubble extends React.Component {
 		messageText = (
 			<div
 				css={messageTxtWrapperStyle(this.context)}
-				className='message__txt__wrapper'
+				className="message__txt__wrapper"
 			>
 				<p
 					css={messageTxtStyle(this.props, showVariation, count)}
-					className='message__txt'
+					className="message__txt"
 				>
 					{parsedMessage}
 					{this.state.translatedMessage}
@@ -163,7 +164,8 @@ class CometChatSenderTextMessageBubble extends React.Component {
 		const messageId = message.id;
 		const messageText = message.text;
 
-		const browserLanguageCode = Translator.getBrowserLanguage().toLowerCase();
+		const browserLanguageCode =
+			Translator.getBrowserLanguage().toLowerCase();
 		let translateToLanguage = browserLanguageCode;
 		if (browserLanguageCode.indexOf("-") !== -1) {
 			const browserLanguageArray = browserLanguageCode.split("-");
@@ -186,7 +188,11 @@ class CometChatSenderTextMessageBubble extends React.Component {
 						result.translations.length
 					) {
 						const messageTranslation = result.translations[0];
-						if (messageTranslation.hasOwnProperty("message_translated")) {
+						if (
+							messageTranslation.hasOwnProperty(
+								"message_translated"
+							)
+						) {
 							translatedMessage = `\n(${messageTranslation["message_translated"]})`;
 						}
 					} else {
@@ -293,7 +299,7 @@ class CometChatSenderTextMessageBubble extends React.Component {
 				messageReactions = (
 					<div
 						css={messageReactionsWrapperStyle()}
-						className='message__reaction__wrapper'
+						className="message__reaction__wrapper"
 					>
 						<CometChatMessageReactions
 							message={this.props.message}
@@ -317,14 +323,14 @@ class CometChatSenderTextMessageBubble extends React.Component {
 		return (
 			<div
 				css={messageContainerStyle()}
-				className='sender__message__container message__text'
+				className="sender__message__container message__text"
 				onMouseEnter={this.handleMouseHover}
 				onMouseLeave={this.handleMouseHover}
 			>
 				{toolTipView}
 				<div
 					css={messageWrapperStyle()}
-					className='message__wrapper'
+					className="message__wrapper"
 					ref={this.messageTextRef}
 				>
 					{messageText}
@@ -332,7 +338,10 @@ class CometChatSenderTextMessageBubble extends React.Component {
 
 				{messageReactions}
 
-				<div css={messageInfoWrapperStyle()} className='message__info__wrapper'>
+				<div
+					css={messageInfoWrapperStyle()}
+					className="message__info__wrapper"
+				>
 					<CometChatThreadedMessageReplyCount
 						message={this.props.message}
 						actionGenerated={this.props.actionGenerated}
