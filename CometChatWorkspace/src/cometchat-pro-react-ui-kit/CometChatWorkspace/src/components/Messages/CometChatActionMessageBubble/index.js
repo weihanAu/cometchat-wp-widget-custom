@@ -289,7 +289,9 @@ class CometChatActionMessageBubble extends React.Component {
 
   render() {
     if (
-      this.props.message?.data?.action === CometChat.ACTION_TYPE.MEMBER_JOINED
+      this.props.message?.data?.action ===
+        CometChat.ACTION_TYPE.MEMBER_JOINED ||
+      this.props.message?.data?.action === CometChat.ACTION_TYPE.MEMBER_LEFT
     ) {
       return null;
     }
