@@ -48,6 +48,8 @@ export class MessageListManager
                 )
                 .then((hideDeletedMessages) =>
                 {
+                    types.pop();
+
                     if (this.type === CometChat.ACTION_TYPE.TYPE_USER)
                     {
                         if (this.parentMessageId)
