@@ -16,11 +16,7 @@ import {
 import { CometChatMessageReactions } from "../Extensions";
 
 import { CometChatContext } from "../../../util/CometChatContext";
-import {
-	linkify,
-	checkMessageForExtensionsData,
-	countEmojiOccurences,
-} from "../../../util/common";
+import { linkify, checkMessageForExtensionsData, countEmojiOccurences } from "../../../util/common";
 import * as enums from "../../../util/enums.js";
 
 import Translator from "../../../resources/localization/translator";
@@ -82,10 +78,7 @@ class CometChatSenderTextMessageBubble extends React.Component {
 		let messageText = this.props.message.text;
 
 		//xss extensions data
-		const xssData = checkMessageForExtensionsData(
-			this.props.message,
-			"xss-filter"
-		);
+		const xssData = checkMessageForExtensionsData(this.props.message, "xss-filter");
 		if (
 			xssData &&
 			xssData.hasOwnProperty("sanitized_text") &&
@@ -96,10 +89,7 @@ class CometChatSenderTextMessageBubble extends React.Component {
 		}
 
 		//datamasking extensions data
-		const maskedData = checkMessageForExtensionsData(
-			this.props.message,
-			"data-masking"
-		);
+		const maskedData = checkMessageForExtensionsData(this.props.message, "data-masking");
 		if (
 			maskedData &&
 			maskedData.hasOwnProperty("data") &&
@@ -111,10 +101,7 @@ class CometChatSenderTextMessageBubble extends React.Component {
 		}
 
 		//profanity extensions data
-		const profaneData = checkMessageForExtensionsData(
-			this.props.message,
-			"profanity-filter"
-		);
+		const profaneData = checkMessageForExtensionsData(this.props.message, "profanity-filter");
 		if (
 			profaneData &&
 			profaneData.hasOwnProperty("profanity") &&
@@ -133,7 +120,11 @@ class CometChatSenderTextMessageBubble extends React.Component {
 
 		let count = countEmojiOccurences(emojiParsedMessage, 'class="emoji"');
 
-		const parsedMessage = parse(emojiParsedMessage);
+		let parsedMessage = parse(emojiParsedMessage);
+
+		if (this.props.message.tags && this.props.message.tags.includes("moderating")) {
+			parsedMessage = "*".repeat(messageText.length);
+		}
 
 		let showVariation = true;
 		//if larger size emojis feature is disabled
@@ -142,14 +133,8 @@ class CometChatSenderTextMessageBubble extends React.Component {
 		}
 
 		messageText = (
-			<div
-				css={messageTxtWrapperStyle(this.context)}
-				className='message__txt__wrapper'
-			>
-				<p
-					css={messageTxtStyle(this.props, showVariation, count)}
-					className='message__txt'
-				>
+			<div css={messageTxtWrapperStyle(this.context)} className="message__txt__wrapper">
+				<p css={messageTxtStyle(this.props, showVariation, count)} className="message__txt">
 					{parsedMessage}
 					{this.state.translatedMessage}
 				</p>
@@ -181,37 +166,22 @@ class CometChatSenderTextMessageBubble extends React.Component {
 					result.hasOwnProperty("language_original") &&
 					result["language_original"] !== translateToLanguage
 				) {
-					if (
-						result.hasOwnProperty("translations") &&
-						result.translations.length
-					) {
+					if (result.hasOwnProperty("translations") && result.translations.length) {
 						const messageTranslation = result.translations[0];
 						if (messageTranslation.hasOwnProperty("message_translated")) {
 							translatedMessage = `\n(${messageTranslation["message_translated"]})`;
 						}
 					} else {
-						this.props.actionGenerated(
-							enums.ACTIONS["ERROR"],
-							[],
-							"SOMETHING_WRONG"
-						);
+						this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG");
 					}
 				} else {
-					this.props.actionGenerated(
-						enums.ACTIONS["INFO"],
-						[],
-						"SAME_LANGUAGE_MESSAGE"
-					);
+					this.props.actionGenerated(enums.ACTIONS["INFO"], [], "SAME_LANGUAGE_MESSAGE");
 				}
 
 				this.setState({ translatedMessage: translatedMessage });
 			})
 			.catch((error) =>
-				this.props.actionGenerated(
-					enums.ACTIONS["ERROR"],
-					[],
-					"SOMETHING_WRONG"
-				)
+				this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG")
 			);
 	};
 
@@ -265,35 +235,26 @@ class CometChatSenderTextMessageBubble extends React.Component {
 		let messageText = this.getMessageText();
 
 		//linkpreview extensions data
-		const linkPreviewData = checkMessageForExtensionsData(
-			this.props.message,
-			"link-preview"
-		);
+		const linkPreviewData = checkMessageForExtensionsData(this.props.message, "link-preview");
 		if (
 			linkPreviewData &&
 			linkPreviewData.hasOwnProperty("links") &&
 			linkPreviewData["links"].length
 		) {
 			messageText = (
-				<CometChatLinkPreview
-					message={this.props.message}
-					messageText={messageText}
-				/>
+				<CometChatLinkPreview message={this.props.message} messageText={messageText} />
 			);
 		}
 
 		//messagereactions extensions data
 		let messageReactions = null;
-		const reactionsData = checkMessageForExtensionsData(
-			this.props.message,
-			"reactions"
-		);
+		const reactionsData = checkMessageForExtensionsData(this.props.message, "reactions");
 		if (reactionsData) {
 			if (Object.keys(reactionsData).length) {
 				messageReactions = (
 					<div
 						css={messageReactionsWrapperStyle()}
-						className='message__reaction__wrapper'
+						className="message__reaction__wrapper"
 					>
 						<CometChatMessageReactions
 							message={this.props.message}
@@ -317,14 +278,14 @@ class CometChatSenderTextMessageBubble extends React.Component {
 		return (
 			<div
 				css={messageContainerStyle()}
-				className='sender__message__container message__text'
+				className="sender__message__container message__text"
 				onMouseEnter={this.handleMouseHover}
 				onMouseLeave={this.handleMouseHover}
 			>
 				{toolTipView}
 				<div
 					css={messageWrapperStyle()}
-					className='message__wrapper'
+					className="message__wrapper"
 					ref={this.messageTextRef}
 				>
 					{messageText}
@@ -332,7 +293,7 @@ class CometChatSenderTextMessageBubble extends React.Component {
 
 				{messageReactions}
 
-				<div css={messageInfoWrapperStyle()} className='message__info__wrapper'>
+				<div css={messageInfoWrapperStyle()} className="message__info__wrapper">
 					<CometChatThreadedMessageReplyCount
 						message={this.props.message}
 						actionGenerated={this.props.actionGenerated}

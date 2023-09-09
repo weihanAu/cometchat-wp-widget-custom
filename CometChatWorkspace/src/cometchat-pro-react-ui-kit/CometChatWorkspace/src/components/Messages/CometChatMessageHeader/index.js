@@ -66,11 +66,7 @@ class CometChatMessageHeader extends React.Component {
 		CometChat.getLoggedinUser()
 			.then((user) => (this.loggedInUser = user))
 			.catch((error) =>
-				this.props.actionGenerated(
-					enums.ACTIONS["ERROR"],
-					[],
-					"SOMETHING_WRONG"
-				)
+				this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG")
 			);
 
 		this.MessageHeaderManager = new MessageHeaderManager();
@@ -147,10 +143,7 @@ class CometChatMessageHeader extends React.Component {
 			const lastActive = this.context.item.lastActiveAt * 1000;
 			const messageDate = dateFormat(lastActive, "dS mmm yyyy, h:MM TT");
 
-			status = `${Translator.translate(
-				"LAST_ACTIVE_AT",
-				this.props.lang
-			)}: ${messageDate}`;
+			status = `${Translator.translate("LAST_ACTIVE_AT", this.props.lang)}: ${messageDate}`;
 		} else if (this.context.item.status === CometChat.USER_STATUS.OFFLINE) {
 			status = Translator.translate("OFFLINE", this.props.lang);
 		} else if (this.context.item.status === CometChat.USER_STATUS.ONLINE) {
@@ -277,10 +270,7 @@ class CometChatMessageHeader extends React.Component {
 			this.context.type === item.receiverType &&
 			this.context.item.uid === item.sender.uid
 		) {
-			const typingText = `${Translator.translate(
-				"TYPING",
-				this.context.language
-			)}`;
+			const typingText = `${Translator.translate("TYPING", this.context.language)}`;
 			showTyping(typingText);
 		}
 	};
@@ -611,6 +601,7 @@ class CometChatMessageHeader extends React.Component {
 			presence = (
 				<CometChatUserPresence
 					status={this.state.presence}
+					user={this.context.item}
 					borderColor={this.props.theme.borderColor.primary}
 				/>
 			);
@@ -637,18 +628,12 @@ class CometChatMessageHeader extends React.Component {
 		}
 
 		let status = (
-			<span
-				css={chatStatusStyle(this.state, this.context)}
-				className={chatStatusClassName}
-			>
+			<span css={chatStatusStyle(this.state, this.context)} className={chatStatusClassName}>
 				{this.state.status}
 			</span>
 		);
 
-		const audioCallText = Translator.translate(
-			"AUDIO_CALL",
-			this.context.language
-		);
+		const audioCallText = Translator.translate("AUDIO_CALL", this.context.language);
 		let audioCallBtn = (
 			<div
 				className={audioCallClassName}
@@ -676,10 +661,7 @@ class CometChatMessageHeader extends React.Component {
 			);
 		}
 
-		const videoCallText = Translator.translate(
-			"VIDEO_CALL",
-			this.context.language
-		);
+		const videoCallText = Translator.translate("VIDEO_CALL", this.context.language);
 		let videoCallBtn = (
 			<div
 				className={videoCallClassName}
@@ -707,10 +689,7 @@ class CometChatMessageHeader extends React.Component {
 			);
 		}
 
-		const viewDetailText = Translator.translate(
-			"VIEW_DETAIL",
-			this.context.language
-		);
+		const viewDetailText = Translator.translate("VIEW_DETAIL", this.context.language);
 		let viewDetailBtn = (
 			<div
 				className={viewDetailClassName}
@@ -726,19 +705,14 @@ class CometChatMessageHeader extends React.Component {
 		 * If the chat window open is of users and block user and shared media feature is disabled, hide view detail button
 		 */
 		if (this.context.type === CometChat.ACTION_TYPE.TYPE_USER) {
-			if (
-				this.state.enableBlockUser === false &&
-				this.state.enableSharedMedia === false
-			) {
+			if (this.state.enableBlockUser === false && this.state.enableSharedMedia === false) {
 				viewDetailBtn = null;
 			}
 		} else if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
 			/**
 			 * If the chat window open is of group
 			 */
-			if (
-				this.context.item?.scope === CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT
-			) {
+			if (this.context.item?.scope === CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT) {
 				/**
 				 * If the loggedin user scope is participant, leave group, view group members, and shared media feature is disabled, hide view detail button
 				 */
@@ -749,9 +723,7 @@ class CometChatMessageHeader extends React.Component {
 				) {
 					viewDetailBtn = null;
 				}
-			} else if (
-				this.context.item?.scope === CometChat.GROUP_MEMBER_SCOPE.MODERATOR
-			) {
+			} else if (this.context.item?.scope === CometChat.GROUP_MEMBER_SCOPE.MODERATOR) {
 				/**
 				 * If the loggedin user scope is moderator, leave group, view group members, kick & ban group members, changing scope of group members and shared media feature is disabled, hide view detail button
 				 */
@@ -765,9 +737,7 @@ class CometChatMessageHeader extends React.Component {
 				) {
 					viewDetailBtn = null;
 				}
-			} else if (
-				this.context.item?.scope === CometChat.GROUP_MEMBER_SCOPE.ADMIN
-			) {
+			} else if (this.context.item?.scope === CometChat.GROUP_MEMBER_SCOPE.ADMIN) {
 				/**
 				 * If the loggedin user scope is admin, add group members, view group members, kick & ban group members, changing scope of group members, leave and delete group and shared media feature is disabled, hide view detail button
 				 */
@@ -815,14 +785,14 @@ class CometChatMessageHeader extends React.Component {
 		}
 
 		return (
-			<div css={chatHeaderStyle(this.context)} className='chat__header'>
-				<div css={chatDetailStyle()} className='chat__details'>
+			<div css={chatHeaderStyle(this.context)} className="chat__header">
+				<div css={chatDetailStyle()} className="chat__details">
 					<div
 						css={chatSideBarBtnStyle(menuIcon, this.props, this.context)}
-						className='chat__sidebar-menu'
+						className="chat__sidebar-menu"
 						onClick={this.resetChat}
 					></div>
-					<div css={chatThumbnailStyle()} className='chat__thumbnail'>
+					<div css={chatThumbnailStyle()} className="chat__thumbnail">
 						{avatar}
 						{presence}
 					</div>
@@ -838,7 +808,7 @@ class CometChatMessageHeader extends React.Component {
 						{typing ? typing : status}
 					</div>
 				</div>
-				<div css={chatOptionWrapStyle()} className='chat__options'>
+				<div css={chatOptionWrapStyle()} className="chat__options">
 					{videoCallBtn}
 					{audioCallBtn}
 					{viewDetailBtn}

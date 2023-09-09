@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div>
+			<ul id="message-list"></ul>
+		</div>
+		<script defer type="module">
+			const { default: CometChatWidget } = await import("./index.js");
+
+			window.CometChatWidget = CometChatWidget;
+
+			const { CometChat } = CometChatWidget;
+
+			const messageList = document.querySelector("#message-list");
+
+			const apiKey = "76cdda8b9290ad8211e3c1abde81d5284de1861a";
+
+			const url =
+				"https://242053eed084c85d.api-us.cometchat.io/v3/messages?limit=100&withTags=true&tags=moderating";
+
+			async function fetchMessages() {
+				messageList.innerHTML = "";
+
+				const res = await fetch(url, {
+					headers: {
+						accept: "application/json",
+						apikey: apiKey,
+					},
+				});
+
+				const { data } = await res.json();
+
+				if (data instanceof Array) {
+					data.map((message) => {
+						const li = document.createElement("li");
+
+						const button = document.createElement("button");
+
+						button.textContent = "check";
+
+						button.onclick = () => moderateMessage(message);
+
+						li.innerText = `
+                        receiver:${message.receiver}
+                        receiverType:${message.receiverType}
+                        message:${message.data.text}
+                        `;
+
+						li.append(button);
+
+						messageList.append(li);
+					});
+				}
+			}
+
+			async function moderateMessage(message) {
+				fetch(`https://242053eed084c85d.api-us.cometchat.io/v3/messages/${message.id}`, {
+					method: "PUT",
+					headers: {
+						accept: "application/json",
+						"content-type": "application/json",
+						apikey: apiKey,
+					},
+					body: JSON.stringify({ tags: ["moderated"] }),
+				})
+					.then(fetchMessages)
+					.catch(console.error);
+			}
+
+			fetchMessages();
+		</script>
+	</body>
+</html>

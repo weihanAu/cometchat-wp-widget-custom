@@ -22,7 +22,7 @@ import { useContext } from "react";
 const CometChatUserListItem = (props) => {
 	const context = useContext(CometChatContext);
 
-	let userPresence = <CometChatUserPresence status={props.user.status} />;
+	let userPresence = <CometChatUserPresence user={props.user} status={props.user.status} />;
 
 	const toggleTooltip = (event, flag) => {
 		const elem = event.target;
@@ -45,26 +45,26 @@ const CometChatUserListItem = (props) => {
 		<div
 			css={listItem(props, context)}
 			onClick={() => props.clickHandler(props.user)}
-			className='list__item'
+			className="list__item"
 		>
-			<div css={itemThumbnailStyle()} className='list__item__thumbnail'>
+			<div css={itemThumbnailStyle()} className="list__item__thumbnail">
 				<CometChatAvatar user={props.user} />
 				{userPresence}
 			</div>
 			<div
 				css={itemDetailStyle()}
-				className='list__item__details'
+				className="list__item__details"
 				dir={Translator.getDirection(context.language)}
 			>
 				<div
 					css={itemNameStyle(context)}
-					className='item__details__name'
+					className="item__details__name"
 					onMouseEnter={(event) => toggleTooltip(event, true)}
 					onMouseLeave={(event) => toggleTooltip(event, false)}
 				>
 					{props.user.name}
 				</div>
-				<div css={itemDescStyle(context)} className='item__details__desc'></div>
+				<div css={itemDescStyle(context)} className="item__details__desc"></div>
 			</div>
 		</div>
 	);

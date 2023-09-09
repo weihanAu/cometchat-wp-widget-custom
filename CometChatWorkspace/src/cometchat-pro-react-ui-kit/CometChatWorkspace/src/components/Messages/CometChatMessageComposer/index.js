@@ -13,11 +13,7 @@ import {
 import { CometChatEmojiKeyboard } from "../";
 
 import { CometChatContext } from "../../../util/CometChatContext";
-import {
-	checkMessageForExtensionsData,
-	ID,
-	getUnixTimestamp,
-} from "../../../util/common";
+import { checkMessageForExtensionsData, ID, getUnixTimestamp } from "../../../util/common";
 import * as enums from "../../../util/enums.js";
 import { SoundManager } from "../../../util/SoundManager";
 
@@ -104,13 +100,9 @@ class CometChatMessageComposer extends React.PureComponent {
 		CometChat.getLoggedinUser()
 			.then((user) => (this.loggedInUser = user))
 			.catch((error) =>
-				this.props.actionGenerated(
-					enums.ACTIONS["ERROR"],
-					[],
-					"SOMETHING_WRONG"
-				)
+				this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG")
 			);
-		this.chatWindow =  this.context.UIKitSettings.chatWindow;
+		this.chatWindow = this.context.UIKitSettings.chatWindow;
 		this.item =
 			this.context.type === CometChat.ACTION_TYPE.TYPE_USER ||
 			this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP
@@ -125,6 +117,8 @@ class CometChatMessageComposer extends React.PureComponent {
 		this.enableEmojis();
 		this.enableCollaborativeDocument();
 		this.enableCollaborativeWhiteboard();
+
+		this.messageInputRef.current?.focus();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -141,10 +135,7 @@ class CometChatMessageComposer extends React.PureComponent {
 				let messageText = messageToBeEdited.text;
 
 				//xss extensions data
-				const xssData = checkMessageForExtensionsData(
-					messageToBeEdited,
-					"xss-filter"
-				);
+				const xssData = checkMessageForExtensionsData(messageToBeEdited, "xss-filter");
 				if (
 					xssData &&
 					xssData.hasOwnProperty("sanitized_text") &&
@@ -204,6 +195,12 @@ class CometChatMessageComposer extends React.PureComponent {
 		this.enableEmojis();
 		this.enableCollaborativeDocument();
 		this.enableCollaborativeWhiteboard();
+
+		if (prevProps.messageToBeEdited !== this.props.messageToBeEdited) {
+			this.setState({
+				messageInput: this.messageInputRef.current.textContent,
+			});
+		}
 	}
 
 	/**
@@ -362,60 +359,58 @@ class CometChatMessageComposer extends React.PureComponent {
 	focusOnMessageComposer = () => {
 		if (this.messageInputRef && this.messageInputRef.current) {
 			this.messageInputRef.current.focus();
-			this.updateSelection()
+			this.updateSelection();
 		}
 	};
 
-	    /**
-     * Updates caret selection object
-     */
-		 updateSelection() {
-			try {
-				if (this.chatWindow.getSelection) {
-				  this.sel = this.chatWindow.getSelection();
-				  if (this.sel.getRangeAt && this.sel.rangeCount) {
-					this.range = this.sel.getRangeAt(0);
-				  }
-				}
-			  } catch (error) {
-				console.log("Error updating selection", error);
-			  }
-			
-		  }
-
-	 /**
-     * Pastes given html at caret position
-     */
-	  pasteHtmlAtCaret(html) {
-		  
+	/**
+	 * Updates caret selection object
+	 */
+	updateSelection() {
 		try {
-		  if (this.sel && this.range) {
-			this.range.deleteContents();
-  
-			let el = document.createElement("div");
-			el.innerHTML = html;
-			let frag = document.createDocumentFragment(),
-			  node,
-			  lastNode;
-			while ((node = el.firstChild)) {
-			  lastNode = frag.appendChild(node);
+			if (this.chatWindow.getSelection) {
+				this.sel = this.chatWindow.getSelection();
+				if (this.sel.getRangeAt && this.sel.rangeCount) {
+					this.range = this.sel.getRangeAt(0);
+				}
 			}
-			this.range.insertNode(frag);
-  
-			if (lastNode) {
-				this.range = this.range.cloneRange();
-				this.range.setStartAfter(lastNode);
-				this.range.collapse(true);
-				this.sel.removeAllRanges();
-				this.sel.addRange(this.range);
-			}
-		  } else if (document.selection && document.selection.type != "Control") {
-			document.selection.createRange().pasteHTML(html);
-		  }
 		} catch (error) {
-		  console.log("Error pasting html to caret", error);
+			console.log("Error updating selection", error);
 		}
-	  }
+	}
+
+	/**
+	 * Pastes given html at caret position
+	 */
+	pasteHtmlAtCaret(html) {
+		try {
+			if (this.sel && this.range) {
+				this.range.deleteContents();
+
+				let el = document.createElement("div");
+				el.innerHTML = html;
+				let frag = document.createDocumentFragment(),
+					node,
+					lastNode;
+				while ((node = el.firstChild)) {
+					lastNode = frag.appendChild(node);
+				}
+				this.range.insertNode(frag);
+
+				if (lastNode) {
+					this.range = this.range.cloneRange();
+					this.range.setStartAfter(lastNode);
+					this.range.collapse(true);
+					this.sel.removeAllRanges();
+					this.sel.addRange(this.range);
+				}
+			} else if (document.selection && document.selection.type != "Control") {
+				document.selection.createRange().pasteHTML(html);
+			}
+		} catch (error) {
+			console.log("Error pasting html to caret", error);
+		}
+	}
 
 	emojiClicked = (emoji) => {
 		if (this.state.messageToReact) {
@@ -423,13 +418,12 @@ class CometChatMessageComposer extends React.PureComponent {
 			return;
 		}
 		const element = this.messageInputRef.current;
-		if(!this.sel && !this.range){
+		if (!this.sel && !this.range) {
 			//  focus when we open emoji keyboard for the first time
 			this.focusOnMessageComposer();
-			}
-			else{
-				element.focus();
-			}
+		} else {
+			element.focus();
+		}
 		this.pasteHtmlAtCaret(emoji.char);
 		this.setState({ messageInput: element.innerText, messageType: "text" });
 	};
@@ -485,11 +479,7 @@ class CometChatMessageComposer extends React.PureComponent {
 			(event) => {
 				// Setting up base64 URL on image
 
-				const newFile = new File(
-					[reader.result],
-					uploadedFile.name,
-					uploadedFile
-				);
+				const newFile = new File([reader.result], uploadedFile.name, uploadedFile);
 				this.sendMediaMessage(newFile, CometChat.MESSAGE_TYPE.IMAGE);
 			},
 			false
@@ -511,11 +501,7 @@ class CometChatMessageComposer extends React.PureComponent {
 			(event) => {
 				// Setting up base64 URL on image
 
-				const newFile = new File(
-					[reader.result],
-					uploadedFile.name,
-					uploadedFile
-				);
+				const newFile = new File([reader.result], uploadedFile.name, uploadedFile);
 				this.sendMediaMessage(newFile, CometChat.MESSAGE_TYPE.FILE);
 			},
 			false
@@ -537,11 +523,7 @@ class CometChatMessageComposer extends React.PureComponent {
 			() => {
 				// Setting up base64 URL on image
 
-				const newFile = new File(
-					[reader.result],
-					uploadedFile.name,
-					uploadedFile
-				);
+				const newFile = new File([reader.result], uploadedFile.name, uploadedFile);
 				this.sendMediaMessage(newFile, CometChat.MESSAGE_TYPE.AUDIO);
 			},
 			false
@@ -563,11 +545,7 @@ class CometChatMessageComposer extends React.PureComponent {
 			() => {
 				// Setting up base64 URL on image
 
-				const newFile = new File(
-					[reader.result],
-					uploadedFile.name,
-					uploadedFile
-				);
+				const newFile = new File([reader.result], uploadedFile.name, uploadedFile);
 				this.sendMediaMessage(newFile, CometChat.MESSAGE_TYPE.VIDEO);
 			},
 			false
@@ -617,16 +595,12 @@ class CometChatMessageComposer extends React.PureComponent {
 		mediaMessage._id = ID();
 
 		SoundManager.play(enums.CONSTANTS.AUDIO["OUTGOING_MESSAGE"], this.context);
-		this.props.actionGenerated(enums.ACTIONS["MESSAGE_COMPOSED"], [
-			mediaMessage,
-		]);
+		this.props.actionGenerated(enums.ACTIONS["MESSAGE_COMPOSED"], [mediaMessage]);
 
 		CometChat.sendMessage(mediaMessage)
 			.then((message) => {
 				const newMessageObj = { ...message, _id: mediaMessage._id };
-				this.props.actionGenerated(enums.ACTIONS["MESSAGE_SENT"], [
-					newMessageObj,
-				]);
+				this.props.actionGenerated(enums.ACTIONS["MESSAGE_SENT"], [newMessageObj]);
 			})
 			.catch((error) => {
 				const newMessageObj = { ...mediaMessage, error: error };
@@ -639,7 +613,9 @@ class CometChatMessageComposer extends React.PureComponent {
 	sendMessageOnEnter = (event) => {
 		if (event.keyCode === 13 && !event.shiftKey) {
 			event.preventDefault();
+
 			this.sendTextMessage();
+
 			return true;
 		}
 	};
@@ -663,11 +639,7 @@ class CometChatMessageComposer extends React.PureComponent {
 		let { receiverId, receiverType } = this.getReceiverDetails();
 		let messageInput = this.state.messageInput.trim();
 
-		let textMessage = new CometChat.TextMessage(
-			receiverId,
-			messageInput,
-			receiverType
-		);
+		let textMessage = new CometChat.TextMessage(receiverId, messageInput, receiverType);
 		if (this.props.parentMessageId) {
 			textMessage.setParentMessageId(this.props.parentMessageId);
 		}
@@ -677,9 +649,11 @@ class CometChatMessageComposer extends React.PureComponent {
 		textMessage._composedAt = getUnixTimestamp();
 		textMessage._id = ID();
 
-		this.props.actionGenerated(enums.ACTIONS["MESSAGE_COMPOSED"], [
-			textMessage,
-		]);
+		if (/(http|https|HTTPS|HTTP):\/\//g.test(messageInput)) {
+			textMessage.setTags(["moderating"]);
+		}
+
+		this.props.actionGenerated(enums.ACTIONS["MESSAGE_COMPOSED"], [textMessage]);
 		this.setState({ messageInput: "", replyPreview: false });
 
 		this.messageInputRef.current.textContent = "";
@@ -688,9 +662,7 @@ class CometChatMessageComposer extends React.PureComponent {
 		CometChat.sendMessage(textMessage)
 			.then((message) => {
 				const newMessageObj = { ...message, _id: textMessage._id };
-				this.props.actionGenerated(enums.ACTIONS["MESSAGE_SENT"], [
-					newMessageObj,
-				]);
+				this.props.actionGenerated(enums.ACTIONS["MESSAGE_SENT"], [newMessageObj]);
 			})
 			.catch((error) => {
 				const newMessageObj = { ...textMessage, error: error };
@@ -698,11 +670,7 @@ class CometChatMessageComposer extends React.PureComponent {
 					newMessageObj,
 				]);
 
-				if (
-					error &&
-					error.hasOwnProperty("code") &&
-					error.code === "ERR_GUID_NOT_FOUND"
-				) {
+				if (error && error.hasOwnProperty("code") && error.code === "ERR_GUID_NOT_FOUND") {
 					//this.context.setDeletedGroupId(this.context.item.guid);
 				}
 			});
@@ -715,11 +683,7 @@ class CometChatMessageComposer extends React.PureComponent {
 
 		let { receiverId, receiverType } = this.getReceiverDetails();
 		let messageText = this.state.messageInput.trim();
-		let textMessage = new CometChat.TextMessage(
-			receiverId,
-			messageText,
-			receiverType
-		);
+		let textMessage = new CometChat.TextMessage(receiverId, messageText, receiverType);
 		textMessage.setId(messageToBeEdited.id);
 
 		const newMessage = Object.assign({}, textMessage, {
@@ -740,11 +704,7 @@ class CometChatMessageComposer extends React.PureComponent {
 				});
 			})
 			.catch((error) =>
-				this.props.actionGenerated(
-					enums.ACTIONS["ERROR"],
-					[],
-					"SOMETHING_WRONG"
-				)
+				this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG")
 			);
 	};
 
@@ -780,7 +740,7 @@ class CometChatMessageComposer extends React.PureComponent {
 	};
 
 	endTyping = (event, metadata) => {
-		this.updateSelection() //updating selection onblur
+		this.updateSelection(); //updating selection onblur
 		//fixing synthetic issue
 		if (event) {
 			event.persist();
@@ -836,11 +796,7 @@ class CometChatMessageComposer extends React.PureComponent {
 				}
 			})
 			.catch((error) =>
-				this.props.actionGenerated(
-					enums.ACTIONS["ERROR"],
-					[],
-					"SOMETHING_WRONG"
-				)
+				this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG")
 			);
 	};
 
@@ -859,11 +815,7 @@ class CometChatMessageComposer extends React.PureComponent {
 				}
 			})
 			.catch((error) =>
-				this.props.actionGenerated(
-					enums.ACTIONS["ERROR"],
-					[],
-					"SOMETHING_WRONG"
-				)
+				this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG")
 			);
 	};
 
@@ -913,17 +865,13 @@ class CometChatMessageComposer extends React.PureComponent {
 		customMessage._composedAt = getUnixTimestamp();
 		customMessage._id = ID();
 
-		this.props.actionGenerated(enums.ACTIONS["MESSAGE_COMPOSED"], [
-			customMessage,
-		]);
+		this.props.actionGenerated(enums.ACTIONS["MESSAGE_COMPOSED"], [customMessage]);
 		SoundManager.play(enums.CONSTANTS.AUDIO["OUTGOING_MESSAGE"], this.context);
 
 		CometChat.sendCustomMessage(customMessage)
 			.then((message) => {
 				const newMessageObj = { ...message, _id: customMessage._id };
-				this.props.actionGenerated(enums.ACTIONS["MESSAGE_SENT"], [
-					newMessageObj,
-				]);
+				this.props.actionGenerated(enums.ACTIONS["MESSAGE_SENT"], [newMessageObj]);
 			})
 			.catch((error) => {
 				const newMessageObj = { ...customMessage, error: error };
@@ -936,11 +884,7 @@ class CometChatMessageComposer extends React.PureComponent {
 	sendReplyMessage = (messageInput) => {
 		let { receiverId, receiverType } = this.getReceiverDetails();
 
-		let textMessage = new CometChat.TextMessage(
-			receiverId,
-			messageInput,
-			receiverType
-		);
+		let textMessage = new CometChat.TextMessage(receiverId, messageInput, receiverType);
 		if (this.props.parentMessageId) {
 			textMessage.setParentMessageId(this.props.parentMessageId);
 		}
@@ -949,9 +893,7 @@ class CometChatMessageComposer extends React.PureComponent {
 		textMessage._composedAt = getUnixTimestamp();
 		textMessage._id = ID();
 
-		this.props.actionGenerated(enums.ACTIONS["MESSAGE_COMPOSED"], [
-			textMessage,
-		]);
+		this.props.actionGenerated(enums.ACTIONS["MESSAGE_COMPOSED"], [textMessage]);
 
 		SoundManager.play(enums.CONSTANTS.AUDIO["OUTGOING_MESSAGE"], this.context);
 		this.setState({ replyPreview: null });
@@ -959,9 +901,7 @@ class CometChatMessageComposer extends React.PureComponent {
 		CometChat.sendMessage(textMessage)
 			.then((message) => {
 				const newMessageObj = { ...message, _id: textMessage._id };
-				this.props.actionGenerated(enums.ACTIONS["MESSAGE_SENT"], [
-					newMessageObj,
-				]);
+				this.props.actionGenerated(enums.ACTIONS["MESSAGE_SENT"], [newMessageObj]);
 			})
 			.catch((error) => {
 				const newMessageObj = { ...textMessage, error: error };
@@ -1020,11 +960,7 @@ class CometChatMessageComposer extends React.PureComponent {
 				? this?.context?.item?.uid
 				: this?.context?.item?.guid;
 
-		let transientMessage = new CometChat.TransientMessage(
-			receiverId,
-			receiverType,
-			metadata
-		);
+		let transientMessage = new CometChat.TransientMessage(receiverId, receiverType, metadata);
 		CometChat.sendTransientMessage(transientMessage);
 	};
 
@@ -1049,10 +985,7 @@ class CometChatMessageComposer extends React.PureComponent {
 			[emoji.char]: { [this.loggedInUser.uid]: userObject },
 		};
 
-		const reactionExtensionsData = checkMessageForExtensionsData(
-			messageObject,
-			"reactions"
-		);
+		const reactionExtensionsData = checkMessageForExtensionsData(messageObject, "reactions");
 		//if the message object has reactions extension data in metadata
 		if (reactionExtensionsData) {
 			//if the reactions metadata has the selected emoji/reaction
@@ -1060,20 +993,16 @@ class CometChatMessageComposer extends React.PureComponent {
 				//if the reactions metadata has the selected emoji/reaction for the loggedin user
 				if (reactionExtensionsData[emoji.char][this.loggedInUser.uid]) {
 					reactionObject = {
-						...messageObject["metadata"]["@injected"]["extensions"][
-							"reactions"
-						],
+						...messageObject["metadata"]["@injected"]["extensions"]["reactions"],
 					};
 					delete reactionObject[emoji.char][this.loggedInUser.uid];
 				} else {
 					reactionObject = {
-						...messageObject["metadata"]["@injected"]["extensions"][
-							"reactions"
-						],
+						...messageObject["metadata"]["@injected"]["extensions"]["reactions"],
 						[emoji.char]: {
-							...messageObject["metadata"]["@injected"]["extensions"][
-								"reactions"
-							][emoji.char],
+							...messageObject["metadata"]["@injected"]["extensions"]["reactions"][
+								emoji.char
+							],
 							[this.loggedInUser.uid]: userObject,
 						},
 					};
@@ -1093,17 +1022,13 @@ class CometChatMessageComposer extends React.PureComponent {
 				messageObject["metadata"]["@injected"] = {};
 			}
 
-			if (
-				messageObject["metadata"]["@injected"].hasOwnProperty("extensions") ===
-				false
-			) {
+			if (messageObject["metadata"]["@injected"].hasOwnProperty("extensions") === false) {
 				messageObject["metadata"]["@injected"]["extensions"] = {};
 			}
 
 			if (
-				messageObject["metadata"]["@injected"]["extensions"].hasOwnProperty(
-					"reactions"
-				) === false
+				messageObject["metadata"]["@injected"]["extensions"].hasOwnProperty("reactions") ===
+				false
 			) {
 				messageObject["metadata"]["@injected"]["extensions"]["reactions"] = {};
 			}
@@ -1137,10 +1062,7 @@ class CometChatMessageComposer extends React.PureComponent {
 			...metadatObject,
 		};
 
-		this.props.actionGenerated(
-			enums.ACTIONS["MESSAGE_EDITED"],
-			newMessageObject
-		);
+		this.props.actionGenerated(enums.ACTIONS["MESSAGE_EDITED"], newMessageObject);
 
 		CometChat.callExtension("reactions", "POST", "v1/react", {
 			msgId: this.state.messageToReact.id,
@@ -1149,35 +1071,24 @@ class CometChatMessageComposer extends React.PureComponent {
 			.then((response) => {
 				// Reaction failed
 				if (!response || !response.success || response.success !== true) {
-					this.props.actionGenerated(
-						enums.ACTIONS["ERROR"],
-						[],
-						"SOMETHING_WRONG"
-					);
+					this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG");
 				}
 			})
 			.catch((error) =>
-				this.props.actionGenerated(
-					enums.ACTIONS["ERROR"],
-					[],
-					"SOMETHING_WRONG"
-				)
+				this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG")
 			);
 	};
 
 	render() {
 		let liveReactionBtn = null;
-		const liveReactionText = Translator.translate(
-			"LIVE_REACTION",
-			this.context.language
-		);
+		const liveReactionText = Translator.translate("LIVE_REACTION", this.context.language);
 		if (enums.CONSTANTS["LIVE_REACTIONS"].hasOwnProperty(this.props.reaction)) {
 			const reactionName = this.props.reaction;
 			liveReactionBtn = (
 				<div
 					title={liveReactionText}
 					css={reactionBtnStyle()}
-					className='button__reactions'
+					className="button__reactions"
 					onClick={this.startLiveReaction}
 				>
 					<img src={heartIcon} alt={reactionName} />
@@ -1195,7 +1106,7 @@ class CometChatMessageComposer extends React.PureComponent {
 			<div
 				title={docText}
 				css={fileItemStyle(docIcon, this.context)}
-				className='filelist__item item__file'
+				className="filelist__item item__file"
 				onClick={() => {
 					this.openFileDialogue("file");
 				}}
@@ -1203,31 +1114,22 @@ class CometChatMessageComposer extends React.PureComponent {
 				<i></i>
 				<input
 					onChange={this.onFileChange}
-					type='file'
-					id='file'
+					type="file"
+					id="file"
 					ref={this.fileUploaderRef}
 				/>
 			</div>
 		);
 
-		const videoText = Translator.translate(
-			"ATTACH_VIDEO",
-			this.context.language
-		);
-		const audioText = Translator.translate(
-			"ATTACH_AUDIO",
-			this.context.language
-		);
-		const imageText = Translator.translate(
-			"ATTACH_IMAGE",
-			this.context.language
-		);
+		const videoText = Translator.translate("ATTACH_VIDEO", this.context.language);
+		const audioText = Translator.translate("ATTACH_AUDIO", this.context.language);
+		const imageText = Translator.translate("ATTACH_IMAGE", this.context.language);
 		let avp = (
 			<React.Fragment>
 				<div
 					title={videoText}
 					css={fileItemStyle(videoIcon, this.context)}
-					className='filelist__item item__video'
+					className="filelist__item item__video"
 					onClick={() => {
 						this.openFileDialogue("video");
 					}}
@@ -1235,15 +1137,15 @@ class CometChatMessageComposer extends React.PureComponent {
 					<i></i>
 					<input
 						onChange={this.onVideoChange}
-						accept='video/*'
-						type='file'
+						accept="video/*"
+						type="file"
 						ref={this.videoUploaderRef}
 					/>
 				</div>
 				<div
 					title={audioText}
 					css={fileItemStyle(audioIcon, this.context)}
-					className='filelist__item item__audio'
+					className="filelist__item item__audio"
 					onClick={() => {
 						this.openFileDialogue("audio");
 					}}
@@ -1251,15 +1153,15 @@ class CometChatMessageComposer extends React.PureComponent {
 					<i></i>
 					<input
 						onChange={this.onAudioChange}
-						accept='audio/*'
-						type='file'
+						accept="audio/*"
+						type="file"
 						ref={this.audioUploaderRef}
 					/>
 				</div>
 				<div
 					title={imageText}
 					css={fileItemStyle(imageIcon, this.context)}
-					className='filelist__item item__image'
+					className="filelist__item item__image"
 					onClick={() => {
 						this.openFileDialogue("image");
 					}}
@@ -1267,8 +1169,8 @@ class CometChatMessageComposer extends React.PureComponent {
 					<i></i>
 					<input
 						onChange={this.onImageChange}
-						accept='image/*'
-						type='file'
+						accept="image/*"
+						type="file"
 						ref={this.imageUploaderRef}
 					/>
 				</div>
@@ -1280,7 +1182,7 @@ class CometChatMessageComposer extends React.PureComponent {
 			<div
 				title={pollText}
 				css={fileItemStyle(pollIcon, this.context)}
-				className='filelist__item item__poll'
+				className="filelist__item item__poll"
 				onClick={this.toggleCreatePoll}
 			>
 				<i></i>
@@ -1295,7 +1197,7 @@ class CometChatMessageComposer extends React.PureComponent {
 			<div
 				title={collaborativeDocText}
 				css={fileItemStyle(documentIcon, this.context)}
-				className='filelist__item item__document'
+				className="filelist__item item__document"
 				onClick={this.toggleCollaborativeDocument}
 			>
 				<i></i>
@@ -1310,7 +1212,7 @@ class CometChatMessageComposer extends React.PureComponent {
 			<div
 				title={collaborativeBoardText}
 				css={fileItemStyle(whiteboardIcon, this.context)}
-				className='filelist__item item__whiteboard'
+				className="filelist__item item__whiteboard"
 				onClick={this.toggleCollaborativeBoard}
 			>
 				<i></i>
@@ -1322,7 +1224,7 @@ class CometChatMessageComposer extends React.PureComponent {
 			<div
 				title={emojiText}
 				css={emojiButtonStyle(insertEmoticon, this.context)}
-				className='button__emoji'
+				className="button__emoji"
 				onClick={() => {
 					this.toggleEmojiPicker();
 					this.setState({ messageToReact: "" });
@@ -1337,22 +1239,19 @@ class CometChatMessageComposer extends React.PureComponent {
 			<div
 				title={StickerText}
 				css={stickerBtnStyle(stickerIcon, this.context)}
-				className='button__sticker'
+				className="button__sticker"
 				onClick={this.toggleStickerPicker}
 			>
 				<i></i>
 			</div>
 		);
 
-		const sendMessageText = Translator.translate(
-			"SEND_MESSAGE",
-			this.context.language
-		);
+		const sendMessageText = Translator.translate("SEND_MESSAGE", this.context.language);
 		let sendBtn = (
 			<div
 				title={sendMessageText}
 				css={sendButtonStyle(sendBlue, this.context)}
-				className='button__send'
+				className="button__send"
 				onClick={this.sendTextMessage}
 			>
 				<i></i>
@@ -1375,18 +1274,12 @@ class CometChatMessageComposer extends React.PureComponent {
 		}
 
 		//if collaborative_document are disabled for chat widget in dashboard
-		if (
-			this.state.enableCollaborativeDocument === false ||
-			this.props.parentMessageId
-		) {
+		if (this.state.enableCollaborativeDocument === false || this.props.parentMessageId) {
 			collaborativeDocBtn = null;
 		}
 
 		//if collaborative_document are disabled for chat widget in dashboard
-		if (
-			this.state.enableCollaborativeWhiteboard === false ||
-			this.props.parentMessageId
-		) {
+		if (this.state.enableCollaborativeWhiteboard === false || this.props.parentMessageId) {
 			collaborativeBoardBtn = null;
 		}
 
@@ -1415,10 +1308,10 @@ class CometChatMessageComposer extends React.PureComponent {
 
 		const attachText = Translator.translate("ATTACH", this.context.language);
 		let attach = (
-			<div css={stickyAttachmentStyle()} className='input__sticky__attachment'>
+			<div css={stickyAttachmentStyle()} className="input__sticky__attachment">
 				<div
 					css={stickyAttachButtonStyle(roundedPlus, this.context)}
-					className='attachment__icon'
+					className="attachment__icon"
 					onClick={this.toggleFilePicker}
 					title={attachText}
 				>
@@ -1426,10 +1319,10 @@ class CometChatMessageComposer extends React.PureComponent {
 				</div>
 				<div
 					css={filePickerStyle(this.state)}
-					className='attachment__filepicker'
+					className="attachment__filepicker"
 					dir={Translator.getDirection(this.context.language)}
 				>
-					<div css={fileListStyle()} className='filepicker__filelist'>
+					<div css={fileListStyle()} className="filepicker__filelist">
 						{avp}
 						{docs}
 						{createPollBtn}
@@ -1527,10 +1420,7 @@ class CometChatMessageComposer extends React.PureComponent {
 		if (this.state.replyPreview) {
 			const message = this.state.replyPreview;
 
-			const smartReplyData = checkMessageForExtensionsData(
-				message,
-				"smart-reply"
-			);
+			const smartReplyData = checkMessageForExtensionsData(message, "smart-reply");
 			if (smartReplyData && smartReplyData.hasOwnProperty("error") === false) {
 				const options = [
 					smartReplyData["reply_positive"],
@@ -1549,9 +1439,7 @@ class CometChatMessageComposer extends React.PureComponent {
 
 		let stickerViewer = null;
 		if (this.state.stickerViewer) {
-			stickerViewer = (
-				<CometChatStickerKeyboard actionGenerated={this.actionHandler} />
-			);
+			stickerViewer = <CometChatStickerKeyboard actionGenerated={this.actionHandler} />;
 		}
 
 		let emojiViewer = null;
@@ -1560,21 +1448,21 @@ class CometChatMessageComposer extends React.PureComponent {
 		}
 
 		return (
-			<div css={chatComposerStyle(this.context)} className='chat__composer'>
+			<div css={chatComposerStyle(this.context)} className="chat__composer">
 				{editPreview}
 				{smartReplyPreview}
 				{stickerViewer}
 				{emojiViewer}
-				<div css={composerInputStyle()} className='composer__input'>
+				<div css={composerInputStyle()} className="composer__input">
 					<div
-						tabIndex='-1'
+						tabIndex="-1"
 						css={inputInnerStyle(this.props, this.state, this.context)}
-						className='input__inner'
+						className="input__inner"
 					>
 						<div
 							css={messageInputStyle(disabledState)}
-							className='input__message-input'
-							contentEditable='true'
+							className="input__message-input"
+							contentEditable="true"
 							placeholder={Translator.translate(
 								"ENTER_YOUR_MESSAGE_HERE",
 								this.context.language
@@ -1587,12 +1475,12 @@ class CometChatMessageComposer extends React.PureComponent {
 						></div>
 						<div
 							css={inputStickyStyle(disabledState, attach, this.context)}
-							className='input__sticky'
+							className="input__sticky"
 						>
 							{attach}
 							<div
 								css={stickyButtonStyle(this.state)}
-								className='input__sticky__buttons'
+								className="input__sticky__buttons"
 							>
 								{stickerBtn}
 								{emojiBtn}

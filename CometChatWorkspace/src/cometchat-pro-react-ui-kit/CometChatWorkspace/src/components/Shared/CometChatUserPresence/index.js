@@ -10,6 +10,7 @@ import { presenceStyle } from "./style";
 
 const CometChatUserPresence = (props) => {
 	const context = React.useContext(CometChatContext);
+
 	const [presence, setPresence] = React.useState(false);
 
 	const togglePresence = () => {
@@ -44,13 +45,7 @@ const CometChatUserPresence = (props) => {
 		borderRadius: cornerRadius,
 	});
 
-	return (
-		<span
-			css={presenceStyle(props)}
-			className='presence'
-			style={getStyle()}
-		></span>
-	);
+	return <span css={presenceStyle(props)} className="presence" style={getStyle()}></span>;
 };
 
 // Specifies the default values for props:
