@@ -41,7 +41,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 
 		this.changeScopeDropDown = (
 			<select
-				className='members-scope-select'
+				className="members-scope-select"
 				onChange={this.scopeChangeHandler}
 				defaultValue={this.props.member.scope}
 			></select>
@@ -95,11 +95,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 		let editClassName = "";
 
 		let name = this.props.member.name;
-		let scope = (
-			<span css={roleStyle()}>
-				{this.context.roles[this.props.member.scope]}
-			</span>
-		);
+		let scope = <span css={roleStyle()}>{this.context.roles[this.props.member.scope]}</span>;
 		let changescope = null;
 		let ban = (
 			<i
@@ -122,6 +118,15 @@ class CometChatViewGroupMemberListItem extends React.Component {
 						enums.ACTIONS["KICK_GROUP_MEMBER"],
 						this.props.member
 					);
+				}}
+			></i>
+		);
+		let deactivate = (
+			<i
+				css={kickIconStyle(kickIcon, this.context)}
+				title={Translator.translate("DEACTIVATE", this.context.language)}
+				onClick={() => {
+					window.alert("User deactivate!");
 				}}
 			></i>
 		);
@@ -158,10 +163,10 @@ class CometChatViewGroupMemberListItem extends React.Component {
 			}
 
 			changescope = (
-				<div css={scopeWrapperStyle()} className='scope__wrapper'>
+				<div css={scopeWrapperStyle()} className="scope__wrapper">
 					<select
 						css={scopeSelectionStyle()}
-						className='scope__select'
+						className="scope__select"
 						onChange={this.scopeChangeHandler}
 						defaultValue={this.props.member.scope}
 					>
@@ -180,9 +185,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 				</div>
 			);
 		} else {
-			if (
-				this.context.item.scope === CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT
-			) {
+			if (this.context.item.scope === CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT) {
 				changescope = scope;
 			} else {
 				changescope = (
@@ -190,10 +193,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 						{scope}
 						<i
 							css={scopeIconStyle(scopeIcon, this.context)}
-							title={Translator.translate(
-								"CHANGE_SCOPE",
-								this.context.language
-							)}
+							title={Translator.translate("CHANGE_SCOPE", this.context.language)}
 							onClick={() => this.toggleChangeScope(true)}
 						></i>
 					</React.Fragment>
@@ -211,6 +211,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 			changescope = scope;
 			ban = null;
 			kick = null;
+			deactivate = null;
 		}
 
 		//disable change scope, kick, ban of self
@@ -251,11 +252,14 @@ class CometChatViewGroupMemberListItem extends React.Component {
 		} else {
 			editAccess = (
 				<React.Fragment>
-					<div css={actionColumnStyle(this.context)} className='ban'>
+					<div css={actionColumnStyle(this.context)} className="ban">
 						{ban}
 					</div>
-					<div css={actionColumnStyle(this.context)} className='kick'>
+					<div css={actionColumnStyle(this.context)} className="kick">
 						{kick}
+					</div>
+					<div css={actionColumnStyle(this.context)} className="deactivate">
+						{deactivate}
 					</div>
 				</React.Fragment>
 			);
@@ -271,14 +275,14 @@ class CometChatViewGroupMemberListItem extends React.Component {
 			} else if (this.props.enableBanGroupMembers === false) {
 				//if ban feature is disabled
 				editAccess = (
-					<div css={actionColumnStyle(this.context)} className='kick'>
+					<div css={actionColumnStyle(this.context)} className="kick">
 						{kick}
 					</div>
 				);
 			} else if (this.props.enableKickGroupMembers === false) {
 				//if kick feature is disabled
 				editAccess = (
-					<div css={actionColumnStyle(this.context)} className='ban'>
+					<div css={actionColumnStyle(this.context)} className="ban">
 						{ban}
 					</div>
 				);
@@ -292,19 +296,14 @@ class CometChatViewGroupMemberListItem extends React.Component {
 			}
 		}
 
-		let userPresence = (
-			<CometChatUserPresence status={this.props.member.status} />
-		);
+		let userPresence = <CometChatUserPresence status={this.props.member.status} />;
 
 		return (
-			<div css={modalRowStyle(this.context)} className='content__row'>
-				<div
-					css={nameColumnStyle(this.context, editClassName)}
-					className='userinfo'
-				>
+			<div css={modalRowStyle(this.context)} className="content__row">
+				<div css={nameColumnStyle(this.context, editClassName)} className="userinfo">
 					<div
 						css={avatarStyle(this.context, editClassName)}
-						className='thumbnail'
+						className="thumbnail"
 						onMouseEnter={(event) => this.toggleTooltip(event, true)}
 						onMouseLeave={(event) => this.toggleTooltip(event, false)}
 					>
@@ -313,14 +312,14 @@ class CometChatViewGroupMemberListItem extends React.Component {
 					</div>
 					<div
 						css={nameStyle(this.context, editClassName)}
-						className='name'
+						className="name"
 						onMouseEnter={(event) => this.toggleTooltip(event, true)}
 						onMouseLeave={(event) => this.toggleTooltip(event, false)}
 					>
 						{name}
 					</div>
 				</div>
-				<div css={scopeColumnStyle(this.context)} className='scope'>
+				<div css={scopeColumnStyle(this.context)} className="scope">
 					{changescope}
 				</div>
 				{editAccess}

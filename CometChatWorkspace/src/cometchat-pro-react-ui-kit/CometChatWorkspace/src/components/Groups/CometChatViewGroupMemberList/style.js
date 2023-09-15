@@ -183,5 +183,8 @@ export const actionColumnStyle = (context) => {
 		[mq[2]]: {
 			width: "40px",
 		},
+		[mq[3]]: {
+			width: "40px",
+		},
 	};
 };
