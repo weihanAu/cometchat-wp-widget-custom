@@ -7,16 +7,10 @@ import { CometChat } from "@cometchat-pro/chat";
 
 import { ConversationListManager } from "./controller";
 
-import {
-	CometChatConfirmDialog,
-	CometChatToastNotification,
-} from "../../Shared";
+import { CometChatConfirmDialog, CometChatToastNotification } from "../../Shared";
 import { CometChatConversationListItem } from "../";
 
-import {
-	CometChatContextProvider,
-	CometChatContext,
-} from "../../../util/CometChatContext";
+import { CometChatContextProvider, CometChatContext } from "../../../util/CometChatContext";
 import * as enums from "../../../util/enums.js";
 import { UIKitSettings } from "../../../util/UIKitSettings";
 import { SoundManager } from "../../../util/SoundManager";
@@ -33,9 +27,11 @@ import {
 	chatsMsgStyle,
 	chatsMsgTxtStyle,
 	chatsListStyle,
+	chatsHeaderSettingStyle,
 } from "./style";
 
 import navigateIcon from "./resources/back.svg";
+import settingIcon from "./resources/gear.svg";
 
 class CometChatConversationList extends React.Component {
 	loggedInUser = null;
@@ -63,10 +59,7 @@ class CometChatConversationList extends React.Component {
 			.then((user) => (this.loggedInUser = user))
 			.catch((error) =>
 				this.setState({
-					decoratorMessage: Translator.translate(
-						"SOMETHING_WRONG",
-						this.props.lang
-					),
+					decoratorMessage: Translator.translate("SOMETHING_WRONG", this.props.lang),
 				})
 			);
 	}
@@ -81,22 +74,16 @@ class CometChatConversationList extends React.Component {
 		this.hideGroupActionMessages();
 
 		this.setState({ conversationlist: [] }, () => {
-			this.ConversationListManager = new ConversationListManager(
-				this.getContext()
-			);
+			this.ConversationListManager = new ConversationListManager(this.getContext());
 			this.getConversations();
 			this.ConversationListManager.attachListeners(this.conversationCallback);
 		});
 
 		//updating last message whenever a message is composed and sent
-		CometChatEvent.on("updateLastMessage", (args) =>
-			this.updateLastMessage(args)
-		);
+		CometChatEvent.on("updateLastMessage", (args) => this.updateLastMessage(args));
 
 		//updating unreadcount whenever a new message is received and not read.
-		CometChatEvent.on(enums.EVENTS["NEW_MESSAGES"], (args) =>
-			this.updateUnreadCount(args)
-		);
+		CometChatEvent.on(enums.EVENTS["NEW_MESSAGES"], (args) => this.updateUnreadCount(args));
 
 		//clearing unreadcount whenever scrolled to the bottom.
 		CometChatEvent.on(enums.EVENTS["CLEAR_UNREAD_MESSAGES"], (args) =>
@@ -107,8 +94,7 @@ class CometChatConversationList extends React.Component {
 	componentDidUpdate() {
 		//when a particular chat is selected from the chats list
 		if (
-			(Object.keys(this.getContext().item).length &&
-				this.getContext().type.length) ||
+			(Object.keys(this.getContext().item).length && this.getContext().type.length) ||
 			this.getContext().item !== this.item
 		) {
 			const conversationlist = [...this.state.conversationlist];
@@ -369,8 +355,7 @@ class CometChatConversationList extends React.Component {
 	markMessageAsDelivered = (message) => {
 		//if chat window is not open, mark message as delivered
 		if (
-			(this.getContext().type === "" ||
-				Object.keys(this.getContext().item).length === 0) &&
+			(this.getContext().type === "" || Object.keys(this.getContext().item).length === 0) &&
 			message.hasOwnProperty("deliveredAt") === false
 		) {
 			CometChat.markAsDelivered(message).catch((error) => {});
@@ -491,10 +476,7 @@ class CometChatConversationList extends React.Component {
 				(receiverType === CometChat.RECEIVER_TYPE.GROUP &&
 					receiverId === this.getContext().item.guid)
 			) {
-				SoundManager.play(
-					enums.CONSTANTS.AUDIO["INCOMING_MESSAGE"],
-					this.getContext()
-				);
+				SoundManager.play(enums.CONSTANTS.AUDIO["INCOMING_MESSAGE"], this.getContext());
 			} else {
 				SoundManager.play(
 					enums.CONSTANTS.AUDIO["INCOMING_OTHER_MESSAGE"],
@@ -502,10 +484,7 @@ class CometChatConversationList extends React.Component {
 				);
 			}
 		} else {
-			SoundManager.play(
-				enums.CONSTANTS.AUDIO["INCOMING_OTHER_MESSAGE"],
-				this.getContext()
-			);
+			SoundManager.play(enums.CONSTANTS.AUDIO["INCOMING_OTHER_MESSAGE"], this.getContext());
 		}
 	};
 
@@ -540,25 +519,23 @@ class CometChatConversationList extends React.Component {
 
 	makeConversation = (message) => {
 		const promise = new Promise((resolve) => {
-			CometChat.CometChatHelper.getConversationFromMessage(message).then(
-				(conversation) => {
-					let conversationList = [...this.state.conversationlist];
-					let conversationKey = conversationList.findIndex(
-						(c) => c.conversationId === conversation.conversationId
-					);
+			CometChat.CometChatHelper.getConversationFromMessage(message).then((conversation) => {
+				let conversationList = [...this.state.conversationlist];
+				let conversationKey = conversationList.findIndex(
+					(c) => c.conversationId === conversation.conversationId
+				);
 
-					let conversationObj = { ...conversation };
-					if (conversationKey > -1) {
-						conversationObj = { ...conversationList[conversationKey] };
-					}
-
-					resolve({
-						conversationKey: conversationKey,
-						conversationObj: conversationObj,
-						conversationList: conversationList,
-					});
+				let conversationObj = { ...conversation };
+				if (conversationKey > -1) {
+					conversationObj = { ...conversationList[conversationKey] };
 				}
-			);
+
+				resolve({
+					conversationKey: conversationKey,
+					conversationObj: conversationObj,
+					conversationList: conversationList,
+				});
+			});
 		});
 
 		return promise;
@@ -608,9 +585,8 @@ class CometChatConversationList extends React.Component {
 					incomingMessage[enums.KEYS["METADATA"]],
 					enums.KEYS["INCREMENT_UNREAD_COUNT"]
 				) &&
-				incomingMessage[enums.KEYS["METADATA"]][
-					enums.KEYS["INCREMENT_UNREAD_COUNT"]
-				] === true &&
+				incomingMessage[enums.KEYS["METADATA"]][enums.KEYS["INCREMENT_UNREAD_COUNT"]] ===
+					true &&
 				incomingMessage.sender.uid !== this.loggedInUser?.uid)
 		) {
 			output = true;
@@ -629,10 +605,7 @@ class CometChatConversationList extends React.Component {
 			const { conversationKey, conversationObj, conversationList } = response;
 
 			if (conversationKey > -1) {
-				let unreadMessageCount = this.makeUnreadMessageCount(
-					message,
-					conversationObj
-				);
+				let unreadMessageCount = this.makeUnreadMessageCount(message, conversationObj);
 				let lastMessageObj = this.makeLastMessage(message, conversationObj);
 
 				let newConversationObj = {
@@ -645,10 +618,7 @@ class CometChatConversationList extends React.Component {
 				conversationList.unshift(newConversationObj);
 				this.setState({ conversationlist: conversationList });
 
-				if (
-					key !== enums.INCOMING_CALL_RECEIVED &&
-					key !== enums.INCOMING_CALL_CANCELLED
-				) {
+				if (key !== enums.INCOMING_CALL_RECEIVED && key !== enums.INCOMING_CALL_CANCELLED) {
 					this.playAudio(message);
 				}
 			} else {
@@ -663,10 +633,7 @@ class CometChatConversationList extends React.Component {
 				conversationList.unshift(newConversationObj);
 				this.setState({ conversationlist: conversationList });
 
-				if (
-					key !== enums.INCOMING_CALL_RECEIVED &&
-					key !== enums.INCOMING_CALL_CANCELLED
-				) {
+				if (key !== enums.INCOMING_CALL_RECEIVED && key !== enums.INCOMING_CALL_CANCELLED) {
 					this.playAudio(message);
 				}
 			}
@@ -873,10 +840,7 @@ class CometChatConversationList extends React.Component {
 	//click handler
 	handleClick = (conversation) => {
 		if (!this.props.onItemClick) return;
-		this.props.onItemClick(
-			conversation.conversationWith,
-			conversation.conversationType
-		);
+		this.props.onItemClick(conversation.conversationWith, conversation.conversationType);
 	};
 
 	handleMenuClose = () => {
@@ -929,10 +893,7 @@ class CometChatConversationList extends React.Component {
 			})
 			.catch((error) =>
 				this.setState({
-					decoratorMessage: Translator.translate(
-						"SOMETHING_WRONG",
-						this.props.lang
-					),
+					decoratorMessage: Translator.translate("SOMETHING_WRONG", this.props.lang),
 				})
 			);
 	};
@@ -977,10 +938,7 @@ class CometChatConversationList extends React.Component {
 				conversation.conversationType === CometChat.RECEIVER_TYPE.GROUP
 					? conversation?.conversationWith?.guid
 					: conversation?.conversationWith?.uid;
-			CometChat.deleteConversation(
-				conversationWith,
-				conversation.conversationType
-			)
+			CometChat.deleteConversation(conversationWith, conversation.conversationType)
 				.then((deletedConversation) => {
 					this.conversationDeleted(conversation);
 				})
@@ -1020,25 +978,23 @@ class CometChatConversationList extends React.Component {
 	};
 
 	render() {
-		const conversationList = this.state.conversationlist.map(
-			(conversation, key) => {
-				return (
-					<CometChatConversationListItem
-						key={conversation.conversationId}
-						conversation={conversation}
-						loggedInUser={this.loggedInUser}
-						handleClick={this.handleClick}
-						actionGenerated={this.actionHandler}
-					/>
-				);
-			}
-		);
+		const conversationList = this.state.conversationlist.map((conversation, key) => {
+			return (
+				<CometChatConversationListItem
+					key={conversation.conversationId}
+					conversation={conversation}
+					loggedInUser={this.loggedInUser}
+					handleClick={this.handleClick}
+					actionGenerated={this.actionHandler}
+				/>
+			);
+		});
 
 		let messageContainer = null;
 		if (this.state.decoratorMessage.length !== 0) {
 			messageContainer = (
-				<div css={chatsMsgStyle()} className='chats__decorator-message'>
-					<p css={chatsMsgTxtStyle(theme)} className='decorator-message'>
+				<div css={chatsMsgStyle()} className="chats__decorator-message">
+					<p css={chatsMsgTxtStyle(theme)} className="decorator-message">
 						{this.state.decoratorMessage}
 					</p>
 				</div>
@@ -1048,9 +1004,38 @@ class CometChatConversationList extends React.Component {
 		let closeBtn = (
 			<div
 				css={chatsHeaderCloseStyle(navigateIcon, theme)}
-				className='header__close'
+				className="header__close"
 				onClick={this.handleMenuClose}
 			></div>
+		);
+
+		let settingBtn = (
+			<div class="dropdown">
+				<button
+					class="btn btn-secondary dropdown-toggle"
+					data-bs-toggle="dropdown"
+					aria-expanded="false"
+				>
+					Dropdown button
+				</button>
+				<ul class="dropdown-menu">
+					<li>
+						<a class="dropdown-item" href="#">
+							Action
+						</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">
+							Another action
+						</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">
+							Something else here
+						</a>
+					</li>
+				</ul>
+			</div>
 		);
 		if (this.getContext() && Object.keys(this.getContext().item).length === 0) {
 			closeBtn = null;
@@ -1062,29 +1047,21 @@ class CometChatConversationList extends React.Component {
 				<CometChatConfirmDialog
 					{...this.props}
 					onClick={this.onDeleteConfirm}
-					message={Translator.translate(
-						"DELETE_CONFIRM",
-						this.getContext().language
-					)}
-					confirmButtonText={Translator.translate(
-						"DELETE",
-						this.getContext().language
-					)}
-					cancelButtonText={Translator.translate(
-						"CANCEL",
-						this.getContext().language
-					)}
+					message={Translator.translate("DELETE_CONFIRM", this.getContext().language)}
+					confirmButtonText={Translator.translate("DELETE", this.getContext().language)}
+					cancelButtonText={Translator.translate("CANCEL", this.getContext().language)}
 				/>
 			);
 		}
 
 		const chatList = (
-			<div css={chatsWrapperStyle(this.props, theme)} className='chats'>
-				<div css={chatsHeaderStyle(theme)} className='chats__header'>
+			<div css={chatsWrapperStyle(this.props, theme)} className="chats">
+				<div css={chatsHeaderStyle(theme)} className="chats__header">
 					{closeBtn}
+					{settingBtn}
 					<h4
 						css={chatsHeaderTitleStyle(this.props)}
-						className='header__title'
+						className="header__title"
 						dir={Translator.getDirection(this.props.lang)}
 					>
 						{Translator.translate("LW chat", this.props.lang)}
@@ -1093,7 +1070,7 @@ class CometChatConversationList extends React.Component {
 				{messageContainer}
 				<div
 					css={chatsListStyle()}
-					className='chats__list'
+					className="chats__list"
 					onScroll={this.handleScroll}
 					ref={(el) => (this.chatListRef = el)}
 				>
