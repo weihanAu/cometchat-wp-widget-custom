@@ -15,6 +15,7 @@ void (async function () {
 			".jpg": "file",
 			".wav": "file",
 			".js": "jsx",
+			".css": "text",
 		},
 		alias: {
 			UIKit: path.resolve("src/cometchat-pro-react-ui-kit/"),

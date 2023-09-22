@@ -61,12 +61,9 @@ export const chatsHeaderSettingStyle = (img, theme) => {
 	const mq = [...theme.breakPoints];
 
 	return {
-		cursor: "pointer",
-		display: "none",
-		mask: `url(${img}) no-repeat left center`,
-		backgroundColor: `${theme.color.primary}`,
-		height: "36px",
+		background: `url(${img}) no-repeat center`,
 		width: "36px",
+		height: "36px",
 		[`@media ${mq[0]}`]: {
 			display: "block!important",
 		},
