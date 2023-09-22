@@ -1011,7 +1011,9 @@ class CometChatConversationList extends React.Component {
 
 		console.log(this.loggedInUser);
 
-		let settingBtn = (
+		const options = ["ACTIVE", "INVISIBLE"];
+
+		let statusBtn = (
 			<div className="dropdown">
 				<button
 					className="btn btn-light"
@@ -1020,20 +1022,17 @@ class CometChatConversationList extends React.Component {
 					aria-expanded="false"
 					style={chatsHeaderSettingStyle(settingIcon, theme)}
 				></button>
-				<ul className="dropdown-menu">
+				<ul className="dropdown-menu" style={{ fontSize: "16px" }}>
 					<li>
-						<h6 class="dropdown-header">YOUR STATUS</h6>
+						<h6 class="dropdown-header" style={{ fontSize: "16px" }}>
+							YOUR STATUS
+						</h6>
 					</li>
-					<li>
-						<a className="dropdown-item" href="#">
-							ACTIVE
-						</a>
-					</li>
-					<li>
-						<a className="dropdown-item" href="#">
-							INVISIBLE
-						</a>
-					</li>
+					{options.map((o) => (
+						<li key={o}>
+							<a className="dropdown-item">{o}</a>
+						</li>
+					))}
 				</ul>
 			</div>
 		);
@@ -1058,7 +1057,7 @@ class CometChatConversationList extends React.Component {
 			<div css={chatsWrapperStyle(this.props, theme)} className="chats">
 				<div css={chatsHeaderStyle(theme)} className="chats__header">
 					{closeBtn}
-					{settingBtn}
+					{statusBtn}
 					<h4
 						css={chatsHeaderTitleStyle(this.props)}
 						className="header__title"
