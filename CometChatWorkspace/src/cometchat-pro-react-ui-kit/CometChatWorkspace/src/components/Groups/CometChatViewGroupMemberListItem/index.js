@@ -25,6 +25,7 @@ import {
 	kickIconStyle,
 	scopeWrapperStyle,
 	scopeSelectionStyle,
+	deactivateIconStyle,
 } from "./style";
 
 import scopeIcon from "./resources/edit.svg";
@@ -32,6 +33,7 @@ import doneIcon from "./resources/done.svg";
 import clearIcon from "./resources/close.svg";
 import banIcon from "./resources/ban-member.svg";
 import kickIcon from "./resources/delete.svg";
+import deactivateIcon from "./resources/deactivate.svg";
 
 class CometChatViewGroupMemberListItem extends React.Component {
 	static contextType = CometChatContext;
@@ -121,14 +123,30 @@ class CometChatViewGroupMemberListItem extends React.Component {
 				}}
 			></i>
 		);
+
+		/**
+		 * Mute user
+		 */
 		let deactivate = (
-			<i
-				css={kickIconStyle(kickIcon, this.context)}
-				title={Translator.translate("DEACTIVATE", this.context.language)}
-				onClick={() => {
-					window.alert("User deactivate!");
-				}}
-			></i>
+			<div className="dropdown">
+				<i
+					type="button"
+					data-bs-toggle="dropdown"
+					aria-expanded="false"
+					style={deactivateIconStyle(deactivateIcon, this.context)}
+				></i>
+				<ul className="dropdown-menu">
+					<li>
+						<h6 class="dropdown-header">DEACTIVATE USER</h6>
+					</li>
+					<li>
+						<a className="dropdown-item">DEACTIVATE PERMANENTLY</a>
+					</li>
+					<li>
+						<a className="dropdown-item">DEACTIVATE 15 MINUTE</a>
+					</li>
+				</ul>
+			</div>
 		);
 
 		if (this.state.showChangeScope) {
@@ -258,7 +276,11 @@ class CometChatViewGroupMemberListItem extends React.Component {
 					<div css={actionColumnStyle(this.context)} className="kick">
 						{kick}
 					</div>
-					<div css={actionColumnStyle(this.context)} className="deactivate">
+					<div
+						style={{ width: 50 }}
+						css={actionColumnStyle(this.context)}
+						className="deactivate"
+					>
 						{deactivate}
 					</div>
 				</React.Fragment>

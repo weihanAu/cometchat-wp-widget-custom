@@ -210,3 +210,13 @@ export const kickIconStyle = (img, context) => {
 		background: `url(${img}) center center no-repeat`,
 	};
 };
+
+export const deactivateIconStyle = (img, context) => {
+	return {
+		width: "24px",
+		height: "24px",
+		display: "inline-block",
+		cursor: "pointer",
+		background: `url(${img}) center center no-repeat`,
+	};
+};

@@ -28,10 +28,14 @@ import {
 	chatsMsgTxtStyle,
 	chatsListStyle,
 	chatsHeaderSettingStyle,
+	chatsHeaderMinimumStyle,
+	chatsHeaderDisposeStyle,
 } from "./style";
 
 import navigateIcon from "./resources/back.svg";
 import settingIcon from "./resources/gear.svg";
+import dashIcon from "./resources/dash.svg";
+import xIcon from "./resources/x.svg";
 
 class CometChatConversationList extends React.Component {
 	loggedInUser = null;
@@ -1053,6 +1057,22 @@ class CometChatConversationList extends React.Component {
 			);
 		}
 
+		const minimumBtn = (
+			<button
+				className="btn btn-light"
+				type="button"
+				style={chatsHeaderMinimumStyle(dashIcon, theme)}
+			></button>
+		);
+
+		const disposeBtn = (
+			<button
+				className="btn btn-light"
+				type="button"
+				style={chatsHeaderDisposeStyle(xIcon, theme)}
+			></button>
+		);
+
 		const chatList = (
 			<div css={chatsWrapperStyle(this.props, theme)} className="chats">
 				<div css={chatsHeaderStyle(theme)} className="chats__header">
@@ -1065,6 +1085,8 @@ class CometChatConversationList extends React.Component {
 					>
 						{Translator.translate("LW chat", this.props.lang)}
 					</h4>
+					{minimumBtn}
+					{disposeBtn}
 				</div>
 				{messageContainer}
 				<div
