@@ -137,7 +137,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 				></i>
 				<ul className="dropdown-menu">
 					<li>
-						<h6 class="dropdown-header">DEACTIVATE USER</h6>
+						<h6 className="dropdown-header">DEACTIVATE USER</h6>
 					</li>
 					<li>
 						<a className="dropdown-item">DEACTIVATE PERMANENTLY</a>

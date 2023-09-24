@@ -37,6 +37,8 @@ import settingIcon from "./resources/gear.svg";
 import dashIcon from "./resources/dash.svg";
 import xIcon from "./resources/x.svg";
 
+import { toggleUserState } from "./api/toggleUserState";
+
 class CometChatConversationList extends React.Component {
 	loggedInUser = null;
 	incrementUnreadCount = false;
@@ -1013,8 +1015,9 @@ class CometChatConversationList extends React.Component {
 			></div>
 		);
 
-		console.log(this.loggedInUser);
-
+		/**
+		 * Fake offline
+		 */
 		const options = ["ACTIVE", "INVISIBLE"];
 
 		let statusBtn = (
@@ -1028,13 +1031,18 @@ class CometChatConversationList extends React.Component {
 				></button>
 				<ul className="dropdown-menu" style={{ fontSize: "16px" }}>
 					<li>
-						<h6 class="dropdown-header" style={{ fontSize: "16px" }}>
+						<h6 className="dropdown-header" style={{ fontSize: "16px" }}>
 							YOUR STATUS
 						</h6>
 					</li>
-					{options.map((o) => (
-						<li key={o}>
-							<a className="dropdown-item">{o}</a>
+					{options.map((state) => (
+						<li key={state}>
+							<a
+								onClick={() => toggleUserState(state, this.context)}
+								className="dropdown-item"
+							>
+								{state}
+							</a>
 						</li>
 					))}
 				</ul>
