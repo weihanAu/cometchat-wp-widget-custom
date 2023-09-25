@@ -65,7 +65,7 @@ export const unifiedMainStyle = (state, props) => {
 	const mq = [...props.theme.breakPoints];
 
 	return {
-		width: "calc(100% - 280px)",
+		width: "100%",
 		height: "100%",
 		order: "2",
 		display: "flex",

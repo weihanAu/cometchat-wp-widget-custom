@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { jsx, keyframes, Global } from "@emotion/react";
 import Frame from "react-frame-component";
 import { CometChat } from "@cometchat-pro/chat";
+import { CometChatUI } from "../../../cometchat-pro-react-ui-kit/CometChatWorkspace/src";
 
 const CometChatMessages = asyncComponent("CometChatMessages", () => {
 	return import("UIKit/CometChatWorkspace/src/components/Messages/CometChatMessages/index.js");
@@ -26,7 +27,14 @@ import { theme } from "UIKit/CometChatWorkspace/src/resources/theme";
 
 import { embedGlobalStyles } from "./globalStyle";
 
-import { embedWrapperStyle, embedFrameStyle, embedContentWrapperStyle, embedSidebarStyle, embedMainStyle, embedLoadingStyle } from "./style";
+import {
+	embedWrapperStyle,
+	embedFrameStyle,
+	embedContentWrapperStyle,
+	embedSidebarStyle,
+	embedMainStyle,
+	embedLoadingStyle,
+} from "./style";
 import { getResponsiveData, minHeight, minWidth, smallScreenWidth } from "../utils";
 import CometChatWidget from "../../..";
 import CometChatWidgetEvent from "../../../CometChatWidgetEvent";
@@ -50,22 +58,24 @@ export class Embedded extends React.PureComponent {
 			sidebarview: false,
 			parentNode: null,
 			customJS: "",
+			chatroomId: "supergroup",
 		};
 
 		CometChat.getLoggedinUser()
-			.then(user => (this.loggedInUser = user))
-			.catch(error => {
-				const errorCode = error && error.hasOwnProperty("code") ? error.code : "USER_NOT_LOGGED_IN";
+			.then((user) => (this.loggedInUser = user))
+			.catch((error) => {
+				const errorCode =
+					error && error.hasOwnProperty("code") ? error.code : "USER_NOT_LOGGED_IN";
 				throw new Error(errorCode);
 			});
 	}
 
 	componentDidMount() {
 		this.applyStyle();
-		
+
 		setTimeout(() => {
 			this.applyCustomJS();
-		}, 1000)
+		}, 1000);
 
 		const parentNode = ReactDOM.findDOMNode(this).parentNode;
 		this.setState({ parentNode: parentNode });
@@ -73,19 +83,22 @@ export class Embedded extends React.PureComponent {
 		/**
 		 * set iframe's window
 		 */
-		const chatWindow = ReactDOM.findDOMNode(this).parentNode.querySelector("iframe").contentWindow;
+		const chatWindow =
+			ReactDOM.findDOMNode(this).parentNode.querySelector("iframe").contentWindow;
 		this.context.UIKitSettings.setChatWindow(chatWindow);
 
 		if (Object.keys(this.context.item).length == 0) {
 			this.toggleLeftPanel();
 		}
 
-		this.item = this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP || CometChat.ACTION_TYPE.TYPE_USER ? this.context.item : {};
+		this.item =
+			this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP ||
+			CometChat.ACTION_TYPE.TYPE_USER
+				? this.context.item
+				: {};
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-
-
 		const previousItem = JSON.stringify(this.item);
 		const currentItem = JSON.stringify(this.context.item);
 
@@ -99,14 +112,18 @@ export class Embedded extends React.PureComponent {
 
 			/**
 			 * @example
-			 * Trigger the onItemClick event when the item gets changed. This can be listened in customJS to pull pinned message when item gets changed. 
+			 * Trigger the onItemClick event when the item gets changed. This can be listened in customJS to pull pinned message when item gets changed.
 			 */
-			if(this.context.item && Object.keys(this.context.item).length > 0) {
-				CometChatWidgetEvent.triggerHandler("onItemClick", this.context.item);		
+			if (this.context.item && Object.keys(this.context.item).length > 0) {
+				CometChatWidgetEvent.triggerHandler("onItemClick", this.context.item);
 			}
 		}
-		
-		this.item = this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP || CometChat.ACTION_TYPE.TYPE_USER ? this.context.item : {};
+
+		this.item =
+			this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP ||
+			CometChat.ACTION_TYPE.TYPE_USER
+				? this.context.item
+				: {};
 	}
 
 	componentWillUnmount() {
@@ -116,29 +133,31 @@ export class Embedded extends React.PureComponent {
 	getResponsiveDimensions = (width, height) => {
 		let dimensions = {
 			width: width || minWidth,
-			height: height || minHeight
-		}
-		
-		if(this.props.dockedview) {
-			const responsiveData = getResponsiveData()
+			height: height || minHeight,
+		};
+
+		if (this.props.dockedview) {
+			const responsiveData = getResponsiveData();
 			const availWidth = window.innerWidth;
-			const availHeight = '100%';
-			if(availWidth <= smallScreenWidth) {
+			const availHeight = "100%";
+			if (availWidth <= smallScreenWidth) {
 				/**Small screens */
 				dimensions.width = `${availWidth * 1}px`;
-				dimensions.height = `calc(${availHeight} - ${(responsiveData.dockedIconHeight + (responsiveData.dockedBottomPadding * 2))}px)`;
+				dimensions.height = `calc(${availHeight} - ${
+					responsiveData.dockedIconHeight + responsiveData.dockedBottomPadding * 2
+				}px)`;
 			}
 
-			return dimensions
+			return dimensions;
 		} else {
-			return dimensions
+			return dimensions;
 		}
-	}
+	};
 
 	applyStyle = () => {
 		const styles = [];
 
-		const dimensions = this.getResponsiveDimensions(this.props.width, this.props.height)
+		const dimensions = this.getResponsiveDimensions(this.props.width, this.props.height);
 
 		if (dimensions.height) {
 			styles.push(`height:${dimensions.height};`);
@@ -152,7 +171,6 @@ export class Embedded extends React.PureComponent {
 	};
 
 	getCustomJS = () => {
-		
 		let customJS = "";
 		if (this.context.UIKitSettings.customJS.trim().length) {
 			customJS = this.context.UIKitSettings.customJS;
@@ -162,12 +180,12 @@ export class Embedded extends React.PureComponent {
 	};
 
 	applyCustomJS = () => {
-
 		const iframeEl = this.embedFrame.querySelector("iframe");
 
-		if(iframeEl) {
-
-			const iframeDocument = iframeEl.contentWindow ? iframeEl.contentWindow.document : iframeEl.contentDocument;
+		if (iframeEl) {
+			const iframeDocument = iframeEl.contentWindow
+				? iframeEl.contentWindow.document
+				: iframeEl.contentDocument;
 			if (iframeEl.contentWindow) {
 				iframeEl.contentWindow.CometChat = CometChat;
 				iframeEl.contentWindow.CometChatWidget = CometChatWidget;
@@ -177,7 +195,6 @@ export class Embedded extends React.PureComponent {
 			const scriptId = "custom_js";
 			let scriptElement = iframeDocument.getElementById(scriptId);
 			if (!scriptElement) {
-
 				scriptElement = iframeDocument.createElement("script");
 				scriptElement.setAttribute("type", "text/javascript");
 				scriptElement.setAttribute("id", scriptId);
@@ -185,7 +202,7 @@ export class Embedded extends React.PureComponent {
 				iframeDocument.head.appendChild(scriptElement);
 			}
 		}
-	}; 
+	};
 
 	itemClickHandler = (item, type) => {
 		this.toggleLeftPanel();
@@ -229,7 +246,7 @@ export class Embedded extends React.PureComponent {
 		}
 	};
 
-	toggleLeftPanel = event => {
+	toggleLeftPanel = (event) => {
 		const sidebarview = this.state.sidebarview;
 		this.setState({ sidebarview: !sidebarview });
 	};
@@ -238,14 +255,22 @@ export class Embedded extends React.PureComponent {
 		switch (key) {
 			case enums.GROUP_MEMBER_BANNED:
 			case enums.GROUP_MEMBER_KICKED: {
-				if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP && this.context.item.guid === group.guid && options.user.uid === this.loggedInUser.uid) {
+				if (
+					this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP &&
+					this.context.item.guid === group.guid &&
+					options.user.uid === this.loggedInUser.uid
+				) {
 					this.context.setItem({});
 					this.context.setType("");
 				}
 				break;
 			}
 			case enums.GROUP_MEMBER_SCOPE_CHANGED: {
-				if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP && this.context.item.guid === group.guid && options.user.uid === this.loggedInUser.uid) {
+				if (
+					this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP &&
+					this.context.item.guid === group.guid &&
+					options.user.uid === this.loggedInUser.uid
+				) {
 					const groupObject = Object.assign({}, this.context.item, {
 						scope: options["scope"],
 					});
@@ -274,11 +299,11 @@ export class Embedded extends React.PureComponent {
 		if (this.props.isSidebarEnabled()) {
 			sidebar = (
 				<div css={embedSidebarStyle(this.props, this.state)} className="embedded__sidebar">
-					<CometChatNavBar 
-						theme={this.props.theme} 
-						lang={this.props.lang} 
-						settings={this.props.settings} 
-						actionGenerated={this.actionHandler} 
+					<CometChatNavBar
+						theme={this.props.theme}
+						lang={this.props.lang}
+						settings={this.props.settings}
+						actionGenerated={this.actionHandler}
 					/>
 				</div>
 			);
@@ -288,19 +313,32 @@ export class Embedded extends React.PureComponent {
 			parentNode: this.state.parentNode,
 			launch: this.props,
 		});
-		let messageScreen = <CometChatMessages theme={this.props.theme} sidebar={sidebar === null ? 0 : 1} lang={this.props.lang} widgetsettings={this.props.widgetsettings} _parent={enums.CONSTANTS["EMBEDDED_COMPONENT"]} actionGenerated={this.actionHandler} />;
+		let messageScreen = (
+			<CometChatMessages
+				theme={this.props.theme}
+				sidebar={sidebar === null ? 0 : 1}
+				lang={this.props.lang}
+				widgetsettings={this.props.widgetsettings}
+				_parent={enums.CONSTANTS["EMBEDDED_COMPONENT"]}
+				actionGenerated={this.actionHandler}
+			/>
+		);
 
 		return (
-			<div css={embedWrapperStyle(this.props)} className="app__messenger" ref={el => (this.embedFrame = el)}>
-				<Frame css={embedFrameStyle()} head={this.getStyle()} allow="geolocation; microphone; camera; autoplay; fullscreen; midi; encrypted-media; display-capture;">
+			<div
+				css={embedWrapperStyle(this.props)}
+				className="app__messenger"
+				ref={(el) => (this.embedFrame = el)}
+			>
+				<Frame
+					css={embedFrameStyle()}
+					head={this.getStyle()}
+					allow="geolocation; microphone; camera; autoplay; fullscreen; midi; encrypted-media; display-capture;"
+				>
 					<FrameProvider>
 						<Global styles={embedGlobalStyles} />
-						<div css={embedContentWrapperStyle(sidebar, this.props, keyframes)} className="messenger__wrapper">
-							{sidebar}
-							<div css={embedMainStyle(sidebar, this.state, this.props)} className="embedded__main">
-								{messageScreen}
-							</div>
-						</div>
+						{/* only show chatroom for livestream */}
+						<CometChatUI chatWithGroup={this.state.chatroomId} />
 					</FrameProvider>
 				</Frame>
 			</div>
@@ -310,13 +348,13 @@ export class Embedded extends React.PureComponent {
 
 // Specifies the default values for props:
 Embedded.defaultProps = {
-  lang: Translator.getDefaultLanguage(),
-  theme: theme,
-  settings: {},
+	lang: Translator.getDefaultLanguage(),
+	theme: theme,
+	settings: {},
 };
 
 Embedded.propTypes = {
-  lang: PropTypes.string,
-  theme: PropTypes.object,
-  settings: PropTypes.object,
+	lang: PropTypes.string,
+	theme: PropTypes.object,
+	settings: PropTypes.object,
 };
