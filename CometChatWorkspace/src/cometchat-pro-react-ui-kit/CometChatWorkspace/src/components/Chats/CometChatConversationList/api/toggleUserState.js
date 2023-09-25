@@ -1,4 +1,4 @@
-import { fetctData } from "../../../../../../../fetchData";
+import { APPID, REGION, fetctData } from "../../../../../../../fetchData";
 
 export async function toggleUserState(state, context) {
 	const user = await context.getLoggedinUser();
@@ -7,7 +7,7 @@ export async function toggleUserState(state, context) {
 
 	const { uid, metadata } = user;
 
-	const url = `https://242053eed084c85d.api-us.cometchat.io/v3/users/${uid}`;
+	const url = `https://${APPID}.api-${REGION}.cometchat.io/v3/users/${uid}`;
 
 	const newMetadata = {
 		fakeOffline: true,

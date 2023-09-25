@@ -34,6 +34,7 @@ import clearIcon from "./resources/close.svg";
 import banIcon from "./resources/ban-member.svg";
 import kickIcon from "./resources/delete.svg";
 import deactivateIcon from "./resources/deactivate.svg";
+import { deactivateUser } from "./api/deactivateUser";
 
 class CometChatViewGroupMemberListItem extends React.Component {
 	static contextType = CometChatContext;
@@ -124,8 +125,10 @@ class CometChatViewGroupMemberListItem extends React.Component {
 			></i>
 		);
 
+		const options = ["DEACTIVATE PERMANENTLY", "DEACTIVATE 15 MINUTE"];
+
 		/**
-		 * Mute user
+		 * Deactivate user
 		 */
 		let deactivate = (
 			<div className="dropdown">
@@ -139,12 +142,16 @@ class CometChatViewGroupMemberListItem extends React.Component {
 					<li>
 						<h6 className="dropdown-header">DEACTIVATE USER</h6>
 					</li>
-					<li>
-						<a className="dropdown-item">DEACTIVATE PERMANENTLY</a>
-					</li>
-					<li>
-						<a className="dropdown-item">DEACTIVATE 15 MINUTE</a>
-					</li>
+					{options.map((option) => (
+						<li key={option}>
+							<a
+								className="dropdown-item"
+								onClick={() => deactivateUser(option, this.props)}
+							>
+								{option}
+							</a>
+						</li>
+					))}
 				</ul>
 			</div>
 		);
