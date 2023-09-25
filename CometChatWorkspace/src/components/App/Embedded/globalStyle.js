@@ -891,9 +891,9 @@ html [type="button"],
   position: absolute;
   inset: 0px auto auto 0px;
   margin: 0px;
-  transform: translate(0px, 40px);
+  transform: translate(-60px, 40px);
   padding: 0.5rem 0;
-  font-size: 16px;
+  font-size: 1rem;
   color: #212529;
   text-align: left;
   list-style: none;
@@ -929,5 +929,14 @@ html [type="button"],
   color:#fff;
   text-decoration:none;
   background-color:#0d6efd;
+}
+.dropdown-header
+{
+  display: block;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  color: #6c757d;
+  white-space: nowrap;
 }
 `;

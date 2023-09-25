@@ -141,13 +141,21 @@ class CometChatViewGroupMemberListItem extends React.Component {
 				></i>
 				<ul className="dropdown-menu">
 					<li>
+						<h6 className="dropdown-header">options</h6>
+					</li>
+					<li>
 						<a className="dropdown-item" href="#">
-							Action
+							BAN
 						</a>
 					</li>
 					<li>
 						<a className="dropdown-item" href="#">
-							A2ction
+							DEACTIVATE PERMANENTLY
+						</a>
+					</li>
+					<li>
+						<a className="dropdown-item" href="#">
+							DEACTIVATE 15 MINUTE
 						</a>
 					</li>
 				</ul>
@@ -275,17 +283,13 @@ class CometChatViewGroupMemberListItem extends React.Component {
 		} else {
 			editAccess = (
 				<React.Fragment>
-					<div css={actionColumnStyle(this.context)} className="ban">
+					{/* <div css={actionColumnStyle(this.context)} className="ban">
 						{ban}
 					</div>
 					<div css={actionColumnStyle(this.context)} className="kick">
 						{kick}
-					</div>
-					<div
-						style={{ width: 50 }}
-						css={actionColumnStyle(this.context)}
-						className="deactivate"
-					>
+					</div> */}
+					<div css={actionColumnStyle(this.context)} className="deactivate">
 						{deactivate}
 					</div>
 				</React.Fragment>

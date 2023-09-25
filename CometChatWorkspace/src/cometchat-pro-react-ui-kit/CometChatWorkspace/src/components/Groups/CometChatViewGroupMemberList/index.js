@@ -207,12 +207,12 @@ class CometChatViewGroupMemberList extends React.Component {
 		if (this.context.item.scope !== CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT) {
 			editAccess = (
 				<React.Fragment>
-					<div css={actionColumnStyle(this.context)} className="ban">
+					{/* <div css={actionColumnStyle(this.context)} className="ban">
 						{Translator.translate("BAN", this.context.language)}
 					</div>
 					<div css={actionColumnStyle(this.context)} className="kick">
 						{Translator.translate("KICK", this.context.language)}
-					</div>
+					</div> */}
 					{/* Deactivate user */}
 					<div css={actionColumnStyle(this.context)} className="deactivate">
 						{Translator.translate("DEACTIVATE", this.context.language)}
