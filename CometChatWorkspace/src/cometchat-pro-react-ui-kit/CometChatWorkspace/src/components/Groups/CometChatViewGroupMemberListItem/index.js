@@ -33,7 +33,7 @@ import doneIcon from "./resources/done.svg";
 import clearIcon from "./resources/close.svg";
 import banIcon from "./resources/ban-member.svg";
 import kickIcon from "./resources/delete.svg";
-import deactivateIcon from "./resources/deactivate.svg";
+import gearIcon from "./resources/gear.svg";
 import { deactivateUser } from "./api/deactivateUser";
 
 class CometChatViewGroupMemberListItem extends React.Component {
@@ -94,6 +94,8 @@ class CometChatViewGroupMemberListItem extends React.Component {
 		}
 	};
 
+	componentDidMount() {}
+
 	render() {
 		let editClassName = "";
 
@@ -133,25 +135,21 @@ class CometChatViewGroupMemberListItem extends React.Component {
 		let deactivate = (
 			<div className="dropdown">
 				<i
-					type="button"
-					data-bs-toggle="dropdown"
+					id="dropdown-toggle"
 					aria-expanded="false"
-					style={deactivateIconStyle(deactivateIcon, this.context)}
+					style={deactivateIconStyle(gearIcon, this.context)}
 				></i>
 				<ul className="dropdown-menu">
 					<li>
-						<h6 className="dropdown-header">DEACTIVATE USER</h6>
+						<a className="dropdown-item" href="#">
+							Action
+						</a>
 					</li>
-					{options.map((option) => (
-						<li key={option}>
-							<a
-								className="dropdown-item"
-								onClick={() => deactivateUser(option, this.props)}
-							>
-								{option}
-							</a>
-						</li>
-					))}
+					<li>
+						<a className="dropdown-item" href="#">
+							A2ction
+						</a>
+					</li>
 				</ul>
 			</div>
 		);

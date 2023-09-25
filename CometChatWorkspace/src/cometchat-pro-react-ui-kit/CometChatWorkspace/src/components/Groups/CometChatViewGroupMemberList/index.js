@@ -214,11 +214,7 @@ class CometChatViewGroupMemberList extends React.Component {
 						{Translator.translate("KICK", this.context.language)}
 					</div>
 					{/* Deactivate user */}
-					<div
-						style={{ width: 50 }}
-						css={actionColumnStyle(this.context)}
-						className="deactivate"
-					>
+					<div css={actionColumnStyle(this.context)} className="deactivate">
 						{Translator.translate("DEACTIVATE", this.context.language)}
 					</div>
 				</React.Fragment>

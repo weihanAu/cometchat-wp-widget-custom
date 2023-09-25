@@ -880,4 +880,54 @@ html [type="button"],
 .emoji-mart-dark .emoji-mart-anchor:focus,
 .emoji-mart-dark .emoji-mart-anchor-selected {
   color: #bfbfbf;
-}`;
+}
+
+.dropdown
+{
+  position: relative;
+}
+
+.dropdown-menu{
+  position: absolute;
+  inset: 0px auto auto 0px;
+  margin: 0px;
+  transform: translate(0px, 40px);
+  padding: 0.5rem 0;
+  font-size: 16px;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.175);
+  border-radius: 0.375rem;
+  z-index:1000;
+}
+
+.dropdown-item
+{
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    border-radius: var(--bs-dropdown-item-border-radius,0);
+}
+.dropdown-item:hover
+{
+  color:#212529;
+  background-color:#f8f9fa;
+}
+.dropdown-item:active
+{
+  color:#fff;
+  text-decoration:none;
+  background-color:#0d6efd;
+}
+`;
