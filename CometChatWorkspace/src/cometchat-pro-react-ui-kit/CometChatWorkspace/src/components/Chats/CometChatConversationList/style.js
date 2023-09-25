@@ -160,3 +160,51 @@ export const chatsListStyle = () => {
 		padding: "0",
 	};
 };
+
+export const stateCollapseStyle = (theme) => {
+	return {
+		width: "100%",
+		position: "absolute",
+		top: 70,
+		left: 0,
+		padding: "24px 12px",
+		borderBottom: `1px solid #eaeaea`,
+		label: {
+			width: "100%",
+			fontSize: "16px",
+			fontWeight: "bold",
+		},
+		".user-state-radio": {
+			padding: "16px",
+			background: "#eaeaea",
+			borderRadius: "8px",
+			marginBottom: "4px",
+			label: {
+				position: "relative",
+				"&::before": {
+					content: '" "',
+					width: "20px",
+					height: "20px",
+					position: "absolute",
+					boxSizing: "border-box",
+					borderRadius: "50%",
+					border: "2px solid #eaeaea",
+					left: "-28px",
+					top: "-2px",
+				},
+			},
+			input: {
+				visibility: "hidden",
+				marginRight: "16px",
+				"&:checked": {
+					"+ label": {
+						"&::before": {
+							background: "green",
+							border: "none",
+						},
+					},
+				},
+			},
+		},
+	};
+};

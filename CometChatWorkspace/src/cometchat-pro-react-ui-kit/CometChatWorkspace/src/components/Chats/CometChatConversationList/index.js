@@ -30,6 +30,7 @@ import {
 	chatsHeaderSettingStyle,
 	chatsHeaderMinimumStyle,
 	chatsHeaderDisposeStyle,
+	stateCollapseStyle,
 } from "./style";
 
 import navigateIcon from "./resources/back.svg";
@@ -57,6 +58,7 @@ class CometChatConversationList extends React.Component {
 			decoratorMessage: Translator.translate("LOADING", props.lang),
 			conversationToBeDeleted: null,
 			isOpenUserState: false,
+			userState: "ACTIVE",
 		};
 
 		this.contextProviderRef = React.createRef();
@@ -1020,36 +1022,7 @@ class CometChatConversationList extends React.Component {
 		/**
 		 * Fake offline
 		 */
-		const options = ["ACTIVE", "INVISIBLE"];
-
 		let statusBtn = (
-			<div className="dropdown">
-				<i
-					data-bs-toggle="dropdown"
-					aria-expanded="false"
-					style={chatsHeaderSettingStyle(settingIcon, theme)}
-				></i>
-				<ul className="dropdown-menu" style={{ fontSize: "16px" }}>
-					<li>
-						<h6 className="dropdown-header" style={{ fontSize: "16px" }}>
-							YOUR STATUS
-						</h6>
-					</li>
-					{options.map((state) => (
-						<li key={state}>
-							<a
-								onClick={() => toggleUserState(state, this.context)}
-								className="dropdown-item"
-							>
-								{state}
-							</a>
-						</li>
-					))}
-				</ul>
-			</div>
-		);
-
-		statusBtn = (
 			<i
 				data-bs-toggle="collapse"
 				data-bs-target="#collapseExample"
@@ -1067,16 +1040,39 @@ class CometChatConversationList extends React.Component {
 			></i>
 		);
 
+		const states = ["ACTIVE", "INVISIBLE"];
+
 		const stateCollapse = (
-			<div
-				class="collapse show"
-				id="collapseExample"
-				style={{ position: "absolute", top: 70, left: 0 }}
-			>
-				<div class="card card-body">
-					Some placeholder content for the collapse component. This panel is hidden by
-					default but revealed when the user activates the relevant trigger.
-				</div>
+			<div css={stateCollapseStyle(theme)}>
+				<label>YOUR STATUS</label>
+				<form
+					onChange={(e) => {
+						this.setState({
+							userState: e.target.value,
+						});
+
+						toggleUserState(e.target.value, this.context);
+					}}
+				>
+					{states.map((s) => (
+						<div
+							className="user-state-radio"
+							style={{
+								backgroundColor:
+									this.state.userState === s ? "#eaeaea" : "transparent",
+							}}
+						>
+							<input
+								id={s}
+								value={s}
+								type="radio"
+								name="userState"
+								defaultChecked={s === this.state.userState}
+							/>
+							<label htmlFor={s}>{s}</label>
+						</div>
+					))}
+				</form>
 			</div>
 		);
 

@@ -5,26 +5,28 @@ export async function toggleUserState(state, context) {
 
 	if (!user) return;
 
-	const { uid, metadata } = user;
+	const { uid } = user;
 
 	const url = `https://${APPID}.api-${REGION}.cometchat.io/v3/users/${uid}`;
 
-	const newMetadata = {
-		fakeOffline: true,
-	};
-
-	if (metadata) Object.assign(newMetadata, metadata);
+	const metadata = {};
 
 	if (state === "ACTIVE") {
-		newMetadata.fakeOffline = false;
+		metadata.userState = state;
+	}
+
+	if (state === "INVISIBLE") {
+		metadata.userState = state;
 	}
 
 	const res = await fetctData(url, {
 		method: "PUT",
 		body: JSON.stringify({
-			metadata: newMetadata,
+			metadata,
 		}),
 	});
+
+	console.log(res);
 
 	if (res.ok) {
 	} else {

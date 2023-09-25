@@ -35,10 +35,10 @@ export const theme = {
 		silver: "#c4c4c4",
 	},
 	breakPoints: [
-		"(min-width: 320px) and (max-width: 767px)",
-		"(min-width: 320px) and (max-width: 480px)",
-		"(min-width: 481px) and (max-width: 768px)",
-		"(min-width: 769px) and (max-width: 1024px)",
-		"(min-width: 1025px) and (max-width: 1200px)",
+		"(minWidth: 320px) and (maxWidth: 767px)",
+		"(minWidth: 320px) and (maxWidth: 480px)",
+		"(minWidth: 481px) and (maxWidth: 768px)",
+		"(minWidth: 769px) and (maxWidth: 1024px)",
+		"(minWidth: 1025px) and (maxWidth: 1200px)",
 	],
 };
