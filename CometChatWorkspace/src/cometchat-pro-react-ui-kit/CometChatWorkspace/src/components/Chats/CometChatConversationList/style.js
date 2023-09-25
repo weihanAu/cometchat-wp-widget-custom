@@ -169,6 +169,8 @@ export const stateCollapseStyle = (theme) => {
 		left: 0,
 		padding: "24px 12px",
 		borderBottom: `1px solid #eaeaea`,
+		zIndex: 99,
+		background: "#ffffff",
 		label: {
 			width: "100%",
 			fontSize: "16px",
