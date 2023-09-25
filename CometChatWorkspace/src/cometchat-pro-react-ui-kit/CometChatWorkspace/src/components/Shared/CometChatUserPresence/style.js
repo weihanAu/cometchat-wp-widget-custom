@@ -14,7 +14,7 @@ export const presenceStyle = (props) => {
 	if (user) {
 		if (user?.metadata?.fakeOffline) {
 			presenceStatus = {
-				backgroundColor: "red",
+				backgroundColor: "#C4C4C4",
 			};
 		}
 	}

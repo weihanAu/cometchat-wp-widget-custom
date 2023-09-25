@@ -263,5 +263,6 @@
 	"NO_PHOTOS": "No Photos",
 	"NO_VIDEOS": "No Videos",
 	"NO_DOCUMENTS": "No Documents",
-	"JOIN": "Join"
+	"JOIN": "Join",
+	"DEACTIVATE":"Deactivate"
 }

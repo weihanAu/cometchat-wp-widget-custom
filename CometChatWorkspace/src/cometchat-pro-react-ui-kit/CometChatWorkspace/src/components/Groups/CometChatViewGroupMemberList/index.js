@@ -114,10 +114,7 @@ class CometChatViewGroupMemberList extends React.Component {
 			})
 			.catch((error) =>
 				this.setState({
-					errorMessage: Translator.translate(
-						"SOMETHING_WRONG",
-						this.context.language
-					),
+					errorMessage: Translator.translate("SOMETHING_WRONG", this.context.language),
 				})
 			);
 	};
@@ -142,10 +139,7 @@ class CometChatViewGroupMemberList extends React.Component {
 			})
 			.catch((error) =>
 				this.setState({
-					errorMessage: Translator.translate(
-						"SOMETHING_WRONG",
-						this.context.language
-					),
+					errorMessage: Translator.translate("SOMETHING_WRONG", this.context.language),
 				})
 			);
 	};
@@ -155,10 +149,7 @@ class CometChatViewGroupMemberList extends React.Component {
 		CometChat.updateGroupMemberScope(guid, member.uid, scope)
 			.then((response) => {
 				if (response) {
-					this.context.setToastMessage(
-						"success",
-						"SCOPECHANGE_GROUPMEMBER_SUCCESS"
-					);
+					this.context.setToastMessage("success", "SCOPECHANGE_GROUPMEMBER_SUCCESS");
 					const updatedMember = Object.assign({}, member, { scope: scope });
 					this.props.actionGenerated(
 						enums.ACTIONS["SCOPECHANGE_GROUPMEMBER_SUCCESS"],
@@ -175,10 +166,7 @@ class CometChatViewGroupMemberList extends React.Component {
 			})
 			.catch((error) =>
 				this.setState({
-					errorMessage: Translator.translate(
-						"SOMETHING_WRONG",
-						this.context.language
-					),
+					errorMessage: Translator.translate("SOMETHING_WRONG", this.context.language),
 				})
 			);
 	};
@@ -187,10 +175,7 @@ class CometChatViewGroupMemberList extends React.Component {
 		if (this._isMounted) {
 			if (editAccess !== null && this.mq.matches) {
 				this.setState({
-					userColumnTitle: Translator.translate(
-						"AVATAR",
-						this.context.language
-					),
+					userColumnTitle: Translator.translate("AVATAR", this.context.language),
 				});
 			} else {
 				this.setState({
@@ -222,11 +207,19 @@ class CometChatViewGroupMemberList extends React.Component {
 		if (this.context.item.scope !== CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT) {
 			editAccess = (
 				<React.Fragment>
-					<div css={actionColumnStyle(this.context)} className='ban'>
+					<div css={actionColumnStyle(this.context)} className="ban">
 						{Translator.translate("BAN", this.context.language)}
 					</div>
-					<div css={actionColumnStyle(this.context)} className='kick'>
+					<div css={actionColumnStyle(this.context)} className="kick">
 						{Translator.translate("KICK", this.context.language)}
+					</div>
+					{/* Deactivate user */}
+					<div
+						style={{ width: 50 }}
+						css={actionColumnStyle(this.context)}
+						className="deactivate"
+					>
+						{Translator.translate("DEACTIVATE", this.context.language)}
 					</div>
 				</React.Fragment>
 			);
@@ -244,47 +237,39 @@ class CometChatViewGroupMemberList extends React.Component {
 		return (
 			<React.Fragment>
 				<CometChatBackdrop show={true} clicked={this.props.close} />
-				<div
-					css={modalWrapperStyle(this.context)}
-					className='modal__viewmembers'
-				>
+				<div css={modalWrapperStyle(this.context)} className="modal__viewmembers">
 					<span
 						css={modalCloseStyle(clearIcon, this.context)}
-						className='modal__close'
+						className="modal__close"
 						onClick={this.props.close}
 						title={Translator.translate("CLOSE", this.context.language)}
 					></span>
-					<div css={modalBodyStyle()} className='modal__body'>
+					<div css={modalBodyStyle()} className="modal__body">
 						<div
-							css={modalCaptionStyle(
-								Translator.getDirection(this.context.language)
-							)}
-							className='modal__title'
+							css={modalCaptionStyle(Translator.getDirection(this.context.language))}
+							className="modal__title"
 						>
 							{Translator.translate("GROUP_MEMBERS", this.context.language)}
 						</div>
-						<div css={modalErrorStyle(this.context)} className='modal__error'>
+						<div css={modalErrorStyle(this.context)} className="modal__error">
 							{this.state.errorMessage}
 						</div>
-						<div css={modalListStyle()} className='modal__content'>
-							<div
-								css={listHeaderStyle(this.context)}
-								className='content__header'
-							>
+						<div css={modalListStyle()} className="modal__content">
+							<div css={listHeaderStyle(this.context)} className="content__header">
 								<div
 									css={nameColumnStyle(this.context, editAccess)}
-									className='name'
+									className="name"
 								>
 									{this.state.userColumnTitle}
 								</div>
-								<div css={scopeColumnStyle(this.context)} className='scope'>
+								<div css={scopeColumnStyle(this.context)} className="scope">
 									{Translator.translate("SCOPE", this.context.language)}
 								</div>
 								{editAccess}
 							</div>
 							<div
 								css={listStyle()}
-								className='content__list'
+								className="content__list"
 								onScroll={this.handleScroll}
 							>
 								{groupMembers}

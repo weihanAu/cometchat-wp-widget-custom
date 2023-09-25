@@ -8,7 +8,12 @@ import { CometChat } from "@cometchat-pro/chat";
 
 import { EVENTS, CONSTANTS } from "../../util/enums";
 
-import { CometChatIncomingCall, CometChatOutgoingCall, CometChatOutgoingDirectCall, CometChatIncomingDirectCall } from "UIKit/CometChatWorkspace/src/components";
+import {
+	CometChatIncomingCall,
+	CometChatOutgoingCall,
+	CometChatOutgoingDirectCall,
+	CometChatIncomingDirectCall,
+} from "UIKit/CometChatWorkspace/src/components";
 
 import { CometChatContextProvider } from "UIKit/CometChatWorkspace/src/util/CometChatContext.js";
 import * as enums from "UIKit/CometChatWorkspace/src/util/enums.js";
@@ -20,6 +25,8 @@ import Translator from "UIKit/CometChatWorkspace/src/resources/localization/tran
 import { AppManager } from "./controller";
 
 import asyncComponent from "../../hoc/asyncComponent";
+import bootstrap from "./js/bootstrap.bundle.txt";
+import bootstrapCSS from "./css/bootstrap.css";
 
 const DockedLauncher = asyncComponent("DockedLauncher", () => {
 	// Pass the component which you want to load dynamically.
@@ -62,20 +69,21 @@ export class App extends React.Component {
 		this.outgoingDirectCallRef = React.createRef();
 
 		CometChat.getLoggedinUser()
-			.then(user => (this.loggedInUser = user))
-			.catch(error => {
-				const errorCode = error && error.hasOwnProperty("code") ? error.code : "USER_NOT_LOGGED_IN";
+			.then((user) => (this.loggedInUser = user))
+			.catch((error) => {
+				const errorCode =
+					error && error.hasOwnProperty("code") ? error.code : "USER_NOT_LOGGED_IN";
 				throw new Error(errorCode);
 			});
 
-		CometChatWidget.on("onOpenChat", args => this.toggleChat(args));
-		CometChatWidget.on("onCloseChat", args => this.toggleChat(args));
-		CometChatWidget.on("chatWithUser", args => this.chatWithUser(args));
-		CometChatWidget.on("chatWithGroup", args => this.chatWithGroup(args));
-		CometChatWidget.on("callUser", args => this.callUser(args));
-		CometChatWidget.on("callGroup", args => this.callGroup(args));
+		CometChatWidget.on("onOpenChat", (args) => this.toggleChat(args));
+		CometChatWidget.on("onCloseChat", (args) => this.toggleChat(args));
+		CometChatWidget.on("chatWithUser", (args) => this.chatWithUser(args));
+		CometChatWidget.on("chatWithGroup", (args) => this.chatWithGroup(args));
+		CometChatWidget.on("callUser", (args) => this.callUser(args));
+		CometChatWidget.on("callGroup", (args) => this.callGroup(args));
 
-		CometChatWidget.on("localize", args => {
+		CometChatWidget.on("localize", (args) => {
 			const lang = args.lang.toLowerCase();
 
 			Translator.setLanguage(lang);
@@ -94,13 +102,16 @@ export class App extends React.Component {
 		 */
 		this.setUpUIKit();
 
-		if (this.props.hasOwnProperty("docked") && (this.props.docked === true || this.props.docked === "true")) {
+		if (
+			this.props.hasOwnProperty("docked") &&
+			(this.props.docked === true || this.props.docked === "true")
+		) {
 			this.setState({ dockedview: true });
 		} else {
 			this.setState({ dockedview: false, showEmbed: true });
 		}
 
-		this.enableUnreadCount().then(response => {
+		this.enableUnreadCount().then((response) => {
 			if (response !== this.state.enableUnreadCount) {
 				this.setState({ enableUnreadCount: response }, () => this.populateMessageList());
 			} else {
@@ -112,7 +123,7 @@ export class App extends React.Component {
 	populateMessageList = () => {
 		let messagelist = {};
 		this.getUnreadMessageCount()
-			.then(response => {
+			.then((response) => {
 				if (Object.keys(response).length) {
 					for (const key in response) {
 						messagelist[key] = response[key];
@@ -120,7 +131,7 @@ export class App extends React.Component {
 				}
 				this.setState({ messagelist: messagelist });
 			})
-			.catch(error => console.log("CometChatWidget Error: ", error));
+			.catch((error) => console.log("CometChatWidget Error: ", error));
 	};
 
 	componentDidUpdate(prevProps, prevState) {
@@ -133,10 +144,10 @@ export class App extends React.Component {
 	}
 
 	enableUnreadCount = () => {
-		return new Promise(resolve => {
+		return new Promise((resolve) => {
 			this.contextProviderRef.state.FeatureRestriction.isUnreadCountEnabled()
-				.then(response => resolve(response))
-				.catch(error => resolve(false));
+				.then((response) => resolve(response))
+				.catch((error) => resolve(false));
 		});
 	};
 
@@ -163,21 +174,27 @@ export class App extends React.Component {
 		 * If the chat widget settings has tab sequence set
 		 */
 		if (validateWidgetSettings(widgetSettings, "sidebar", "sidebar_navigation_sequence")) {
-			this.contextProviderRef.state.UIKitSettings.setTabs(widgetSettings["sidebar"]["sidebar_navigation_sequence"]);
+			this.contextProviderRef.state.UIKitSettings.setTabs(
+				widgetSettings["sidebar"]["sidebar_navigation_sequence"]
+			);
 		}
 
 		/**
 		 * If the chat widget settings has key `recent_chat_listing`
 		 */
 		if (validateWidgetSettings(widgetSettings, "sidebar", "recent_chat_listing")) {
-			this.contextProviderRef.state.UIKitSettings.setChatListMode(widgetSettings["sidebar"]["recent_chat_listing"]);
+			this.contextProviderRef.state.UIKitSettings.setChatListMode(
+				widgetSettings["sidebar"]["recent_chat_listing"]
+			);
 		}
 
 		/**
 		 * If the chat widget settings has key `user_listing`
 		 */
 		if (validateWidgetSettings(widgetSettings, "sidebar", "user_listing")) {
-			this.contextProviderRef.state.UIKitSettings.setUserListMode(widgetSettings["sidebar"]["user_listing"]);
+			this.contextProviderRef.state.UIKitSettings.setUserListMode(
+				widgetSettings["sidebar"]["user_listing"]
+			);
 		}
 
 		/**
@@ -237,7 +254,10 @@ export class App extends React.Component {
 		/**
 		 * If the chat widget settings has allowed sharing collaborative whiteboard
 		 */
-		if (validateWidgetSettings(widgetSettings, "main", "enable_collaborative_whiteboard") === true) {
+		if (
+			validateWidgetSettings(widgetSettings, "main", "enable_collaborative_whiteboard") ===
+			true
+		) {
 			this.contextProviderRef.state.UIKitSettings.setCollaborativeWhiteboard(true);
 		} else {
 			this.contextProviderRef.state.UIKitSettings.setCollaborativeWhiteboard(false);
@@ -257,7 +277,9 @@ export class App extends React.Component {
 		/**
 		 * If the chat widget settings has allowed sharing collaborative document
 		 */
-		if (validateWidgetSettings(widgetSettings, "main", "enable_collaborative_document") === true) {
+		if (
+			validateWidgetSettings(widgetSettings, "main", "enable_collaborative_document") === true
+		) {
 			this.contextProviderRef.state.UIKitSettings.setCollaborativeDocument(true);
 		} else {
 			this.contextProviderRef.state.UIKitSettings.setCollaborativeDocument(false);
@@ -416,7 +438,9 @@ export class App extends React.Component {
 		/**
 		 * If the chat widget settings has enabled display of group action messages
 		 */
-		if (validateWidgetSettings(widgetSettings, "main", "hide_join_leave_notifications") === true) {
+		if (
+			validateWidgetSettings(widgetSettings, "main", "hide_join_leave_notifications") === true
+		) {
 			this.contextProviderRef.state.UIKitSettings.setJoinLeaveNotifications(false);
 		} else {
 			this.contextProviderRef.state.UIKitSettings.setJoinLeaveNotifications(true);
@@ -488,7 +512,9 @@ export class App extends React.Component {
 		/**
 		 * If the chat widget settings has enabled read receipts
 		 */
-		if (validateWidgetSettings(widgetSettings, "main", "show_delivery_read_indicators") === true) {
+		if (
+			validateWidgetSettings(widgetSettings, "main", "show_delivery_read_indicators") === true
+		) {
 			this.contextProviderRef.state.UIKitSettings.setShowReadDeliveryReceipts(true);
 		} else {
 			this.contextProviderRef.state.UIKitSettings.setShowReadDeliveryReceipts(false);
@@ -524,7 +550,9 @@ export class App extends React.Component {
 		/**
 		 * If the chat widget settings has allowed sharing live reactions
 		 */
-		if (validateWidgetSettings(widgetSettings, "main", "allow_promote_demote_members") === true) {
+		if (
+			validateWidgetSettings(widgetSettings, "main", "allow_promote_demote_members") === true
+		) {
 			this.contextProviderRef.state.UIKitSettings.setAllowPromoteDemoteMembers(true);
 		} else {
 			this.contextProviderRef.state.UIKitSettings.setAllowPromoteDemoteMembers(false);
@@ -542,7 +570,13 @@ export class App extends React.Component {
 		/**
 		 * If the chat widget settings has enabled send message in private
 		 */
-		if (validateWidgetSettings(widgetSettings, "main", "send_message_in_private_to_group_member") === true) {
+		if (
+			validateWidgetSettings(
+				widgetSettings,
+				"main",
+				"send_message_in_private_to_group_member"
+			) === true
+		) {
 			this.contextProviderRef.state.UIKitSettings.setMessageInPrivate(true);
 		} else {
 			this.contextProviderRef.state.UIKitSettings.setMessageInPrivate(false);
@@ -551,26 +585,48 @@ export class App extends React.Component {
 		/**
 		 * If the chat widget settings has allowed moderator to delete messages
 		 */
-		if (validateWidgetSettings(widgetSettings, "main", "allow_moderator_to_delete_member_messages") === true) {
-			this.contextProviderRef.state.UIKitSettings.setAllowModeratorToDeleteMemberMessages(true);
+		if (
+			validateWidgetSettings(
+				widgetSettings,
+				"main",
+				"allow_moderator_to_delete_member_messages"
+			) === true
+		) {
+			this.contextProviderRef.state.UIKitSettings.setAllowModeratorToDeleteMemberMessages(
+				true
+			);
 		} else {
-			this.contextProviderRef.state.UIKitSettings.setAllowModeratorToDeleteMemberMessages(false);
+			this.contextProviderRef.state.UIKitSettings.setAllowModeratorToDeleteMemberMessages(
+				false
+			);
 		}
 
 		/**
 		 * If the chat widget settings has enabled show_call_recording_option
 		 */
-		if (validateWidgetSettings(widgetSettings, CONSTANTS["WIDGET_SETTINGS"]["MAIN"], "show_call_recording_option") === true) {
+		if (
+			validateWidgetSettings(
+				widgetSettings,
+				CONSTANTS["WIDGET_SETTINGS"]["MAIN"],
+				"show_call_recording_option"
+			) === true
+		) {
 			this.contextProviderRef.state.UIKitSettings.setShowCallRecordingOption(true);
 		} else {
 			this.contextProviderRef.state.UIKitSettings.setShowCallRecordingOption(false);
 		}
+
+		/**
+		 * Set Bootstrap UI
+		 */
+		this.contextProviderRef.state.UIKitSettings.setCustomJS(bootstrap);
+		this.contextProviderRef.state.UIKitSettings.setCustomCSS(bootstrapCSS);
 	};
 
-	chatWithUser = args => {
+	chatWithUser = (args) => {
 		return new Promise((resolve, reject) => {
 			CometChat.getLoggedinUser()
-				.then(loggedInUser => {
+				.then((loggedInUser) => {
 					//if user is not logged in
 					if (loggedInUser === null || Object.keys(loggedInUser).length === 0) {
 						const message = "CometChat Widget Error: User not logged in.";
@@ -592,26 +648,29 @@ export class App extends React.Component {
 					}
 
 					CometChat.getUser(id)
-						.then(user => {
-							this.contextProviderRef.state.setTypeAndItem(CometChat.ACTION_TYPE.TYPE_USER, user);
+						.then((user) => {
+							this.contextProviderRef.state.setTypeAndItem(
+								CometChat.ACTION_TYPE.TYPE_USER,
+								user
+							);
 							return resolve({ type: CometChat.ACTION_TYPE.TYPE_USER, user });
 						})
-						.catch(error => {
+						.catch((error) => {
 							console.log("CometChat Widget Error: ", error);
 							return resolve({ type: "", user: {} });
 						});
 				})
-				.catch(error => {
+				.catch((error) => {
 					console.error("CometChat Widget Error: ", error);
 					return reject(error);
 				});
 		});
 	};
 
-	chatWithGroup = args => {
+	chatWithGroup = (args) => {
 		return new Promise((resolve, reject) => {
 			CometChat.getLoggedinUser()
-				.then(loggedInUser => {
+				.then((loggedInUser) => {
 					if (loggedInUser === null || Object.keys(loggedInUser).length === 0) {
 						const message = "CometChat Widget Error: User not logged in.";
 						console.error(message);
@@ -626,7 +685,7 @@ export class App extends React.Component {
 					}
 
 					CometChat.getGroup(args.guid)
-						.then(group => {
+						.then((group) => {
 							if (!group.hasJoined) {
 								const guid = group.guid;
 								const groupType = group.type;
@@ -636,26 +695,44 @@ export class App extends React.Component {
 								}
 
 								CometChat.joinGroup(guid, groupType, password)
-									.then(group => {
-										console.log("CometChat Widget: Group joined successfully", group);
-										this.contextProviderRef.state.setTypeAndItem(CometChat.ACTION_TYPE.TYPE_GROUP, group);
-										return resolve({ type: CometChat.ACTION_TYPE.TYPE_GROUP, group: group });
+									.then((group) => {
+										console.log(
+											"CometChat Widget: Group joined successfully",
+											group
+										);
+										this.contextProviderRef.state.setTypeAndItem(
+											CometChat.ACTION_TYPE.TYPE_GROUP,
+											group
+										);
+										return resolve({
+											type: CometChat.ACTION_TYPE.TYPE_GROUP,
+											group: group,
+										});
 									})
-									.catch(error => {
+									.catch((error) => {
 										console.log("CometChat Widget Error: ", error);
-										return resolve({ type: CometChat.ACTION_TYPE.TYPE_GROUP, group: {} });
+										return resolve({
+											type: CometChat.ACTION_TYPE.TYPE_GROUP,
+											group: {},
+										});
 									});
 							} else {
-								this.contextProviderRef.state.setTypeAndItem(CometChat.ACTION_TYPE.TYPE_GROUP, group);
-								return resolve({ type: CometChat.ACTION_TYPE.TYPE_GROUP, group: group });
+								this.contextProviderRef.state.setTypeAndItem(
+									CometChat.ACTION_TYPE.TYPE_GROUP,
+									group
+								);
+								return resolve({
+									type: CometChat.ACTION_TYPE.TYPE_GROUP,
+									group: group,
+								});
 							}
 						})
-						.catch(error => {
+						.catch((error) => {
 							console.log("CometChat Widget Error: ", error);
 							return resolve({ type: CometChat.ACTION_TYPE.TYPE_GROUP, group: {} });
 						});
 				})
-				.catch(error => {
+				.catch((error) => {
 					console.error("CometChat Widget Error: ", error);
 					reject(error);
 					return;
@@ -678,7 +755,7 @@ export class App extends React.Component {
 
 				if (chatListMode === chatListFilterOptions["USERS_AND_GROUPS"]) {
 					CometChat.getUnreadMessageCount()
-						.then(messages => {
+						.then((messages) => {
 							if (messages.hasOwnProperty("users")) {
 								for (const user in messages["users"]) {
 									messagelist[user] = messages["users"][user];
@@ -693,10 +770,10 @@ export class App extends React.Component {
 
 							resolve(messagelist);
 						})
-						.catch(error => reject(error));
+						.catch((error) => reject(error));
 				} else if (chatListMode === chatListFilterOptions["USERS"]) {
 					CometChat.getUnreadMessageCountForAllUsers()
-						.then(messages => {
+						.then((messages) => {
 							if (Object.keys(messages).length) {
 								for (const user in messages) {
 									messagelist[user] = messages[user];
@@ -705,10 +782,10 @@ export class App extends React.Component {
 
 							resolve(messagelist);
 						})
-						.catch(error => reject(error));
+						.catch((error) => reject(error));
 				} else if (chatListMode === chatListFilterOptions["GROUPS"]) {
 					CometChat.getUnreadMessageCountForAllGroups()
-						.then(messages => {
+						.then((messages) => {
 							if (Object.keys(messages).length) {
 								for (const group in messages) {
 									messagelist[group] = messages[group];
@@ -717,33 +794,37 @@ export class App extends React.Component {
 
 							resolve(messagelist);
 						})
-						.catch(error => reject(error));
+						.catch((error) => reject(error));
 				}
 			} else if (this.props.defaultType === CometChat.ACTION_TYPE.TYPE_USER) {
 				const uid = this.props.defaultID;
 				CometChat.getUnreadMessageCountForUser(uid)
-					.then(response => resolve(response))
-					.catch(error => reject(error));
+					.then((response) => resolve(response))
+					.catch((error) => reject(error));
 			} else if (this.props.defaultType === CometChat.ACTION_TYPE.TYPE_GROUP) {
 				const guid = this.props.defaultID;
 				CometChat.getUnreadMessageCountForGroup(guid)
-					.then(response => resolve(response))
-					.catch(error => reject(error));
+					.then((response) => resolve(response))
+					.catch((error) => reject(error));
 			}
 		});
 
 		return promise;
 	};
 
-	toggleChat = params => {
-		if (this.state.dockedview !== true || (this.state.showEmbed === true && params.flag === true) || (!this.state.showEmbed && params.flag === false)) {
+	toggleChat = (params) => {
+		if (
+			this.state.dockedview !== true ||
+			(this.state.showEmbed === true && params.flag === true) ||
+			(!this.state.showEmbed && params.flag === false)
+		) {
 			return false;
 		}
 
 		this.setState({ showEmbed: params.flag }, this.afterToggleChat);
 	};
 
-	afterToggleChat = args => {
+	afterToggleChat = (args) => {
 		let eventName;
 		if (this.state.showEmbed) {
 			eventName = EVENTS["OPEN_CHAT"];
@@ -783,7 +864,10 @@ export class App extends React.Component {
 
 				if (
 					this.contextProviderRef.state.hasKeyValue(message, enums.KEYS["METADATA"]) &&
-					this.contextProviderRef.state.hasKeyValue(message[enums.KEYS["METADATA"]], enums.KEYS["INCREMENT_UNREAD_COUNT"]) &&
+					this.contextProviderRef.state.hasKeyValue(
+						message[enums.KEYS["METADATA"]],
+						enums.KEYS["INCREMENT_UNREAD_COUNT"]
+					) &&
 					message[enums.KEYS["METADATA"]][enums.KEYS["INCREMENT_UNREAD_COUNT"]] === true
 				) {
 					this.incrementUnreadMessageCount(message);
@@ -811,14 +895,15 @@ export class App extends React.Component {
 		this.decrementUnreadMessageCount(message.receiver);
 	};
 
-	messageReadActionHandler = message => {
+	messageReadActionHandler = (message) => {
 		const receiverType = message.receiverType;
-		const receiverId = receiverType === CometChat.RECEIVER_TYPE.USER ? message.sender.uid : message.receiverId;
+		const receiverId =
+			receiverType === CometChat.RECEIVER_TYPE.USER ? message.sender.uid : message.receiverId;
 
 		this.decrementUnreadMessageCount(receiverId);
 	};
 
-	incrementUnreadMessageCount = message => {
+	incrementUnreadMessageCount = (message) => {
 		/**
 		 * Is unreadcount feature is disabled, return empty object
 		 */
@@ -832,7 +917,8 @@ export class App extends React.Component {
 		}
 
 		const receiverType = message.receiverType;
-		const receiverId = receiverType === CometChat.RECEIVER_TYPE.USER ? message.sender.uid : message.receiverId;
+		const receiverId =
+			receiverType === CometChat.RECEIVER_TYPE.USER ? message.sender.uid : message.receiverId;
 
 		const messagelist = { ...this.state.messagelist };
 
@@ -847,20 +933,34 @@ export class App extends React.Component {
 		 * Sound alert for incoming messages
 		 */
 		if (receiverType === this.contextProviderRef.state.type) {
-			if ((receiverType === CometChat.RECEIVER_TYPE.USER && receiverId === this.contextProviderRef.state.item.uid) || (receiverType === CometChat.RECEIVER_TYPE.GROUP && receiverId === this.contextProviderRef.state.item.guid)) {
-				SoundManager.play(enums.CONSTANTS.AUDIO["INCOMING_MESSAGE"], this.contextProviderRef.state);
+			if (
+				(receiverType === CometChat.RECEIVER_TYPE.USER &&
+					receiverId === this.contextProviderRef.state.item.uid) ||
+				(receiverType === CometChat.RECEIVER_TYPE.GROUP &&
+					receiverId === this.contextProviderRef.state.item.guid)
+			) {
+				SoundManager.play(
+					enums.CONSTANTS.AUDIO["INCOMING_MESSAGE"],
+					this.contextProviderRef.state
+				);
 			} else {
-				SoundManager.play(enums.CONSTANTS.AUDIO["INCOMING_OTHER_MESSAGE"], this.contextProviderRef.state);
+				SoundManager.play(
+					enums.CONSTANTS.AUDIO["INCOMING_OTHER_MESSAGE"],
+					this.contextProviderRef.state
+				);
 			}
 		} else {
-			SoundManager.play(enums.CONSTANTS.AUDIO["INCOMING_OTHER_MESSAGE"], this.contextProviderRef.state);
+			SoundManager.play(
+				enums.CONSTANTS.AUDIO["INCOMING_OTHER_MESSAGE"],
+				this.contextProviderRef.state
+			);
 		}
 
 		this.setState({ messagelist: messagelist });
 	};
 
 	//update unread message count
-	decrementUnreadMessageCount = id => {
+	decrementUnreadMessageCount = (id) => {
 		const messagelist = { ...this.state.messagelist };
 		if (messagelist.hasOwnProperty(id)) {
 			let unreadcount = messagelist[id];
@@ -882,7 +982,7 @@ export class App extends React.Component {
 			}
 		});
 
-		return values.some(val => val === true);
+		return values.some((val) => val === true);
 	};
 
 	isChatsTabEnabled = () => {
@@ -890,15 +990,23 @@ export class App extends React.Component {
 			return false;
 		}
 
-		return this.props.settings.sidebar.hasOwnProperty(tabs["SIDEBAR_CHATS"]) && this.props.settings.sidebar[tabs["SIDEBAR_CHATS"]];
+		return (
+			this.props.settings.sidebar.hasOwnProperty(tabs["SIDEBAR_CHATS"]) &&
+			this.props.settings.sidebar[tabs["SIDEBAR_CHATS"]]
+		);
 	};
 
-	ifChatsTabFilterMatches = message => {
+	ifChatsTabFilterMatches = (message) => {
 		const chatListMode = this.contextProviderRef.state.UIKitSettings.chatListMode;
 		const chatListFilterOptions = UIKitSettings.chatListFilterOptions;
 
 		if (chatListMode !== chatListFilterOptions["USERS_AND_GROUPS"]) {
-			if ((chatListMode === chatListFilterOptions["USERS"] && message.receiverType === CometChat.RECEIVER_TYPE.GROUP) || (chatListMode === chatListFilterOptions["GROUPS"] && message.receiverType === CometChat.RECEIVER_TYPE.USER)) {
+			if (
+				(chatListMode === chatListFilterOptions["USERS"] &&
+					message.receiverType === CometChat.RECEIVER_TYPE.GROUP) ||
+				(chatListMode === chatListFilterOptions["GROUPS"] &&
+					message.receiverType === CometChat.RECEIVER_TYPE.USER)
+			) {
 				return false;
 			}
 		}
@@ -906,7 +1014,7 @@ export class App extends React.Component {
 		return true;
 	};
 
-	checkIfChatWindowMatches = message => {
+	checkIfChatWindowMatches = (message) => {
 		const isChatsTabEnabled = this.isChatsTabEnabled();
 
 		//when chat window is closed
@@ -916,13 +1024,20 @@ export class App extends React.Component {
 				return true;
 			} else if (isChatsTabEnabled === false) {
 				//if the default id and type matches with the message receiver id and type
-				if (Object.keys(this.contextProviderRef.state.item).length && this.contextProviderRef.state.type) {
+				if (
+					Object.keys(this.contextProviderRef.state.item).length &&
+					this.contextProviderRef.state.type
+				) {
 					let item = this.contextProviderRef.state.item;
 					let type = this.contextProviderRef.state.type;
 
 					if (
-						(type === CometChat.RECEIVER_TYPE.GROUP && message.receiverType === CometChat.RECEIVER_TYPE.GROUP && message.receiverId === item.guid) ||
-						(type === CometChat.RECEIVER_TYPE.USER && message.receiverType === CometChat.RECEIVER_TYPE.USER && message.sender.uid === item.uid)
+						(type === CometChat.RECEIVER_TYPE.GROUP &&
+							message.receiverType === CometChat.RECEIVER_TYPE.GROUP &&
+							message.receiverId === item.guid) ||
+						(type === CometChat.RECEIVER_TYPE.USER &&
+							message.receiverType === CometChat.RECEIVER_TYPE.USER &&
+							message.sender.uid === item.uid)
 					) {
 						return true;
 					}
@@ -930,14 +1045,21 @@ export class App extends React.Component {
 			}
 		} else if (this.state.showEmbed === true) {
 			if (isChatsTabEnabled === true && this.ifChatsTabFilterMatches(message) === true) {
-				if (Object.keys(this.contextProviderRef.state.item).length && this.contextProviderRef.state.type) {
+				if (
+					Object.keys(this.contextProviderRef.state.item).length &&
+					this.contextProviderRef.state.type
+				) {
 					let item = this.contextProviderRef.state.item;
 					let type = this.contextProviderRef.state.type;
 
 					//if the default id and type matches with the message receiver id and type
 					if (
-						(type === CometChat.RECEIVER_TYPE.GROUP && message.receiverType === CometChat.RECEIVER_TYPE.GROUP && message.receiverId === item.guid) ||
-						(type === CometChat.RECEIVER_TYPE.USER && message.receiverType === CometChat.RECEIVER_TYPE.USER && message.sender.uid === item.uid)
+						(type === CometChat.RECEIVER_TYPE.GROUP &&
+							message.receiverType === CometChat.RECEIVER_TYPE.GROUP &&
+							message.receiverId === item.guid) ||
+						(type === CometChat.RECEIVER_TYPE.USER &&
+							message.receiverType === CometChat.RECEIVER_TYPE.USER &&
+							message.sender.uid === item.uid)
 					) {
 						return false;
 					}
@@ -952,7 +1074,7 @@ export class App extends React.Component {
 	};
 
 	//dispatch a message received event to the chat widget user
-	triggerMessageReceivedEvent = message => {
+	triggerMessageReceivedEvent = (message) => {
 		this.props.actionGenerated("onMessageReceived", message);
 
 		// if (Object.keys(this.contextProviderRef.state.item).length && this.contextProviderRef.state.type) {
@@ -1011,28 +1133,31 @@ export class App extends React.Component {
 		}
 	};
 
-	callUser = args => {
-
-		if(this.loggedInUser?.uid === args.uid) {
+	callUser = (args) => {
+		if (this.loggedInUser?.uid === args.uid) {
 			return false;
-		}	
-		const call = new CometChat.Call(args.uid, CometChat.CALL_TYPE.VIDEO, CometChat.RECEIVER_TYPE.USER);
+		}
+		const call = new CometChat.Call(
+			args.uid,
+			CometChat.CALL_TYPE.VIDEO,
+			CometChat.RECEIVER_TYPE.USER
+		);
 		CometChat.initiateCall(call)
-			.then(outgoingCall => this.startCall(outgoingCall))
-			.catch(error => console.error("CometChatWidget Error: ", error));
+			.then((outgoingCall) => this.startCall(outgoingCall))
+			.catch((error) => console.error("CometChatWidget Error: ", error));
 	};
 
-	callGroup = args => {
+	callGroup = (args) => {
 		this.startDirectCall(args.guid);
 	};
 
-	startCall = outgoingCall => {
+	startCall = (outgoingCall) => {
 		this.setState({ callType: enums.CONSTANTS["OUTGOING_DEFAULT_CALLING"] });
 		this.outgoingCallRef.startCall(outgoingCall);
 		this.contextProviderRef.state.setCallInProgress(outgoingCall);
 	};
 
-	startDirectCall = sessionID => {
+	startDirectCall = (sessionID) => {
 		this.setState({ callType: enums.CONSTANTS["OUTGOING_DIRECT_CALLING"] });
 		//const sessionID = this.contextProviderRef.state.type === CometChat.ACTION_TYPE.TYPE_GROUP ? this.contextProviderRef.state.item.guid : null;
 		this.outgoingDirectCallRef.startCall(sessionID);
@@ -1040,7 +1165,10 @@ export class App extends React.Component {
 
 	joinDirectCall = () => {
 		this.setState({ callType: enums.CONSTANTS["OUTGOING_DIRECT_CALLING"] });
-		const sessionID = this.contextProviderRef.state.type === CometChat.ACTION_TYPE.TYPE_GROUP ? this.contextProviderRef.state.item.guid : null;
+		const sessionID =
+			this.contextProviderRef.state.type === CometChat.ACTION_TYPE.TYPE_GROUP
+				? this.contextProviderRef.state.item.guid
+				: null;
 		this.outgoingDirectCallRef.joinCall(sessionID);
 	};
 
@@ -1056,7 +1184,16 @@ export class App extends React.Component {
 		let dockedLauncher = null;
 		let EmbedView = null;
 		if (this.state.dockedview === true) {
-			dockedLauncher = <DockedLauncher {...this.props} theme={this.props.theme} lang={this.state.lang} messagelist={this.state.messagelist} active={this.state.showEmbed} clicked={this.activateChat} />;
+			dockedLauncher = (
+				<DockedLauncher
+					{...this.props}
+					theme={this.props.theme}
+					lang={this.state.lang}
+					messagelist={this.state.messagelist}
+					active={this.state.showEmbed}
+					clicked={this.activateChat}
+				/>
+			);
 
 			if (this.state.showEmbed !== null) {
 				EmbedView = (
@@ -1090,9 +1227,23 @@ export class App extends React.Component {
 			);
 		}
 
-		let incomingDirectCallAlertScreen = <CometChatIncomingDirectCall theme={this.props.theme} lang={this.state.lang} widgetsettings={widgetSettings} actionGenerated={this.actionHandler} />;
+		let incomingDirectCallAlertScreen = (
+			<CometChatIncomingDirectCall
+				theme={this.props.theme}
+				lang={this.state.lang}
+				widgetsettings={widgetSettings}
+				actionGenerated={this.actionHandler}
+			/>
+		);
 
-		let incomingCallAlertScreen = <CometChatIncomingCall theme={this.props.theme} lang={this.state.lang} widgetsettings={widgetSettings} actionGenerated={this.actionHandler} />;
+		let incomingCallAlertScreen = (
+			<CometChatIncomingCall
+				theme={this.props.theme}
+				lang={this.state.lang}
+				widgetsettings={widgetSettings}
+				actionGenerated={this.actionHandler}
+			/>
+		);
 
 		const outgoingCallScreenCache = createCache({
 			key: "outgoingcall",
@@ -1101,7 +1252,13 @@ export class App extends React.Component {
 
 		let outgoingCallScreen = (
 			<CacheProvider value={outgoingCallScreenCache}>
-				<CometChatOutgoingCall ref={el => (this.outgoingCallRef = el)} widgetsettings={widgetSettings} theme={this.props.theme} lang={this.state.lang} actionGenerated={this.actionHandler} />
+				<CometChatOutgoingCall
+					ref={(el) => (this.outgoingCallRef = el)}
+					widgetsettings={widgetSettings}
+					theme={this.props.theme}
+					lang={this.state.lang}
+					actionGenerated={this.actionHandler}
+				/>
 			</CacheProvider>
 		);
 
@@ -1112,12 +1269,21 @@ export class App extends React.Component {
 
 		let directCallScreen = (
 			<CacheProvider value={directCallScreenCache}>
-				<CometChatOutgoingDirectCall ref={el => (this.outgoingDirectCallRef = el)} widgetsettings={widgetSettings} theme={this.props.theme} lang={this.state.lang} actionGenerated={this.actionHandler} />
+				<CometChatOutgoingDirectCall
+					ref={(el) => (this.outgoingDirectCallRef = el)}
+					widgetsettings={widgetSettings}
+					theme={this.props.theme}
+					lang={this.state.lang}
+					actionGenerated={this.actionHandler}
+				/>
 			</CacheProvider>
 		);
 
 		let toastNotificationPosition = "top-right";
-		if (this.props.hasOwnProperty("docked") && (this.props.docked === true || this.props.docked === "true")) {
+		if (
+			this.props.hasOwnProperty("docked") &&
+			(this.props.docked === true || this.props.docked === "true")
+		) {
 			if (this.props.hasOwnProperty("alignment") && this.props.alignment === "left") {
 				toastNotificationPosition = "top-left";
 			}
@@ -1125,7 +1291,12 @@ export class App extends React.Component {
 
 		return (
 			<div css={AppStyle(this.props)} className="app__wrapper">
-				<CometChatContextProvider ref={el => (this.contextProviderRef = el)} _component={enums.CONSTANTS["EMBEDDED_COMPONENT"]} language={this.state.lang} toastNotificationPos={toastNotificationPosition}>
+				<CometChatContextProvider
+					ref={(el) => (this.contextProviderRef = el)}
+					_component={enums.CONSTANTS["EMBEDDED_COMPONENT"]}
+					language={this.state.lang}
+					toastNotificationPos={toastNotificationPosition}
+				>
 					{EmbedView}
 					{dockedLauncher}
 					{incomingDirectCallAlertScreen}

@@ -14,8 +14,7 @@ export const modalWrapperStyle = (context) => {
 		transform: "translate(-50%, -50%)",
 		zIndex: "1002",
 		margin: "0 auto",
-		boxShadow:
-			"rgba(20, 20, 20, 0.2) 0 16px 32px, rgba(20, 20, 20, 0.04) 0 0 0 1px",
+		boxShadow: "rgba(20, 20, 20, 0.2) 0 16px 32px, rgba(20, 20, 20, 0.04) 0 0 0 1px",
 		borderRadius: "12px",
 		display: "block",
 		[mq[1]]: {
@@ -181,6 +180,9 @@ export const actionColumnStyle = (context) => {
 			width: "40px",
 		},
 		[mq[2]]: {
+			width: "40px",
+		},
+		[mq[3]]: {
 			width: "40px",
 		},
 	};
