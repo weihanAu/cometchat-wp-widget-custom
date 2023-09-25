@@ -66,7 +66,13 @@ class CometChatConversationList extends React.Component {
 		this.toastRef = React.createRef();
 
 		CometChat.getLoggedinUser()
-			.then((user) => (this.loggedInUser = user))
+			.then((user) => {
+				this.loggedInUser = user;
+
+				this.setState({
+					userState: user?.metadata?.userState ?? "ACTIVE",
+				});
+			})
 			.catch((error) =>
 				this.setState({
 					decoratorMessage: Translator.translate("SOMETHING_WRONG", this.props.lang),
@@ -1056,6 +1062,7 @@ class CometChatConversationList extends React.Component {
 				>
 					{states.map((s) => (
 						<div
+							key={s}
 							className="user-state-radio"
 							style={{
 								backgroundColor:
