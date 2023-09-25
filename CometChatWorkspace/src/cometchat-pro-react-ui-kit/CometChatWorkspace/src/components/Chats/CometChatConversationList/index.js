@@ -36,6 +36,7 @@ import navigateIcon from "./resources/back.svg";
 import settingIcon from "./resources/gear.svg";
 import dashIcon from "./resources/dash.svg";
 import xIcon from "./resources/x.svg";
+import upIcon from "./resources/up.svg";
 
 import { toggleUserState } from "./api/toggleUserState";
 
@@ -55,6 +56,7 @@ class CometChatConversationList extends React.Component {
 			showConfirmDialog: false,
 			decoratorMessage: Translator.translate("LOADING", props.lang),
 			conversationToBeDeleted: null,
+			isOpenUserState: false,
 		};
 
 		this.contextProviderRef = React.createRef();
@@ -1046,6 +1048,38 @@ class CometChatConversationList extends React.Component {
 				</ul>
 			</div>
 		);
+
+		statusBtn = (
+			<i
+				data-bs-toggle="collapse"
+				data-bs-target="#collapseExample"
+				aria-expanded="false"
+				aria-controls="collapseExample"
+				style={chatsHeaderSettingStyle(
+					this.state.isOpenUserState ? upIcon : settingIcon,
+					theme
+				)}
+				onClick={() => {
+					this.setState({
+						isOpenUserState: !this.state.isOpenUserState,
+					});
+				}}
+			></i>
+		);
+
+		const stateCollapse = (
+			<div
+				class="collapse show"
+				id="collapseExample"
+				style={{ position: "absolute", top: 70, left: 0 }}
+			>
+				<div class="card card-body">
+					Some placeholder content for the collapse component. This panel is hidden by
+					default but revealed when the user activates the relevant trigger.
+				</div>
+			</div>
+		);
+
 		if (this.getContext() && Object.keys(this.getContext().item).length === 0) {
 			closeBtn = null;
 		}
@@ -1079,8 +1113,10 @@ class CometChatConversationList extends React.Component {
 					>
 						{Translator.translate("LW chat", this.props.lang)}
 					</h4>
-					{minimumBtn}
-					{disposeBtn}
+
+					{/* {minimumBtn}
+					{disposeBtn} */}
+					{this.state.isOpenUserState && stateCollapse}
 				</div>
 				{messageContainer}
 				<div

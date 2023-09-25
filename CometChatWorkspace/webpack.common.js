@@ -1,6 +1,6 @@
-const path = require('path');
+const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 
 const BUILD_CONSTANTS = require("./CONSTS");
@@ -9,21 +9,14 @@ let publicPath;
 let bundleOutputDir = "../v3";
 
 if (process.env.NODE_ENV && process.env.NODE_ENV === "custom") {
-    
 	bundleOutputDir = "build";
-    publicPath = `${BUILD_CONSTANTS.URL}`;
-
+	publicPath = `${BUILD_CONSTANTS.URL}`;
 } else if (process.env.NODE_ENV && process.env.NODE_ENV === "production") {
-
 	publicPath = `https://widget-js.cometchat.io/v3`;
-
 } else if (process.env.NODE_ENV && process.env.NODE_ENV === "development") {
-
-    publicPath = `https://widget-js-dev.cometchat.io/v3`;
-
+	publicPath = `https://widget-js-dev.cometchat.io/v3`;
 } else if (process.env.NODE_ENV && process.env.NODE_ENV === "local") {
-
-    publicPath = ".";
+	publicPath = ".";
 }
 
 module.exports = {
@@ -107,6 +100,7 @@ module.exports = {
 					},
 				],
 			},
+			{ test: /\.txt$/, use: ["raw-loader"] },
 		],
 	},
 	resolve: {
