@@ -375,11 +375,11 @@ button,input {
   overflow:visible;
 }
 
-button:not(.btn),
+button,
 html input[type="button"],
 input[type="reset"],
 input[type="submit"],
-html [type="button"]:not(.btn),
+html [type="button"],
 [type="reset"],
 [type="submit"] {
   -webkit-appearance:button;
