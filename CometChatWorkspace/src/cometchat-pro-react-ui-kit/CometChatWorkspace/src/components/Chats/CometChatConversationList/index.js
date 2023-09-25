@@ -1022,13 +1022,11 @@ class CometChatConversationList extends React.Component {
 
 		let statusBtn = (
 			<div className="dropdown">
-				<button
-					className="btn btn-light"
-					type="button"
+				<i
 					data-bs-toggle="dropdown"
 					aria-expanded="false"
 					style={chatsHeaderSettingStyle(settingIcon, theme)}
-				></button>
+				></i>
 				<ul className="dropdown-menu" style={{ fontSize: "16px" }}>
 					<li>
 						<h6 className="dropdown-header" style={{ fontSize: "16px" }}>
@@ -1065,21 +1063,9 @@ class CometChatConversationList extends React.Component {
 			);
 		}
 
-		const minimumBtn = (
-			<button
-				className="btn btn-light"
-				type="button"
-				style={chatsHeaderMinimumStyle(dashIcon, theme)}
-			></button>
-		);
+		const minimumBtn = <i style={chatsHeaderMinimumStyle(dashIcon, theme)}></i>;
 
-		const disposeBtn = (
-			<button
-				className="btn btn-light"
-				type="button"
-				style={chatsHeaderDisposeStyle(xIcon, theme)}
-			></button>
-		);
+		const disposeBtn = <i style={chatsHeaderDisposeStyle(xIcon, theme)}></i>;
 
 		const chatList = (
 			<div css={chatsWrapperStyle(this.props, theme)} className="chats">

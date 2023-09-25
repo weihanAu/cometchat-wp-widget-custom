@@ -61,6 +61,8 @@ export const chatsHeaderSettingStyle = (img, theme) => {
 	const mq = [...theme.breakPoints];
 
 	return {
+		cursor: "pointer",
+		display: "block",
 		background: `url(${img}) no-repeat center`,
 		width: "36px",
 		height: "36px",
@@ -74,6 +76,8 @@ export const chatsHeaderMinimumStyle = (img, theme) => {
 	const mq = [...theme.breakPoints];
 
 	return {
+		cursor: "pointer",
+		display: "block",
 		background: `url(${img}) no-repeat bottom`,
 		width: "36px",
 		height: "36px",
@@ -87,6 +91,8 @@ export const chatsHeaderDisposeStyle = (img, theme) => {
 	const mq = [...theme.breakPoints];
 
 	return {
+		cursor: "pointer",
+		display: "block",
 		background: `url(${img}) no-repeat center`,
 		width: "36px",
 		height: "36px",
