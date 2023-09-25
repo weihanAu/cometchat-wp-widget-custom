@@ -23,6 +23,7 @@
 		<div id="cometchat"></div>
 		<!-- <button class="add_widget">+</button> -->
 		<script defer type="module">
+			window.liveChatroomId ='supergroup';
 			const widgets = [];
 			window.addEventListener("DOMContentLoaded", async (event) => {
 				const { default: CometChatWidget } = await import("./index.js");

@@ -58,7 +58,7 @@ export class Embedded extends React.PureComponent {
 			sidebarview: false,
 			parentNode: null,
 			customJS: "",
-			chatroomId: "supergroup",
+			chatroomId: window.liveChatroomId,
 		};
 
 		CometChat.getLoggedinUser()
@@ -338,7 +338,11 @@ export class Embedded extends React.PureComponent {
 					<FrameProvider>
 						<Global styles={embedGlobalStyles} />
 						{/* only show chatroom for livestream */}
-						<CometChatUI chatWithGroup={this.state.chatroomId} />
+						{!!this.state.chatroomId ? (
+							<CometChatUI chatWithGroup={this.state.chatroomId} />
+						) : (
+							"www"
+						)}
 					</FrameProvider>
 				</Frame>
 			</div>
