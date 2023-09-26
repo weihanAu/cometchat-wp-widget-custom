@@ -888,6 +888,7 @@ html [type="button"],
 }
 
 .dropdown-menu{
+  display:none;
   position: absolute;
   inset: 0px auto auto 0px;
   margin: 0px;
@@ -938,5 +939,9 @@ html [type="button"],
   font-size: 0.875rem;
   color: #6c757d;
   white-space: nowrap;
+}
+.show
+{
+  display:block;
 }
 `;

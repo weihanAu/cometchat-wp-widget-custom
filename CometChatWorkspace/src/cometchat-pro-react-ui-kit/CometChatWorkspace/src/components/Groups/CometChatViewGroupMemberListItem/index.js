@@ -136,6 +136,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 			<div className="dropdown">
 				<i
 					id="dropdown-toggle"
+					data-bs-toggle="dropdown"
 					aria-expanded="false"
 					style={deactivateIconStyle(gearIcon, this.context)}
 				></i>
@@ -144,17 +145,38 @@ class CometChatViewGroupMemberListItem extends React.Component {
 						<h6 className="dropdown-header">options</h6>
 					</li>
 					<li>
-						<a className="dropdown-item" href="#">
+						<a
+							className="dropdown-item"
+							href="#"
+							onClick={() => {
+								this.props.actionGenerated(
+									enums.ACTIONS["BAN_GROUP_MEMBER"],
+									this.props.member
+								);
+							}}
+						>
 							BAN
 						</a>
 					</li>
 					<li>
-						<a className="dropdown-item" href="#">
+						<a
+							className="dropdown-item"
+							href="#"
+							onClick={() => {
+								deactivateUser("DEACTIVATE PERMANENTLY", this.props);
+							}}
+						>
 							DEACTIVATE PERMANENTLY
 						</a>
 					</li>
 					<li>
-						<a className="dropdown-item" href="#">
+						<a
+							className="dropdown-item"
+							href="#"
+							onClick={() => {
+								deactivateUser("DEACTIVATE PERMANENTLY", this.props);
+							}}
+						>
 							DEACTIVATE 15 MINUTE
 						</a>
 					</li>

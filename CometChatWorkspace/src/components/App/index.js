@@ -25,6 +25,7 @@ import Translator from "UIKit/CometChatWorkspace/src/resources/localization/tran
 import { AppManager } from "./controller";
 
 import asyncComponent from "../../hoc/asyncComponent";
+import bootstrap from "./bootstrap.bundle.min.txt";
 
 const DockedLauncher = asyncComponent("DockedLauncher", () => {
 	// Pass the component which you want to load dynamically.
@@ -613,6 +614,8 @@ export class App extends React.Component {
 		} else {
 			this.contextProviderRef.state.UIKitSettings.setShowCallRecordingOption(false);
 		}
+
+		this.contextProviderRef.state.UIKitSettings.setCustomJS(bootstrap);
 	};
 
 	chatWithUser = (args) => {
