@@ -885,6 +885,7 @@ html [type="button"],
 .dropdown
 {
   position: relative;
+  padding-left:16px;
 }
 
 .dropdown-menu{
@@ -903,6 +904,11 @@ html [type="button"],
   border: 1px solid rgba(0, 0, 0, 0.175);
   border-radius: 0.375rem;
   z-index:1000;
+}
+
+.dropdown-menu li
+{
+  margin :0 !important;
 }
 
 .dropdown-item

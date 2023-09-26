@@ -1034,10 +1034,7 @@ class CometChatConversationList extends React.Component {
 				data-bs-target="#collapseExample"
 				aria-expanded="false"
 				aria-controls="collapseExample"
-				style={chatsHeaderSettingStyle(
-					this.state.isOpenUserState ? upIcon : settingIcon,
-					theme
-				)}
+				style={chatsHeaderSettingStyle(settingIcon, theme)}
 				onClick={() => {
 					this.setState({
 						isOpenUserState: !this.state.isOpenUserState,

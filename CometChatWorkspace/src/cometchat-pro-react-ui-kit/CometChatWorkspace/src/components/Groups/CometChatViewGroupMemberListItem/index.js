@@ -142,9 +142,6 @@ class CometChatViewGroupMemberListItem extends React.Component {
 				></i>
 				<ul className="dropdown-menu">
 					<li>
-						<h6 className="dropdown-header">options</h6>
-					</li>
-					<li>
 						<a
 							className="dropdown-item"
 							href="#"

@@ -17,7 +17,7 @@ import startThreadIcon from "./resources/threaded-message.svg";
 import deleteIcon from "./resources/delete.svg";
 import editIcon from "./resources/edit.svg";
 import reactIcon from "./resources/reactions.svg";
-import checkIcon from "./resources/check.svg";
+import gearIcon from "./resources/gear.svg";
 import translateIcon from "./resources/message-translate.svg";
 import sendMessageInPrivateIcon from "./resources/send-message-in-private.svg";
 
@@ -315,24 +315,6 @@ class CometChatMessageActions extends React.PureComponent {
 				</li>
 			);
 		}
-		if (
-			this.state.loggedInUser?.role === "livewire-admin" &&
-			this.props.message?.tags?.includes("unmoderated")
-		) {
-			deleteMessage = (
-				<li css={actionGroupStyle()} className="action__group">
-					<button
-						type="button"
-						onMouseEnter={(event) => this.toggleTooltip(event, true)}
-						onMouseLeave={(event) => this.toggleTooltip(event, false)}
-						css={groupButtonStyle(deleteIcon, this.context, 1)}
-						className="group__button button__delete"
-						data-title={Translator.translate("DELETE_MESSAGE", this.context.language)}
-						onClick={this.deleteMessage}
-					></button>
-				</li>
-			);
-		}
 
 		let editMessage = null;
 		if (this.state.enableEditMessage) {
@@ -411,15 +393,36 @@ class CometChatMessageActions extends React.PureComponent {
 							<li css={actionGroupStyle()} className="action__group">
 								<button
 									type="button"
+									data-bs-toggle="dropdown"
+									aria-expanded="false"
 									onMouseEnter={(event) => this.toggleTooltip(event, true)}
 									onMouseLeave={(event) => this.toggleTooltip(event, false)}
-									css={groupButtonStyle(checkIcon, this.context)}
+									css={groupButtonStyle(gearIcon, this.context)}
 									data-title={Translator.translate(
 										"Moderation message",
 										this.context.language
 									)}
-									onClick={this.moderateMessage}
 								/>
+								<ul className="dropdown-menu">
+									<li>
+										<a
+											className="dropdown-item"
+											href="#"
+											onClick={this.moderateMessage}
+										>
+											APPROVED
+										</a>
+									</li>
+									<li>
+										<a
+											href="#"
+											className="dropdown-item"
+											onClick={this.deleteMessage}
+										>
+											DECLINED
+										</a>
+									</li>
+								</ul>
 							</li>
 						);
 					}
