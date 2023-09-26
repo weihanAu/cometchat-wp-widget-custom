@@ -250,6 +250,10 @@ class CometChatMessageActions extends React.PureComponent {
 			);
 	};
 
+	previewLink = () => {
+		this.props.actionGenerated(enums.ACTIONS["PREVIEW_LINK"]);
+	};
+
 	render() {
 		//don't show the tooltip while the message is being sent
 		if (this.props.message.hasOwnProperty("sentAt") === false) {
@@ -431,7 +435,11 @@ class CometChatMessageActions extends React.PureComponent {
 										</a>
 									</li>
 									<li>
-										<a href="#" className="dropdown-item">
+										<a
+											href="#"
+											className="dropdown-item"
+											onClick={this.previewLink}
+										>
 											VIEW
 										</a>
 									</li>

@@ -49,6 +49,7 @@ class CometChatReceiverTextMessageBubble extends React.Component {
 			translatedMessage: "",
 			isHovering: false,
 			enableLargerSizeEmojis: false,
+			previewLink: false,
 		};
 	}
 
@@ -148,6 +149,7 @@ class CometChatReceiverTextMessageBubble extends React.Component {
 					className="message__txt"
 				>
 					{parsedMessage}
+					{this.state.previewLink && parse(emojiParsedMessage)}
 					{this.state.translatedMessage}
 					{/* live stream icon */}
 					{isVimeoLink(parsedMessage.props?.href) && (
@@ -251,6 +253,10 @@ class CometChatReceiverTextMessageBubble extends React.Component {
 				break;
 			case enums.ACTIONS["MESSAGE_EDITED"]:
 				this.props.actionGenerated(action, message);
+				break;
+			case enums.ACTIONS["PREVIEW_LINK"]:
+				this.setState({ previewLink: !this.state.previewLink });
+				break;
 			default:
 				break;
 		}

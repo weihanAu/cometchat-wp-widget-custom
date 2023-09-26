@@ -43,6 +43,7 @@ class CometChatSenderTextMessageBubble extends React.Component {
 			translatedMessage: "",
 			isHovering: false,
 			enableLargerSizeEmojis: false,
+			previewLink: false,
 		};
 	}
 
@@ -136,6 +137,7 @@ class CometChatSenderTextMessageBubble extends React.Component {
 			<div css={messageTxtWrapperStyle(this.context)} className="message__txt__wrapper">
 				<p css={messageTxtStyle(this.props, showVariation, count)} className="message__txt">
 					{parsedMessage}
+					{this.state.previewLink && parse(emojiParsedMessage)}
 					{this.state.translatedMessage}
 				</p>
 			</div>
@@ -228,6 +230,10 @@ class CometChatSenderTextMessageBubble extends React.Component {
 				break;
 			case enums.ACTIONS["MESSAGE_EDITED"]:
 				this.props.actionGenerated(action, message);
+				break;
+			case enums.ACTIONS["PREVIEW_LINK"]:
+				this.setState({ previewLink: !this.state.previewLink });
+				break;
 			default:
 				break;
 		}

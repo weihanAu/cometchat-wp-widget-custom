@@ -144,6 +144,7 @@ export const ACTIONS = {
 	ERROR: "errorOccurred",
 	INFO: "infoMessage",
 	TRANSLATE_MESSAGE: "translateMessage",
+	PREVIEW_LINK: "previewLink",
 };
 
 export const EVENTS = {
