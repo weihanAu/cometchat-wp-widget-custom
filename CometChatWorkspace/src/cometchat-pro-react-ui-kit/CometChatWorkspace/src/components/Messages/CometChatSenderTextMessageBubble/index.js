@@ -233,6 +233,7 @@ class CometChatSenderTextMessageBubble extends React.Component {
 				break;
 			case enums.ACTIONS["PREVIEW_LINK"]:
 				this.setState({ previewLink: !this.state.previewLink });
+				this.forceUpdate();
 				break;
 			default:
 				break;
