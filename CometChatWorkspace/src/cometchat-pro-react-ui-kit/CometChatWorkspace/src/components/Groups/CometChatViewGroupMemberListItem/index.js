@@ -160,7 +160,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 							className="dropdown-item"
 							href="#"
 							onClick={() => {
-								deactivateUser("DEACTIVATE PERMANENTLY", this.props);
+								deactivateUser("DEACTIVATE PERMANENTLY", this.props, this.context);
 							}}
 						>
 							DEACTIVATE
@@ -171,7 +171,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 							className="dropdown-item"
 							href="#"
 							onClick={() => {
-								deactivateUser("DEACTIVATE PERMANENTLY", this.props);
+								deactivateUser("DEACTIVATE PERMANENTLY", this.props, this.context);
 							}}
 						>
 							TIME OUT

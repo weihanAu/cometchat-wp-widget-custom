@@ -1,6 +1,6 @@
 import { APPID, REGION, fetctData } from "../../../../../../../fetchData";
 
-export async function deactivateUser(option, props) {
+export async function deactivateUser(option, props, context) {
 	const { member } = props;
 
 	const { uid } = member;
@@ -22,4 +22,15 @@ export async function deactivateUser(option, props) {
 	 */
 	if (option === "DEACTIVATE 15 MINUTE") {
 	}
+
+	const groupmembers = [...context.groupMembers];
+
+	const filteredMembers = groupmembers.filter((groupmember) => {
+		if (groupmember.uid === member.uid) {
+			return false;
+		}
+		return true;
+	});
+
+	context.updateGroupMembers(filteredMembers);
 }
