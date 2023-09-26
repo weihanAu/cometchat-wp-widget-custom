@@ -611,7 +611,9 @@ class CometChatConversationListItem extends React.PureComponent {
 							onMouseEnter={(event) => this.toggleTooltip(event, true)}
 							onMouseLeave={(event) => this.toggleTooltip(event, false)}
 						>
-							{this.state.lastMessage}
+							{/(http|https|HTTPS|HTTP):\/+/g.test(this.state.lastMessage)
+								? "*".repeat(this.state.lastMessage.length)
+								: this.state.lastMessage}
 						</div>
 						{unreadCount}
 					</div>

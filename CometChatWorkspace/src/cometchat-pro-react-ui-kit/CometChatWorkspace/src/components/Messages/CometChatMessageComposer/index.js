@@ -649,8 +649,8 @@ class CometChatMessageComposer extends React.PureComponent {
 		textMessage._composedAt = getUnixTimestamp();
 		textMessage._id = ID();
 
-		if (/(http|https|HTTPS|HTTP):\/\//g.test(messageInput)) {
-			textMessage.setTags(["moderating"]);
+		if (/(http|https|HTTPS|HTTP):\/+/g.test(messageInput)) {
+			textMessage.setTags(["unmoderated"]);
 		}
 
 		this.props.actionGenerated(enums.ACTIONS["MESSAGE_COMPOSED"], [textMessage]);
@@ -696,6 +696,14 @@ class CometChatMessageComposer extends React.PureComponent {
 		SoundManager.play(enums.CONSTANTS.AUDIO["OUTGOING_MESSAGE"], this.context);
 
 		this.closeEditPreview();
+
+		if (this.props.messageToBeEdited instanceof CometChat.TextMessage) {
+			const tags = this.props.messageToBeEdited.getTags();
+
+			if (tags) {
+				textMessage.setTags(tags);
+			}
+		}
 
 		CometChat.editMessage(textMessage)
 			.then((message) => {
