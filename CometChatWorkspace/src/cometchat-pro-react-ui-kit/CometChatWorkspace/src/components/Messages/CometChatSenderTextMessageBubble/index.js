@@ -122,6 +122,8 @@ class CometChatSenderTextMessageBubble extends React.Component {
 
 		let parsedMessage = parse(emojiParsedMessage);
 
+		console.log(this.props.message);
+
 		if (this.props.message.tags && this.props.message.tags.includes("moderating")) {
 			parsedMessage = "*".repeat(messageText.length);
 		}

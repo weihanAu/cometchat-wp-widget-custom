@@ -34,98 +34,91 @@ export class MessageListManager {
 
 			let messageFilterManager = new MessageFilter(this.context);
 
-            messageFilterManager
-                .getCategories()
-                .then((categoryList) => (categories = Object.keys(categoryList)))
-                .then(() => messageFilterManager.getTypes())
-                .then((typeList) => (types = Object.keys(typeList)))
-                .then(() =>
-                    this.context.FeatureRestriction.isHideDeletedMessagesEnabled()
-                )
-                .then((hideDeletedMessages) =>
-                {
-                    types.pop();
+			messageFilterManager
+				.getCategories()
+				.then((categoryList) => (categories = Object.keys(categoryList)))
+				.then(() => messageFilterManager.getTypes())
+				.then((typeList) => (types = Object.keys(typeList)))
+				.then(() => this.context.FeatureRestriction.isHideDeletedMessagesEnabled())
+				.then((hideDeletedMessages) => {
+					types.pop();
 
-                    if (this.type === CometChat.ACTION_TYPE.TYPE_USER)
-                    {
-                        if (this.parentMessageId)
-                        {
-                            this.messageRequest = new CometChat.MessagesRequestBuilder()
-                                .setUID(this.item.uid)
-                                .setParentMessageId(this.parentMessageId)
-                                .setCategories(categories)
-                                .setTypes(types)
-                                .hideDeletedMessages(hideDeletedMessages)
-                                .setLimit(this.limit)
-                                .build();
-                        } else
-                        {
-                            this.messageRequest = new CometChat.MessagesRequestBuilder()
-                                .setUID(this.item.uid)
-                                .setCategories(categories)
-                                .setTypes(types)
-                                .hideReplies(true)
-                                .hideDeletedMessages(hideDeletedMessages)
-                                .setLimit(this.limit)
-                                .build();
-                        }
-                        resolve(this.messageRequest);
-                    } else if (this.type === CometChat.ACTION_TYPE.TYPE_GROUP)
-                    {
-                        if (this.parentMessageId)
-                        {
-                            if (this.item.metadata && this.item.metadata.delete)
-                            {
-                                this.messageRequest = new CometChat.MessagesRequestBuilder()
-                                    .setGUID(this.item.guid)
-                                    .setParentMessageId(this.parentMessageId)
-                                    .setCategories(categories)
-                                    .setTypes(types)
-                                    .hideDeletedMessages(hideDeletedMessages)
-                                    .setLimit(this.limit)
-                                    .setTimestamp(this.timestamp)
-                                    .build();
-                            } else
-                            {
-                                this.messageRequest = new CometChat.MessagesRequestBuilder()
-                                    .setGUID(this.item.guid)
-                                    .setParentMessageId(this.parentMessageId)
-                                    .setCategories(categories)
-                                    .setTypes(types)
-                                    .hideDeletedMessages(hideDeletedMessages)
-                                    .setLimit(this.limit)
-                                    .build();
-                            }
-                        } else
-                        {
-                            if (this.item.metadata && this.item.metadata.delete)
-                            {
-                                this.messageRequest = new CometChat.MessagesRequestBuilder()
-                                    .setGUID(this.item.guid)
-                                    .setCategories(categories)
-                                    .setTypes(types)
-                                    .hideReplies(true)
-                                    .hideDeletedMessages(hideDeletedMessages)
-                                    .setLimit(this.limit)
-                                    .setTimestamp(this.timestamp)
-                                    .build();
-                            } else
-                            {
-                                this.messageRequest = new CometChat.MessagesRequestBuilder()
-                                    .setGUID(this.item.guid)
-                                    .setCategories(categories)
-                                    .setTypes(types)
-                                    .hideReplies(true)
-                                    .hideDeletedMessages(hideDeletedMessages)
-                                    .setLimit(this.limit)
-                                    .build();
-                            }
-                        }
-                        resolve(this.messageRequest);
-                    }
-                });
-        });
-    };
+					if (this.type === CometChat.ACTION_TYPE.TYPE_USER) {
+						if (this.parentMessageId) {
+							this.messageRequest = new CometChat.MessagesRequestBuilder()
+								.setUID(this.item.uid)
+								.setParentMessageId(this.parentMessageId)
+								.setCategories(categories)
+								.withTags(true)
+								.setTypes(types)
+								.hideDeletedMessages(hideDeletedMessages)
+								.setLimit(this.limit)
+								.build();
+						} else {
+							this.messageRequest = new CometChat.MessagesRequestBuilder()
+								.setUID(this.item.uid)
+								.setCategories(categories)
+								.setTypes(types)
+								.withTags(true)
+								.hideReplies(true)
+								.hideDeletedMessages(hideDeletedMessages)
+								.setLimit(this.limit)
+								.build();
+						}
+						resolve(this.messageRequest);
+					} else if (this.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
+						if (this.parentMessageId) {
+							if (this.item.metadata && this.item.metadata.delete) {
+								this.messageRequest = new CometChat.MessagesRequestBuilder()
+									.setGUID(this.item.guid)
+									.setParentMessageId(this.parentMessageId)
+									.setCategories(categories)
+									.setTypes(types)
+									.withTags(true)
+									.hideDeletedMessages(hideDeletedMessages)
+									.setLimit(this.limit)
+									.setTimestamp(this.timestamp)
+									.build();
+							} else {
+								this.messageRequest = new CometChat.MessagesRequestBuilder()
+									.setGUID(this.item.guid)
+									.setParentMessageId(this.parentMessageId)
+									.setCategories(categories)
+									.setTypes(types)
+									.withTags(true)
+									.hideDeletedMessages(hideDeletedMessages)
+									.setLimit(this.limit)
+									.build();
+							}
+						} else {
+							if (this.item.metadata && this.item.metadata.delete) {
+								this.messageRequest = new CometChat.MessagesRequestBuilder()
+									.setGUID(this.item.guid)
+									.setCategories(categories)
+									.setTypes(types)
+									.hideReplies(true)
+									.withTags(true)
+									.hideDeletedMessages(hideDeletedMessages)
+									.setLimit(this.limit)
+									.setTimestamp(this.timestamp)
+									.build();
+							} else {
+								this.messageRequest = new CometChat.MessagesRequestBuilder()
+									.setGUID(this.item.guid)
+									.setCategories(categories)
+									.setTypes(types)
+									.hideReplies(true)
+									.withTags(true)
+									.hideDeletedMessages(hideDeletedMessages)
+									.setLimit(this.limit)
+									.build();
+							}
+						}
+						resolve(this.messageRequest);
+					}
+				});
+		});
+	};
 
 	fetchPreviousMessages() {
 		if (this.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
@@ -164,10 +157,7 @@ export class MessageListManager {
 					callback(enums.MESSAGE_EDITED, editedMessage);
 				},
 				onTransientMessageReceived: (transientMessage) => {
-					callback(
-						enums.TRANSIENT_MESSAGE_RECEIVED,
-						transientMessage
-					);
+					callback(enums.TRANSIENT_MESSAGE_RECEIVED, transientMessage);
 				},
 			})
 		);
@@ -182,58 +172,28 @@ export class MessageListManager {
 					oldScope,
 					changedGroup
 				) => {
-					callback(
-						enums.GROUP_MEMBER_SCOPE_CHANGED,
-						message,
-						changedGroup,
-						{
-							user: changedUser,
-							scope: newScope,
-						}
-					);
+					callback(enums.GROUP_MEMBER_SCOPE_CHANGED, message, changedGroup, {
+						user: changedUser,
+						scope: newScope,
+					});
 				},
-				onGroupMemberKicked: (
-					message,
-					kickedUser,
-					kickedBy,
-					kickedFrom
-				) => {
+				onGroupMemberKicked: (message, kickedUser, kickedBy, kickedFrom) => {
 					callback(enums.GROUP_MEMBER_KICKED, message, kickedFrom, {
 						user: kickedUser,
 						hasJoined: false,
 					});
 				},
-				onGroupMemberBanned: (
-					message,
-					bannedUser,
-					bannedBy,
-					bannedFrom
-				) => {
+				onGroupMemberBanned: (message, bannedUser, bannedBy, bannedFrom) => {
 					callback(enums.GROUP_MEMBER_BANNED, message, bannedFrom, {
 						user: bannedUser,
 					});
 				},
-				onGroupMemberUnbanned: (
-					message,
-					unbannedUser,
-					unbannedBy,
-					unbannedFrom
-				) => {
-					callback(
-						enums.GROUP_MEMBER_UNBANNED,
-						message,
-						unbannedFrom,
-						{
-							user: unbannedUser,
-						}
-					);
+				onGroupMemberUnbanned: (message, unbannedUser, unbannedBy, unbannedFrom) => {
+					callback(enums.GROUP_MEMBER_UNBANNED, message, unbannedFrom, {
+						user: unbannedUser,
+					});
 				},
-				onMemberAddedToGroup: (
-					message,
-					userAdded,
-					userAddedBy,
-					userAddedIn
-				) => {
+				onMemberAddedToGroup: (message, userAdded, userAddedBy, userAddedIn) => {
 					callback(enums.GROUP_MEMBER_ADDED, message, userAddedIn, {
 						user: userAdded,
 						hasJoined: true,

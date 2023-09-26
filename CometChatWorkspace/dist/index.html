@@ -33,6 +33,20 @@
 
 				const UID = "1";
 
+				CometChat.addUserListener(
+					UID,
+					new CometChat.UserListener({
+						onUserOnline: (onlineUser) => {
+							// 用户上线时触发
+							console.log("用户上线:", onlineUser);
+						},
+						onUserOffline: (offlineUser) => {
+							// 用户离线时触发
+							console.log("用户离线:", offlineUser);
+						},
+					})
+				);
+
 				const init = () => {
 					CometChatWidget.init({
 						appID: "242053eed084c85d",
@@ -52,7 +66,7 @@
 										roundedCorners: "true",
 										height: "37.5rem",
 										width: "37.5rem",
-										defaultID: "superhero1", //default UID (user) or GUID (group) to show,
+										defaultID: UID, //default UID (user) or GUID (group) to show,
 										defaultType: "user", //user or group,
 										docked: false,
 									});
