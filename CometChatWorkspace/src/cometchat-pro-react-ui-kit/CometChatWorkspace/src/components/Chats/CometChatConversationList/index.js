@@ -1058,6 +1058,10 @@ class CometChatConversationList extends React.Component {
 						});
 
 						toggleUserState(e.target.value, this.context);
+
+						this.setState({
+							isOpenUserState: false,
+						});
 					}}
 				>
 					{states.map((s) => (
