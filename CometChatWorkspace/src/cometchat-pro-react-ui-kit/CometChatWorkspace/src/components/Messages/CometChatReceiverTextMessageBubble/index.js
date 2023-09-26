@@ -133,7 +133,7 @@ class CometChatReceiverTextMessageBubble extends React.Component {
 		let parsedMessage = parse(emojiParsedMessage);
 
 		if (this.props.message.tags && this.props.message.tags.includes("unmoderated")) {
-			parsedMessage = <span style={{ color: "red" }}>Link hiddent, just for now!😊</span>;
+			parsedMessage = `[Links detected. It is currently under moderation.]`;
 		}
 
 		let showVariation = true;
@@ -149,7 +149,10 @@ class CometChatReceiverTextMessageBubble extends React.Component {
 					className="message__txt"
 				>
 					{parsedMessage}
-					{this.state.previewLink && parse(emojiParsedMessage)}
+					<br />
+					{this.state.previewLink &&
+						this.props.message?.tags?.includes("unmoderated") &&
+						parse(emojiParsedMessage)}
 					{this.state.translatedMessage}
 					{/* live stream icon */}
 					{isVimeoLink(parsedMessage.props?.href) && (

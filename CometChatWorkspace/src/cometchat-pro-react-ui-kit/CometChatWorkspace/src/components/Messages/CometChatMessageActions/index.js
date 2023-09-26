@@ -422,7 +422,7 @@ class CometChatMessageActions extends React.PureComponent {
 											href="#"
 											onClick={this.moderateMessage}
 										>
-											APPROVED
+											APPROV
 										</a>
 									</li>
 									<li>
@@ -431,7 +431,7 @@ class CometChatMessageActions extends React.PureComponent {
 											className="dropdown-item"
 											onClick={this.deleteMessage}
 										>
-											DECLINED
+											DECLIN
 										</a>
 									</li>
 									<li>
