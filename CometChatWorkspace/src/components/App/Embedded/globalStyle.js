@@ -894,7 +894,7 @@ html [type="button"],
   margin: 0px;
   transform: translate(-22px, 26px);
   padding: 0.5rem 0;
-  font-size: 1rem;
+  font-size: 16px;
   color: #212529;
   text-align: left;
   list-style: none;
@@ -936,7 +936,7 @@ html [type="button"],
   display: block;
   padding: 0.5rem 1rem;
   margin-bottom: 0;
-  font-size: 0.875rem;
+  font-size: 14px;
   color: #6c757d;
   white-space: nowrap;
 }

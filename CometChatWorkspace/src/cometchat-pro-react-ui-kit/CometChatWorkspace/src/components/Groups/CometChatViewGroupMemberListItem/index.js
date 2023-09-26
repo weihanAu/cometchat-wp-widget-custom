@@ -166,7 +166,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 								deactivateUser("DEACTIVATE PERMANENTLY", this.props);
 							}}
 						>
-							DEACTIVATE PERMANENTLY
+							DEACTIVATE
 						</a>
 					</li>
 					<li>
@@ -177,7 +177,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 								deactivateUser("DEACTIVATE PERMANENTLY", this.props);
 							}}
 						>
-							DEACTIVATE 15 MINUTE
+							TIME OUT
 						</a>
 					</li>
 				</ul>
