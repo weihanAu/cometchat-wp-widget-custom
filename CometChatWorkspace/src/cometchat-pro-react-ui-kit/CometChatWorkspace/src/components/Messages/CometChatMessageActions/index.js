@@ -241,9 +241,6 @@ class CometChatMessageActions extends React.PureComponent {
 
 		CometChat.editMessage(textMessage)
 			.then((message) => {
-				const newMessageObj = { ...message, _id: textMessage._id };
-				this.props.actionGenerated(enums.ACTIONS["MESSAGE_SENT"], [newMessageObj]);
-
 				this.props.actionGenerated(enums.ACTIONS["MESSAGE_EDITED"], {
 					...message,
 				});

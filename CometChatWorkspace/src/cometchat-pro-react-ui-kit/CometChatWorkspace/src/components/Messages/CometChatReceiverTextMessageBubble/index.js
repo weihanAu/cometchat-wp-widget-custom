@@ -249,6 +249,8 @@ class CometChatReceiverTextMessageBubble extends React.Component {
 			case enums.ACTIONS["TRANSLATE_MESSAGE"]:
 				this.translateMessage(message);
 				break;
+			case enums.ACTIONS["MESSAGE_EDITED"]:
+				this.props.actionGenerated(action, message);
 			default:
 				break;
 		}
