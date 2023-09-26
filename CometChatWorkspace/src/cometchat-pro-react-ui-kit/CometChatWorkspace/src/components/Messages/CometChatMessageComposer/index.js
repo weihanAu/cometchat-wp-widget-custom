@@ -697,14 +697,6 @@ class CometChatMessageComposer extends React.PureComponent {
 
 		this.closeEditPreview();
 
-		if (this.props.messageToBeEdited instanceof CometChat.TextMessage) {
-			const tags = this.props.messageToBeEdited.getTags();
-
-			if (tags) {
-				textMessage.setTags(tags);
-			}
-		}
-
 		CometChat.editMessage(textMessage)
 			.then((message) => {
 				this.props.actionGenerated(enums.ACTIONS["MESSAGE_EDITED"], {

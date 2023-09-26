@@ -123,7 +123,7 @@ class CometChatSenderTextMessageBubble extends React.Component {
 		let parsedMessage = parse(emojiParsedMessage);
 
 		if (this.props.message.tags && this.props.message.tags.includes("unmoderated")) {
-			parsedMessage = "*".repeat(messageText.length);
+			parsedMessage = <span style={{ color: "red" }}>Link hiddent, just for now!😊</span>;
 		}
 
 		let showVariation = true;

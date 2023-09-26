@@ -612,7 +612,7 @@ class CometChatConversationListItem extends React.PureComponent {
 							onMouseLeave={(event) => this.toggleTooltip(event, false)}
 						>
 							{/(http|https|HTTPS|HTTP):\/+/g.test(this.state.lastMessage)
-								? "*".repeat(this.state.lastMessage.length)
+								? "LINK"
 								: this.state.lastMessage}
 						</div>
 						{unreadCount}

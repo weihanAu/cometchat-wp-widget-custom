@@ -26,10 +26,7 @@ import { CometChatUserDetails } from "../../Users";
 import { CometChatGroupDetails } from "../../Groups";
 import { CometChatToastNotification } from "../../Shared";
 
-import {
-	CometChatContextProvider,
-	CometChatContext,
-} from "../../../util/CometChatContext";
+import { CometChatContextProvider, CometChatContext } from "../../../util/CometChatContext";
 import * as enums from "../../../util/enums.js";
 import { checkMessageForExtensionsData } from "../../../util/common";
 import { SoundManager } from "../../../util/SoundManager";
@@ -157,14 +154,12 @@ class CometChatMessages extends React.PureComponent {
 			if (
 				Object.keys(this.getContext().directCallCustomMessage).length &&
 				this.getContext().directCallCustomMessageAction.trim().length &&
-				(this.getContext().directCallCustomMessage !==
-					this.directCallCustomMessage ||
+				(this.getContext().directCallCustomMessage !== this.directCallCustomMessage ||
 					this.getContext().directCallCustomMessageAction !==
 						this.directCallCustomMessageAction)
 			) {
 				const customMessage = this.getContext().directCallCustomMessage;
-				const messageAction =
-					this.getContext().directCallCustomMessageAction.trim();
+				const messageAction = this.getContext().directCallCustomMessageAction.trim();
 
 				switch (messageAction) {
 					case enums.ACTIONS["MESSAGE_COMPOSED"]:
@@ -296,10 +291,7 @@ class CometChatMessages extends React.PureComponent {
 						this.appendMessage(messages);
 					}
 
-					SoundManager.play(
-						enums.CONSTANTS.AUDIO["INCOMING_MESSAGE"],
-						this.getContext()
-					);
+					SoundManager.play(enums.CONSTANTS.AUDIO["INCOMING_MESSAGE"], this.getContext());
 				}
 				break;
 			case enums.ACTIONS["MESSAGE_READ"]: {
@@ -707,19 +699,12 @@ class CometChatMessages extends React.PureComponent {
 
 	audioCall = () => {
 		const { receiverId, receiverType } = this.getReceiverDetails();
-		const call = new CometChat.Call(
-			receiverId,
-			CometChat.CALL_TYPE.AUDIO,
-			receiverType
-		);
+		const call = new CometChat.Call(receiverId, CometChat.CALL_TYPE.AUDIO, receiverType);
 		CometChat.initiateCall(call)
 			.then((outgoingCall) => {
 				//when this component is part of chat widget trigger an event.. (outgoingcall component is used separately in chat widget)
 				if (Object.keys(this.props.widgetsettings).length) {
-					this.props.actionGenerated(
-						enums.ACTIONS["START_AUDIO_CALL"],
-						outgoingCall
-					);
+					this.props.actionGenerated(enums.ACTIONS["START_AUDIO_CALL"], outgoingCall);
 				} else {
 					this.outgoingCallRef.startCall(outgoingCall);
 					this.appendCallMessage(outgoingCall);
@@ -738,10 +723,7 @@ class CometChatMessages extends React.PureComponent {
 					? this.getContext().item.guid
 					: null;
 			if (Object.keys(this.props.widgetsettings).length) {
-				this.props.actionGenerated(
-					enums.ACTIONS["START_DIRECT_CALL"],
-					sessionID
-				);
+				this.props.actionGenerated(enums.ACTIONS["START_DIRECT_CALL"], sessionID);
 			} else {
 				this.outgoingDirectCallRef.startCall(sessionID);
 			}
@@ -752,19 +734,12 @@ class CometChatMessages extends React.PureComponent {
 		Default calling for one-on-one
 		*/
 		const { receiverId, receiverType } = this.getReceiverDetails();
-		const call = new CometChat.Call(
-			receiverId,
-			CometChat.CALL_TYPE.VIDEO,
-			receiverType
-		);
+		const call = new CometChat.Call(receiverId, CometChat.CALL_TYPE.VIDEO, receiverType);
 		CometChat.initiateCall(call)
 			.then((outgoingCall) => {
 				//when this component is part of chat widget trigger an event.. (outgoingcall component is used separately in chat widget)
 				if (Object.keys(this.props.widgetsettings).length) {
-					this.props.actionGenerated(
-						enums.ACTIONS["START_VIDEO_CALL"],
-						outgoingCall
-					);
+					this.props.actionGenerated(enums.ACTIONS["START_VIDEO_CALL"], outgoingCall);
 				} else {
 					this.outgoingCallRef.startCall(outgoingCall);
 				}
@@ -942,9 +917,7 @@ class CometChatMessages extends React.PureComponent {
 		const deletedMessage = messages[0];
 		const messagelist = [...this.state.messageList];
 
-		let messageKey = messagelist.findIndex(
-			(message) => message.id === deletedMessage.id
-		);
+		let messageKey = messagelist.findIndex((message) => message.id === deletedMessage.id);
 		if (messageKey > -1) {
 			if (this.state.enableHideDeletedMessages) {
 				messagelist.splice(messageKey, 1);
@@ -1004,14 +977,10 @@ class CometChatMessages extends React.PureComponent {
 		const receivedMessage = messages[0];
 
 		let messageList = [...this.state.messageList];
-		let messageKey = messageList.findIndex(
-			(m) => m.id === receivedMessage.parentMessageId
-		);
+		let messageKey = messageList.findIndex((m) => m.id === receivedMessage.parentMessageId);
 		if (messageKey > -1) {
 			const messageObj = messageList[messageKey];
-			let replyCount = messageObj.hasOwnProperty("replyCount")
-				? messageObj.replyCount
-				: 0;
+			let replyCount = messageObj.hasOwnProperty("replyCount") ? messageObj.replyCount : 0;
 			replyCount = replyCount + 1;
 			const newMessageObj = Object.assign({}, messageObj, {
 				replyCount: replyCount,
@@ -1038,14 +1007,8 @@ class CometChatMessages extends React.PureComponent {
 			.FeatureRestriction.isSmartRepliesEnabled()
 			.then((response) => {
 				if (response === true) {
-					const smartReplyData = checkMessageForExtensionsData(
-						message,
-						"smart-reply"
-					);
-					if (
-						smartReplyData &&
-						smartReplyData.hasOwnProperty("error") === false
-					) {
+					const smartReplyData = checkMessageForExtensionsData(message, "smart-reply");
+					if (smartReplyData && smartReplyData.hasOwnProperty("error") === false) {
 						this.setState({ replyPreview: message });
 					} else {
 						this.setState({ replyPreview: null });
@@ -1131,23 +1094,20 @@ class CometChatMessages extends React.PureComponent {
 							this.props.lang
 					  )}`;
 			newMessageIndicator = (
-				<div css={messagePaneTopStyle()} className='message_pane__top'>
-					<div
-						css={messagePaneBannerStyle(this.props)}
-						className='message_pane__banner'
-					>
+				<div css={messagePaneTopStyle()} className="message_pane__top">
+					<div css={messagePaneBannerStyle(this.props)} className="message_pane__banner">
 						<div
 							css={messagePaneUnreadBannerStyle()}
-							className='message_pane__unread_banner__banner'
+							className="message_pane__unread_banner__banner"
 							title={Translator.translate("JUMP", this.props.lang)}
 						>
 							<button
-								type='button'
+								type="button"
 								css={messagePaneUnreadBannerMessageStyle(this.props)}
-								className='message_pane__unread_banner__msg'
+								className="message_pane__unread_banner__msg"
 								onClick={this.jumpToMessages}
 							>
-								<span css={iconArrowDownStyle()} className='icon--arrow-down'>
+								<span css={iconArrowDownStyle()} className="icon--arrow-down">
 									&#x2193;{" "}
 								</span>
 								{messageText}
@@ -1197,9 +1157,7 @@ class CometChatMessages extends React.PureComponent {
 		let incomingCallView = null;
 		let incomingDirectCallView = null;
 		if (this.props._parent.trim().length === 0) {
-			incomingCallView = (
-				<CometChatIncomingCall actionGenerated={this.actionHandler} />
-			);
+			incomingCallView = <CometChatIncomingCall actionGenerated={this.actionHandler} />;
 
 			incomingDirectCallView = (
 				<CometChatIncomingDirectCall actionGenerated={this.actionHandler} />
@@ -1230,10 +1188,7 @@ class CometChatMessages extends React.PureComponent {
 		if (this.state.viewdetailscreen) {
 			if (this.getContext().type === CometChat.ACTION_TYPE.TYPE_USER) {
 				detailScreen = (
-					<div
-						css={chatSecondaryStyle(this.props)}
-						className='chat__secondary-view'
-					>
+					<div css={chatSecondaryStyle(this.props)} className="chat__secondary-view">
 						<CometChatUserDetails
 							lang={this.props.lang}
 							actionGenerated={this.actionHandler}
@@ -1242,10 +1197,7 @@ class CometChatMessages extends React.PureComponent {
 				);
 			} else if (this.getContext().type === CometChat.ACTION_TYPE.TYPE_GROUP) {
 				detailScreen = (
-					<div
-						css={chatSecondaryStyle(this.props)}
-						className='chat__secondary-view'
-					>
+					<div css={chatSecondaryStyle(this.props)} className="chat__secondary-view">
 						<CometChatGroupDetails
 							lang={this.props.lang}
 							actionGenerated={this.actionHandler}
@@ -1258,10 +1210,7 @@ class CometChatMessages extends React.PureComponent {
 		let threadMessageView = null;
 		if (this.state.threadmessageview) {
 			threadMessageView = (
-				<div
-					css={chatSecondaryStyle(this.props)}
-					className='chat__secondary-view'
-				>
+				<div css={chatSecondaryStyle(this.props)} className="chat__secondary-view">
 					<CometChatMessageThread
 						activeTab={this.state.activeTab}
 						threadItem={this.state.threadmessageitem}
@@ -1288,7 +1237,7 @@ class CometChatMessages extends React.PureComponent {
 			<React.Fragment>
 				<div
 					css={chatWrapperStyle(this.props, this.state)}
-					className='main__chat'
+					className="main__chat"
 					dir={Translator.getDirection(this.props.lang)}
 				>
 					<CometChatMessageHeader
