@@ -891,7 +891,7 @@ html [type="button"],
   position: absolute;
   inset: 0px auto auto 0px;
   margin: 0px;
-  transform: translate(-60px, 40px);
+  transform: translate(-22px, 26px);
   padding: 0.5rem 0;
   font-size: 1rem;
   color: #212529;
