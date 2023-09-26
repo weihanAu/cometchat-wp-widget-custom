@@ -177,11 +177,13 @@ export const stateCollapseStyle = (theme) => {
 			fontWeight: "bold",
 		},
 		".user-state-radio": {
+			cursor: "pointer",
 			padding: "16px",
 			background: "#eaeaea",
 			borderRadius: "8px",
 			marginBottom: "4px",
 			label: {
+				cursor: "pointer",
 				position: "relative",
 				"&::before": {
 					content: '" "',
