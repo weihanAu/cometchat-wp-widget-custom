@@ -232,6 +232,18 @@ class CometChatMessageList extends React.PureComponent {
 				) {
 					this.props.actionGenerated(actionGenerated, messageList);
 				}
+
+				if ((actionGenerated = enums.ACTIONS["MESSAGES_INITIAL_FETCH"])) {
+					if (messageList.length !== 0 && messageList.length !== 1) {
+						const message = messageList.reverse()[0];
+
+						if (message?.metadata?.timestamp) {
+							setTimeout(() => {
+								this.reInitializeMessageBuilder(message.metadata.timestamp);
+							});
+						}
+					}
+				}
 			})
 			.catch((error) => {
 				if (this.props.messages.length === 0) {
