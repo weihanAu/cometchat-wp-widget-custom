@@ -7,10 +7,7 @@ import { CometChat } from "@cometchat-pro/chat";
 
 import { GroupDetailManager } from "./controller";
 
-import {
-	CometChatConfirmDialog,
-	CometChatToastNotification,
-} from "../../Shared";
+import { CometChatConfirmDialog, CometChatToastNotification } from "../../Shared";
 import {
 	CometChatViewGroupMemberList,
 	CometChatAddGroupMemberList,
@@ -40,6 +37,7 @@ import {
 } from "./style";
 
 import navigateIcon from "./resources/back.svg";
+import { ID, getUnixTimestamp } from "../../../util/common";
 
 class CometChatGroupDetails extends React.Component {
 	item;
@@ -365,9 +363,7 @@ class CometChatGroupDetails extends React.Component {
 
 		let bannedmemberlist = [...this.context.bannedGroupMembers];
 		//search for user
-		let bannedMemberKey = bannedmemberlist.findIndex(
-			(m, k) => m.uid === member.uid
-		);
+		let bannedMemberKey = bannedmemberlist.findIndex((m, k) => m.uid === member.uid);
 		//if found in the list, update user object
 		if (bannedMemberKey > -1) {
 			let bannedMemberObj = bannedmemberlist[bannedMemberKey];
@@ -393,11 +389,7 @@ class CometChatGroupDetails extends React.Component {
 					}
 				});
 
-				this.context.setAllGroupMembers(
-					groupMembers,
-					administratorslist,
-					moderatorslist
-				);
+				this.context.setAllGroupMembers(groupMembers, administratorslist, moderatorslist);
 			})
 			.catch((error) => this.toastRef.setError("SOMETHING_WRONG"));
 	};
@@ -558,10 +550,7 @@ class CometChatGroupDetails extends React.Component {
 			return true;
 		});
 
-		this.props.actionGenerated(
-			enums.ACTIONS["UNBAN_GROUP_MEMBER_SUCCESS"],
-			unbannedMembers
-		);
+		this.props.actionGenerated(enums.ACTIONS["UNBAN_GROUP_MEMBER_SUCCESS"], unbannedMembers);
 		this.context.updateBannedGroupMembers(filteredBannedMembers);
 	};
 
@@ -575,10 +564,7 @@ class CometChatGroupDetails extends React.Component {
 			};
 			this.context.setItem(newItem);
 
-			this.props.actionGenerated(
-				enums.ACTIONS["ADD_GROUP_MEMBER_SUCCESS"],
-				members
-			);
+			this.props.actionGenerated(enums.ACTIONS["ADD_GROUP_MEMBER_SUCCESS"], members);
 		}
 	};
 
@@ -612,9 +598,7 @@ class CometChatGroupDetails extends React.Component {
 	updateParticipants = (updatedMember) => {
 		const memberlist = [...this.context.groupMembers];
 
-		const memberKey = memberlist.findIndex(
-			(member) => member.uid === updatedMember.uid
-		);
+		const memberKey = memberlist.findIndex((member) => member.uid === updatedMember.uid);
 		if (memberKey > -1) {
 			const memberObj = memberlist[memberKey];
 			const newMemberObj = Object.assign({}, memberObj, updatedMember, {
@@ -622,10 +606,9 @@ class CometChatGroupDetails extends React.Component {
 			});
 
 			memberlist.splice(memberKey, 1, newMemberObj);
-			this.props.actionGenerated(
-				enums.ACTIONS["SCOPECHANGE_GROUPMEMBER_SUCCESS"],
-				[newMemberObj]
-			);
+			this.props.actionGenerated(enums.ACTIONS["SCOPECHANGE_GROUPMEMBER_SUCCESS"], [
+				newMemberObj,
+			]);
 			this.context.updateGroupMembers(memberlist);
 		}
 	};
@@ -642,16 +625,49 @@ class CometChatGroupDetails extends React.Component {
 		this.props.actionGenerated(enums.ACTIONS["CLOSE_GROUP_DETAIL"]);
 	};
 
+	clearMessages = () => {
+		const receiverId = this.context.item.guid;
+
+		const receiverType = CometChat.RECEIVER_TYPE.GROUP;
+
+		const textMessage = new CometChat.TextMessage(receiverId, "Clear Messages", receiverType);
+
+		textMessage.setId(ID());
+
+		textMessage.setMetadata({
+			timestamp: getUnixTimestamp(),
+		});
+
+		CometChat.sendMessage(textMessage)
+			.then((message) => {
+				const newMessageObj = { ...message, _id: textMessage._id };
+				this.props.actionGenerated(enums.ACTIONS["MESSAGE_SENT"], [newMessageObj]);
+			})
+			.catch((error) => {
+				const newMessageObj = { ...textMessage, error: error };
+				this.props.actionGenerated(enums.ACTIONS["ERROR_IN_SENDING_MESSAGE"], [
+					newMessageObj,
+				]);
+
+				if (error && error.hasOwnProperty("code") && error.code === "ERR_GUID_NOT_FOUND") {
+					//this.context.setDeletedGroupId(this.context.item.guid);
+				}
+			})
+			.finally(() => {
+				this.closeGroupDetail();
+			});
+	};
+
 	render() {
 		if (this.state.loggedInUser === null) {
 			return null;
 		}
 
 		let viewMembersBtn = (
-			<div css={contentItemStyle()} className='content__item'>
+			<div css={contentItemStyle()} className="content__item">
 				<div
 					css={itemLinkStyle(this.context, 0)}
-					className='item__link'
+					className="item__link"
 					onClick={() => this.clickHandler("viewmember", true)}
 				>
 					{Translator.translate("VIEW_MEMBERS", this.context.language)}
@@ -664,10 +680,10 @@ class CometChatGroupDetails extends React.Component {
 			bannedMembersBtn = null;
 		if (this.context.item.scope === CometChat.GROUP_MEMBER_SCOPE.ADMIN) {
 			addMembersBtn = (
-				<div css={contentItemStyle()} className='content__item'>
+				<div css={contentItemStyle()} className="content__item">
 					<div
 						css={itemLinkStyle(this.context, 0)}
-						className='item__link'
+						className="item__link"
 						onClick={() => this.clickHandler("addmember", true)}
 					>
 						{Translator.translate("ADD_MEMBERS", this.context.language)}
@@ -676,10 +692,10 @@ class CometChatGroupDetails extends React.Component {
 			);
 
 			deleteGroupBtn = (
-				<div css={contentItemStyle()} className='content__item'>
+				<div css={contentItemStyle()} className="content__item">
 					<span
 						css={itemLinkStyle(this.context, 1)}
-						className='item__link'
+						className="item__link"
 						onClick={this.deleteGroup}
 					>
 						{Translator.translate("DELETE_AND_EXIT", this.context.language)}
@@ -690,10 +706,10 @@ class CometChatGroupDetails extends React.Component {
 
 		if (this.context.item.scope !== CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT) {
 			bannedMembersBtn = (
-				<div css={contentItemStyle()} className='content__item'>
+				<div css={contentItemStyle()} className="content__item">
 					<div
 						css={itemLinkStyle(this.context, 0)}
-						className='item__link'
+						className="item__link"
 						onClick={() => this.clickHandler("banmember", true)}
 					>
 						{Translator.translate("BANNED_MEMBERS", this.context.language)}
@@ -703,10 +719,10 @@ class CometChatGroupDetails extends React.Component {
 		}
 
 		let leaveGroupBtn = (
-			<div css={contentItemStyle()} className='content__item'>
+			<div css={contentItemStyle()} className="content__item">
 				<span
 					css={itemLinkStyle(this.context, 0)}
-					className='item__link'
+					className="item__link"
 					onClick={this.leaveGroup}
 				>
 					{Translator.translate("LEAVE_GROUP", this.context.language)}
@@ -715,10 +731,7 @@ class CometChatGroupDetails extends React.Component {
 		);
 
 		let sharedmediaView = (
-			<CometChatSharedMediaView
-				containerHeight='225px'
-				lang={this.context.language}
-			/>
+			<CometChatSharedMediaView containerHeight="225px" lang={this.context.language} />
 		);
 
 		if (this.context.item.scope === CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT) {
@@ -757,10 +770,7 @@ class CometChatGroupDetails extends React.Component {
 		}
 
 		//if leaving group feature is disabled
-		if (
-			this.state.enableLeaveGroup === false ||
-			this.context?.item?.membersCount === 1
-		) {
+		if (this.state.enableLeaveGroup === false || this.context?.item?.membersCount === 1) {
 			leaveGroupBtn = null;
 		}
 
@@ -769,36 +779,52 @@ class CometChatGroupDetails extends React.Component {
 			sharedmediaView = null;
 		}
 
+		/**
+		 * Clear Message Button
+		 */
+		let clearMessagesBtn = null;
+
+		if (this.state.loggedInUser.role === "livewire-admin") {
+			clearMessagesBtn = (
+				<div css={contentItemStyle()} className="content__item">
+					<div
+						css={itemLinkStyle(this.context, 0)}
+						className="item__link"
+						onClick={this.clearMessages}
+					>
+						Clear Messages
+					</div>
+				</div>
+			);
+		}
+
 		let members = (
-			<div css={sectionStyle()} className='section section__members'>
-				<h6 css={sectionHeaderStyle(this.context)} className='section__header'>
+			<div css={sectionStyle()} className="section section__members">
+				<h6 css={sectionHeaderStyle(this.context)} className="section__header">
 					{Translator.translate("MEMBERS", this.context.language)}
 				</h6>
-				<div css={sectionContentStyle()} className='section__content'>
+				<div css={sectionContentStyle()} className="section__content">
 					{viewMembersBtn}
 					{addMembersBtn}
 					{bannedMembersBtn}
+					{clearMessagesBtn}
 				</div>
 			</div>
 		);
 
 		let options = (
-			<div css={sectionStyle()} className='section section__options'>
-				<h6 css={sectionHeaderStyle(this.context)} className='section__header'>
+			<div css={sectionStyle()} className="section section__options">
+				<h6 css={sectionHeaderStyle(this.context)} className="section__header">
 					{Translator.translate("OPTIONS", this.context.language)}
 				</h6>
-				<div css={sectionContentStyle()} className='section__content'>
+				<div css={sectionContentStyle()} className="section__content">
 					{leaveGroupBtn}
 					{deleteGroupBtn}
 				</div>
 			</div>
 		);
 
-		if (
-			viewMembersBtn === null &&
-			addMembersBtn === null &&
-			bannedMembersBtn === null
-		) {
+		if (viewMembersBtn === null && addMembersBtn === null && bannedMembersBtn === null) {
 			members = null;
 		}
 
@@ -848,18 +874,9 @@ class CometChatGroupDetails extends React.Component {
 				<CometChatConfirmDialog
 					{...this.props}
 					onClick={this.onDeleteConfirm}
-					message={Translator.translate(
-						"DELETE_CONFIRM",
-						this.context.language
-					)}
-					confirmButtonText={Translator.translate(
-						"DELETE",
-						this.context.language
-					)}
-					cancelButtonText={Translator.translate(
-						"CANCEL",
-						this.context.language
-					)}
+					message={Translator.translate("DELETE_CONFIRM", this.context.language)}
+					confirmButtonText={Translator.translate("DELETE", this.context.language)}
+					cancelButtonText={Translator.translate("CANCEL", this.context.language)}
 				/>
 			);
 		}
@@ -871,14 +888,8 @@ class CometChatGroupDetails extends React.Component {
 					{...this.props}
 					onClick={this.onLeaveConfirm}
 					message={Translator.translate("LEAVE_CONFIRM", this.context.language)}
-					confirmButtonText={Translator.translate(
-						"LEAVE",
-						this.context.language
-					)}
-					cancelButtonText={Translator.translate(
-						"CANCEL",
-						this.context.language
-					)}
+					confirmButtonText={Translator.translate("LEAVE", this.context.language)}
+					cancelButtonText={Translator.translate("CANCEL", this.context.language)}
 				/>
 			);
 		}
@@ -889,18 +900,9 @@ class CometChatGroupDetails extends React.Component {
 				<CometChatConfirmDialog
 					{...this.props}
 					onClick={this.onTransferConfirm}
-					message={Translator.translate(
-						"TRANSFER_CONFIRM",
-						this.context.language
-					)}
-					confirmButtonText={Translator.translate(
-						"TRANSFER",
-						this.context.language
-					)}
-					cancelButtonText={Translator.translate(
-						"CANCEL",
-						this.context.language
-					)}
+					message={Translator.translate("TRANSFER_CONFIRM", this.context.language)}
+					confirmButtonText={Translator.translate("TRANSFER", this.context.language)}
+					cancelButtonText={Translator.translate("CANCEL", this.context.language)}
 				/>
 			);
 		}
@@ -918,18 +920,18 @@ class CometChatGroupDetails extends React.Component {
 		}
 
 		return (
-			<div css={detailStyle(this.context)} className='detailpane'>
-				<div css={headerStyle(this.context)} className='detailpane__header'>
+			<div css={detailStyle(this.context)} className="detailpane">
+				<div css={headerStyle(this.context)} className="detailpane__header">
 					<div
 						css={headerCloseStyle(navigateIcon, this.context)}
-						className='header__close'
+						className="header__close"
 						onClick={this.closeGroupDetail}
 					></div>
-					<h4 css={headerTitleStyle()} className='header__title'>
+					<h4 css={headerTitleStyle()} className="header__title">
 						{Translator.translate("DETAILS", this.context.language)}
 					</h4>
 				</div>
-				<div css={detailPaneStyle()} className='detailpane__section'>
+				<div css={detailPaneStyle()} className="detailpane__section">
 					{members}
 					{options}
 					{sharedmediaView}

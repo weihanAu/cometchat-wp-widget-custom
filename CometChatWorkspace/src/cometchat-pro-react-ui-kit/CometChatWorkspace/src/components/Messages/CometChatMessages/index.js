@@ -292,6 +292,10 @@ class CometChatMessages extends React.PureComponent {
 					}
 
 					SoundManager.play(enums.CONSTANTS.AUDIO["INCOMING_MESSAGE"], this.getContext());
+
+					if (message?.metadata?.timestamp) {
+						this.messageListRef.reInitializeMessageBuilder(true);
+					}
 				}
 				break;
 			case enums.ACTIONS["MESSAGE_READ"]: {
@@ -308,6 +312,12 @@ class CometChatMessages extends React.PureComponent {
 			case enums.ACTIONS["MESSAGE_SENT"]:
 				this.messageSent(messages);
 				CometChatEvent.triggerHandler("updateLastMessage", { ...messages[0] });
+
+				const message = messages[0];
+
+				if (message?.metadata?.timestamp) {
+					this.messageListRef.reInitializeMessageBuilder(true);
+				}
 				//this.getContext().setLastMessage(messages[0]);
 				break;
 			case enums.ACTIONS["ERROR_IN_SENDING_MESSAGE"]:
