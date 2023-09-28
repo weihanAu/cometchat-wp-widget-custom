@@ -254,6 +254,32 @@ class CometChatMessageActions extends React.PureComponent {
 		this.props.actionGenerated(enums.ACTIONS["PREVIEW_LINK"]);
 	};
 
+	markDelete = () => {
+		const receiverId = this.context.item.guid;
+
+		const receiverType = CometChat.RECEIVER_TYPE.GROUP;
+
+		const textMessage = new CometChat.TextMessage(
+			receiverId,
+			`[Delete] ${this.props.message.text}`,
+			receiverType
+		);
+
+		textMessage.setId(this.props.message.id);
+
+		textMessage.setTags(["delete"]);
+
+		CometChat.editMessage(textMessage)
+			.then((message) => {
+				this.props.actionGenerated(enums.ACTIONS["MESSAGE_EDITED"], {
+					...message,
+				});
+			})
+			.catch((error) =>
+				this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG")
+			);
+	};
+
 	render() {
 		//don't show the tooltip while the message is being sent
 		if (this.props.message.hasOwnProperty("sentAt") === false) {
@@ -451,11 +477,37 @@ class CometChatMessageActions extends React.PureComponent {
 			}
 		}
 
+		let markDeleteMessage = null;
+
+		if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
+			if (this.state.loggedInUser && this.state.loggedInUser.role === "livewire-admin") {
+				if (this.props.message.sender?.uid !== this.state.loggedInUser?.uid) {
+					markDeleteMessage = (
+						<li css={actionGroupStyle()} className="action__group">
+							<button
+								type="button"
+								onMouseEnter={(event) => this.toggleTooltip(event, true)}
+								onMouseLeave={(event) => this.toggleTooltip(event, false)}
+								css={groupButtonStyle(deleteIcon, this.context, 1)}
+								className="group__button button__delete"
+								data-title={Translator.translate(
+									"DELETE_MESSAGE",
+									this.context.language
+								)}
+								onClick={this.markDelete}
+							></button>
+						</li>
+					);
+				}
+			}
+		}
+
 		let tooltip = (
 			<ul
 				css={messageActionStyle(this.props, this.context, this.state.loggedInUser)}
 				className="message__actions"
 			>
+				{markDeleteMessage}
 				{moderationMessage}
 				{reactToMessage}
 				{threadedChats}

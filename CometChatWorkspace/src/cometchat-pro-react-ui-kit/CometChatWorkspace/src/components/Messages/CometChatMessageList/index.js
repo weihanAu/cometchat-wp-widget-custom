@@ -246,7 +246,7 @@ class CometChatMessageList extends React.PureComponent {
 							/**
 							 * @type {CometChat.TextMessage[]}
 							 */
-							const messageListReverse = messageList.reverse();
+							const messageListReverse = messageList.toReversed();
 
 							let message = messageListReverse[0];
 
@@ -261,9 +261,12 @@ class CometChatMessageList extends React.PureComponent {
 										break;
 									}
 								}
-								setTimeout(() => {
-									this.reInitializeMessageBuilder(message.metadata.timestamp);
-								});
+
+								if (message?.metadata?.timestamp) {
+									setTimeout(() => {
+										this.reInitializeMessageBuilder(message.metadata.timestamp);
+									});
+								}
 							}
 						}
 					}
