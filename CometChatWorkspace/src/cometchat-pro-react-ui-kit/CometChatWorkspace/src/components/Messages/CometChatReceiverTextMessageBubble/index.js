@@ -168,6 +168,8 @@ class CometChatReceiverTextMessageBubble extends React.Component {
 			</div>
 		);
 
+		if (parsedMessage.includes("[Delete]")) return null;
+
 		return messageText;
 	};
 
@@ -286,6 +288,9 @@ class CometChatReceiverTextMessageBubble extends React.Component {
 		}
 
 		let messageText = this.getMessageText();
+
+		if (messageText === null) return null;
+
 		//linkpreview extensions data
 		const linkPreviewData = checkMessageForExtensionsData(this.props.message, "link-preview");
 		if (

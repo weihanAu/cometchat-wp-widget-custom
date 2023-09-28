@@ -146,6 +146,8 @@ class CometChatSenderTextMessageBubble extends React.Component {
 			</div>
 		);
 
+		if (parsedMessage.includes("[Delete]")) return null;
+
 		return messageText;
 	};
 
@@ -245,6 +247,8 @@ class CometChatSenderTextMessageBubble extends React.Component {
 
 	render() {
 		let messageText = this.getMessageText();
+
+		if (messageText === null) return null;
 
 		//linkpreview extensions data
 		const linkPreviewData = checkMessageForExtensionsData(this.props.message, "link-preview");
