@@ -234,30 +234,31 @@ class CometChatMessageList extends React.PureComponent {
 				}
 
 				if ((actionGenerated = enums.ACTIONS["MESSAGES_INITIAL_FETCH"])) {
-					if (messageList.length !== 0 && messageList.length !== 1) {
-						/**
-						 * @type {CometChat.TextMessage[]}
-						 */
-						const messageListReverse = messageList.reverse();
+					if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
+						if (messageList.length !== 0 && messageList.length !== 1) {
+							/**
+							 * @type {CometChat.TextMessage[]}
+							 */
+							const messageListReverse = messageList.reverse();
 
-						let message = messageListReverse[0];
+							let message = messageListReverse[0];
 
-						if (message?.metadata?.timestamp) {
-							setTimeout(() => {
-								this.reInitializeMessageBuilder(message.metadata.timestamp);
-							});
-						} else {
-							console.log("=--");
-							for (const m of messageListReverse) {
-								if (m.getMetadata()?.timestamp) {
-									message = m;
-									break;
+							if (message?.metadata?.timestamp) {
+								setTimeout(() => {
+									this.reInitializeMessageBuilder(message.metadata.timestamp);
+								});
+							} else {
+								for (const m of messageListReverse) {
+									if (m.getMetadata()?.timestamp) {
+										message = m;
+										break;
+									}
 								}
+								console.log(message.getMetadata().timestamp);
+								setTimeout(() => {
+									this.reInitializeMessageBuilder(message.metadata.timestamp);
+								});
 							}
-							console.log(message.getMetadata().timestamp);
-							setTimeout(() => {
-								this.reInitializeMessageBuilder(message.metadata.timestamp);
-							});
 						}
 					}
 				}
