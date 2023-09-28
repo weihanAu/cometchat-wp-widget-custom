@@ -233,8 +233,15 @@ class CometChatMessageList extends React.PureComponent {
 					this.props.actionGenerated(actionGenerated, messageList);
 				}
 
+				/**
+				 * @type {CometChat.Group}
+				 */
+				const group = item;
+
 				if ((actionGenerated = enums.ACTIONS["MESSAGES_INITIAL_FETCH"])) {
 					if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
+						if (!group?.metadata?.delete) return;
+
 						if (messageList.length !== 0 && messageList.length !== 1) {
 							/**
 							 * @type {CometChat.TextMessage[]}
@@ -254,7 +261,6 @@ class CometChatMessageList extends React.PureComponent {
 										break;
 									}
 								}
-								console.log(message.getMetadata().timestamp);
 								setTimeout(() => {
 									this.reInitializeMessageBuilder(message.metadata.timestamp);
 								});

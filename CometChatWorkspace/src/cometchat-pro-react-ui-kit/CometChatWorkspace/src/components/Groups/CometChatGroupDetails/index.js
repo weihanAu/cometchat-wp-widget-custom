@@ -784,7 +784,12 @@ class CometChatGroupDetails extends React.Component {
 		 */
 		let clearMessagesBtn = null;
 
-		if (this.state.loggedInUser.role === "livewire-admin") {
+		/**
+		 * @type {CometChat.Group}
+		 */
+		const group = this.context.item;
+
+		if (this.state.loggedInUser.role === "livewire-admin" && group?.metadata?.delete) {
 			clearMessagesBtn = (
 				<div css={contentItemStyle()} className="content__item">
 					<div
