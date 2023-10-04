@@ -25,6 +25,10 @@ export class MessageListManager {
 		this.type = type;
 		this.parentMessageId = parentMessageId;
 		this.context = context;
+
+		if (this.item.metadata && this.item.metadata.delete && this.item.metadata.timestamp) {
+			this.timestamp = this.item.metadata.timestamp + 10;
+		}
 	}
 
 	initializeMessageRequest = () => {

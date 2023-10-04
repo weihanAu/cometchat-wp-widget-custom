@@ -625,18 +625,28 @@ class CometChatGroupDetails extends React.Component {
 		this.props.actionGenerated(enums.ACTIONS["CLOSE_GROUP_DETAIL"]);
 	};
 
-	clearMessages = () => {
+	clearMessages = async () => {
 		const receiverId = this.context.item.guid;
 
 		const receiverType = CometChat.RECEIVER_TYPE.GROUP;
+
+		const timestamp = getUnixTimestamp();
 
 		const textMessage = new CometChat.TextMessage(receiverId, "Clear Messages", receiverType);
 
 		textMessage.setId(ID());
 
 		textMessage.setMetadata({
-			timestamp: getUnixTimestamp(),
+			timestamp,
 		});
+
+		const group = new CometChat.Group(receiverId);
+
+		const groupMetadata = { ...this.context.item.metadata, timestamp };
+
+		group.setMetadata(groupMetadata);
+
+		await CometChat.updateGroup(group);
 
 		CometChat.sendMessage(textMessage)
 			.then((message) => {

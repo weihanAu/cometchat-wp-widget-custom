@@ -232,45 +232,6 @@ class CometChatMessageList extends React.PureComponent {
 				) {
 					this.props.actionGenerated(actionGenerated, messageList);
 				}
-
-				/**
-				 * @type {CometChat.Group}
-				 */
-				const group = item;
-
-				if ((actionGenerated = enums.ACTIONS["MESSAGES_INITIAL_FETCH"])) {
-					if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
-						if (!group?.metadata?.delete) return;
-
-						if (messageList.length !== 0 && messageList.length !== 1) {
-							/**
-							 * @type {CometChat.TextMessage[]}
-							 */
-							const messageListReverse = messageList.toReversed();
-
-							let message = messageListReverse[0];
-
-							if (message?.metadata?.timestamp) {
-								setTimeout(() => {
-									this.reInitializeMessageBuilder(message.metadata.timestamp);
-								});
-							} else {
-								for (const m of messageListReverse) {
-									if (m.getMetadata()?.timestamp) {
-										message = m;
-										break;
-									}
-								}
-
-								if (message?.metadata?.timestamp) {
-									setTimeout(() => {
-										this.reInitializeMessageBuilder(message.metadata.timestamp);
-									});
-								}
-							}
-						}
-					}
-				}
 			})
 			.catch((error) => {
 				if (this.props.messages.length === 0) {
