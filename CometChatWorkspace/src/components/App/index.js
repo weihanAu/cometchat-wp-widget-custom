@@ -1285,7 +1285,10 @@ export class App extends React.Component {
 		}
 
 		return (
-			<div css={AppStyle(this.props)} className="app__wrapper">
+			<div
+				css={AppStyle(this.props)}
+				className={"app__wrapper" + (this.props.docked === true ? " chat__hide" : "")}
+			>
 				<CometChatContextProvider
 					ref={(el) => (this.contextProviderRef = el)}
 					_component={enums.CONSTANTS["EMBEDDED_COMPONENT"]}
