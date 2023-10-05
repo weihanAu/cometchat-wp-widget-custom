@@ -1487,7 +1487,7 @@ class CometChatMessageComposer extends React.PureComponent {
 								{stickerBtn}
 								{emojiBtn}
 								{sendBtn}
-								{liveReactionBtn}
+								{/* {liveReactionBtn} */}
 							</div>
 						</div>
 					</div>
