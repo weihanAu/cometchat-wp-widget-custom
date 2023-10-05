@@ -146,7 +146,13 @@ class CometChatSenderTextMessageBubble extends React.Component {
 			</div>
 		);
 
-		if (parsedMessage.includes("[Delete]")) return null;
+		if (
+			this.props.message &&
+			this.props.message.tags &&
+			this.props.message.tags.includes("delete")
+		) {
+			return null;
+		}
 
 		return messageText;
 	};
