@@ -649,8 +649,10 @@ class CometChatMessageComposer extends React.PureComponent {
 		textMessage._composedAt = getUnixTimestamp();
 		textMessage._id = ID();
 
-		if (/(http|https|HTTPS|HTTP):\/+/g.test(messageInput)) {
-			textMessage.setTags(["unmoderated"]);
+		if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
+			if (/(http|https|HTTPS|HTTP):\/+/g.test(messageInput)) {
+				textMessage.setTags(["unmoderated"]);
+			}
 		}
 
 		this.props.actionGenerated(enums.ACTIONS["MESSAGE_COMPOSED"], [textMessage]);
