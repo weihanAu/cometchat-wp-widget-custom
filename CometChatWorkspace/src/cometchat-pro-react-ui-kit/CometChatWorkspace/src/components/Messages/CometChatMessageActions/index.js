@@ -273,6 +273,29 @@ class CometChatMessageActions extends React.PureComponent {
 					this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG")
 				);
 		}
+
+		if (this.props.message.type === CometChat.MESSAGE_TYPE.AUDIO) {
+			const audioMessage = new CometChat.MediaMessage(
+				receiverId,
+				this.props.message.data.url,
+				CometChat.MESSAGE_TYPE.AUDIO,
+				receiverType
+			);
+
+			audioMessage.setId(this.props.message.id);
+
+			audioMessage.setTags(["approved"]);
+
+			CometChat.editMessage(audioMessage)
+				.then((message) => {
+					this.props.actionGenerated(enums.ACTIONS["MESSAGE_EDITED"], {
+						...message,
+					});
+				})
+				.catch((error) =>
+					this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG")
+				);
+		}
 	};
 
 	preview = () => {
@@ -282,6 +305,10 @@ class CometChatMessageActions extends React.PureComponent {
 
 		if (this.props.message.type === CometChat.MESSAGE_TYPE.VIDEO) {
 			this.props.previewVideo();
+		}
+
+		if (this.props.message.type === CometChat.MESSAGE_TYPE.AUDIO) {
+			this.props.previewAudio();
 		}
 	};
 
