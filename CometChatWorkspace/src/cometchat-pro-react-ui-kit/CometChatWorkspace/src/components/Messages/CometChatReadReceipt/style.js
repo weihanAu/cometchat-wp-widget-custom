@@ -18,3 +18,10 @@ export const iconStyle = (img, color) => {
 		height: "24px",
 	};
 };
+
+export const errorMessageStyle = () => {
+	return {
+		textAlign: "right",
+		color: "red",
+	};
+};
