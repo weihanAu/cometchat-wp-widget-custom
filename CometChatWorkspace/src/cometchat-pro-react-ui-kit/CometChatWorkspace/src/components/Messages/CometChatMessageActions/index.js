@@ -229,29 +229,60 @@ class CometChatMessageActions extends React.PureComponent {
 
 		const receiverType = CometChat.RECEIVER_TYPE.GROUP;
 
-		const textMessage = new CometChat.TextMessage(
-			receiverId,
-			this.props.message.text,
-			receiverType
-		);
-
-		textMessage.setId(this.props.message.id);
-
-		textMessage.setTags(["approved"]);
-
-		CometChat.editMessage(textMessage)
-			.then((message) => {
-				this.props.actionGenerated(enums.ACTIONS["MESSAGE_EDITED"], {
-					...message,
-				});
-			})
-			.catch((error) =>
-				this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG")
+		if (this.props.message.type === CometChat.MESSAGE_TYPE.TEXT) {
+			const textMessage = new CometChat.TextMessage(
+				receiverId,
+				this.props.message.text,
+				receiverType
 			);
+
+			textMessage.setId(this.props.message.id);
+
+			textMessage.setTags(["approved"]);
+
+			CometChat.editMessage(textMessage)
+				.then((message) => {
+					this.props.actionGenerated(enums.ACTIONS["MESSAGE_EDITED"], {
+						...message,
+					});
+				})
+				.catch((error) =>
+					this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG")
+				);
+		}
+
+		if (this.props.message.type === CometChat.MESSAGE_TYPE.VIDEO) {
+			const viedoMessage = new CometChat.MediaMessage(
+				receiverId,
+				this.props.message.data.url,
+				CometChat.MESSAGE_TYPE.VIDEO,
+				receiverType
+			);
+
+			viedoMessage.setId(this.props.message.id);
+
+			viedoMessage.setTags(["approved"]);
+
+			CometChat.editMessage(viedoMessage)
+				.then((message) => {
+					this.props.actionGenerated(enums.ACTIONS["MESSAGE_EDITED"], {
+						...message,
+					});
+				})
+				.catch((error) =>
+					this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG")
+				);
+		}
 	};
 
-	previewLink = () => {
-		this.props.actionGenerated(enums.ACTIONS["PREVIEW_LINK"]);
+	preview = () => {
+		if (this.props.message.type === CometChat.MESSAGE_TYPE.TEXT) {
+			this.props.actionGenerated(enums.ACTIONS["PREVIEW_LINK"]);
+		}
+
+		if (this.props.message.type === CometChat.MESSAGE_TYPE.VIDEO) {
+			this.props.previewVideo();
+		}
 	};
 
 	markDelete = () => {
@@ -464,7 +495,7 @@ class CometChatMessageActions extends React.PureComponent {
 										<a
 											href="#"
 											className="dropdown-item"
-											onClick={this.previewLink}
+											onClick={this.preview}
 										>
 											VIEW
 										</a>

@@ -1117,9 +1117,8 @@ class CometChatConversationList extends React.Component {
 					>
 						{Translator.translate("LW chat", this.props.lang)}
 					</h4>
-
-					{/* {minimumBtn}
-					{disposeBtn} */}
+					{minimumBtn}
+					{disposeBtn}
 					{this.state.isOpenUserState && stateCollapse}
 				</div>
 				{messageContainer}
