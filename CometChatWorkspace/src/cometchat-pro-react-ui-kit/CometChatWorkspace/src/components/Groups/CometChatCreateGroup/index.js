@@ -91,6 +91,11 @@ class CometChatCreateGroup extends React.Component {
 	};
 
 	enablePrivateGroup = () => {
+		this.context.getLoggedinUser().then((user) => {
+			if (user.role !== "livewire-admin") {
+				this.context.FeatureRestriction.UIKitSettings.privateGroup = false;
+			}
+		});
 		this.context.FeatureRestriction.isPrivateGroupEnabled()
 			.then((response) => {
 				/**
@@ -132,20 +137,14 @@ class CometChatCreateGroup extends React.Component {
 
 		if (!groupName) {
 			this.setState({
-				errorMessage: Translator.translate(
-					"INVALID_GROUP_NAME",
-					this.context.language
-				),
+				errorMessage: Translator.translate("INVALID_GROUP_NAME", this.context.language),
 			});
 			return false;
 		}
 
 		if (!groupType) {
 			this.setState({
-				errorMessage: Translator.translate(
-					"INVALID_GROUP_TYPE",
-					this.context.language
-				),
+				errorMessage: Translator.translate("INVALID_GROUP_TYPE", this.context.language),
 			});
 			return false;
 		}
@@ -156,10 +155,7 @@ class CometChatCreateGroup extends React.Component {
 
 			if (!password.length) {
 				this.setState({
-					errorMessage: Translator.translate(
-						"INVALID_PASSWORD",
-						this.context.language
-					),
+					errorMessage: Translator.translate("INVALID_PASSWORD", this.context.language),
 				});
 				return false;
 			}
@@ -221,10 +217,7 @@ class CometChatCreateGroup extends React.Component {
 			.catch((error) => {
 				this.setState({
 					creatingGroup: false,
-					errorMessage: Translator.translate(
-						"SOMETHING_WRONG",
-						this.context.language
-					),
+					errorMessage: Translator.translate("SOMETHING_WRONG", this.context.language),
 				});
 			});
 	};
@@ -272,12 +265,12 @@ class CometChatCreateGroup extends React.Component {
 						<td>
 							<select
 								css={inputStyle(this.props)}
-								className='grouptype'
+								className="grouptype"
 								onChange={this.typeChangeHandler}
 								value={this.state.type}
-								tabIndex='2'
+								tabIndex="2"
 							>
-								<option value=''>
+								<option value="">
 									{Translator.translate(
 										"SELECT_GROUP_TYPE",
 										this.context.language
@@ -294,10 +287,10 @@ class CometChatCreateGroup extends React.Component {
 						<td>
 							<select
 								css={inputStyle(this.props)}
-								className='grouptype'
+								className="grouptype"
 								onChange={this.typeChangeHandler}
 								value={this.state.type}
-								tabIndex='2'
+								tabIndex="2"
 							>
 								{groupTypeListOptions}
 							</select>
@@ -313,14 +306,14 @@ class CometChatCreateGroup extends React.Component {
 				<tr>
 					<td>
 						<input
-							autoComplete='off'
+							autoComplete="off"
 							css={inputStyle(this.context)}
 							placeholder={Translator.translate(
 								"ENTER_GROUP_PASSWORD",
 								this.context.language
 							)}
-							type='password'
-							tabIndex='3'
+							type="password"
+							tabIndex="3"
 							onChange={this.passwordChangeHandler}
 							value={this.state.password}
 						/>
@@ -336,26 +329,20 @@ class CometChatCreateGroup extends React.Component {
 		return (
 			<React.Fragment>
 				<CometChatBackdrop show={true} clicked={this.props.close} />
-				<div
-					css={modalWrapperStyle(this.context)}
-					className='modal__creategroup'
-				>
+				<div css={modalWrapperStyle(this.context)} className="modal__creategroup">
 					<span
 						css={modalCloseStyle(closeIcon, this.context)}
-						className='modal__close'
+						className="modal__close"
 						onClick={this.props.close}
 						title={Translator.translate("CLOSE", this.context.language)}
 					></span>
-					<div css={modalBodyStyle()} className='modal__body'>
+					<div css={modalBodyStyle()} className="modal__body">
 						<table css={modalTableStyle(this.props)}>
-							<caption css={tableCaptionStyle()} className='modal__title'>
+							<caption css={tableCaptionStyle()} className="modal__title">
 								{" "}
-								{Translator.translate(
-									"CREATE_GROUP",
-									this.context.language
-								)}{" "}
+								{Translator.translate("CREATE_GROUP", this.context.language)}{" "}
 							</caption>
-							<tbody css={tableBodyStyle()} className='modal__search'>
+							<tbody css={tableBodyStyle()} className="modal__search">
 								<tr>
 									<td>
 										<div css={modalErrorStyle(this.context)}>
@@ -366,15 +353,15 @@ class CometChatCreateGroup extends React.Component {
 								<tr>
 									<td>
 										<input
-											autoComplete='off'
+											autoComplete="off"
 											css={inputStyle(this.props)}
-											className='search__input'
+											className="search__input"
 											placeholder={Translator.translate(
 												"ENTER_GROUP_NAME",
 												this.context.language
 											)}
-											type='text'
-											tabIndex='1'
+											type="text"
+											tabIndex="1"
 											onChange={this.nameChangeHandler}
 											value={this.state.name}
 										/>
@@ -383,14 +370,12 @@ class CometChatCreateGroup extends React.Component {
 								{groupTypeSelect}
 								{password}
 							</tbody>
-							<tfoot
-								css={tableFootStyle(this.context, this.state, creatingIcon)}
-							>
-								<tr className='creategroup'>
+							<tfoot css={tableFootStyle(this.context, this.state, creatingIcon)}>
+								<tr className="creategroup">
 									<td>
 										<button
-											type='button'
-											tabIndex='4'
+											type="button"
+											tabIndex="4"
 											onClick={this.createGroup}
 										>
 											<span>{createText}</span>
