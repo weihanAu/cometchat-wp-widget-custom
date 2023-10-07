@@ -31,6 +31,11 @@ import {
 	messageReactionsWrapperStyle,
 } from "./style";
 
+import {
+	messageTxtWrapperStyle,
+	messageTxtStyle,
+} from "../CometChatReceiverTextMessageBubble/style";
+
 class CometChatReceiverVideoMessageBubble extends React.Component {
 	static contextType = CometChatContext;
 
@@ -39,6 +44,7 @@ class CometChatReceiverVideoMessageBubble extends React.Component {
 
 		this.state = {
 			isHovering: false,
+			previewVideo: false,
 		};
 	}
 
@@ -65,19 +71,28 @@ class CometChatReceiverVideoMessageBubble extends React.Component {
 		};
 	};
 
+	togglePreviewVieo = () => {
+		this.setState({ previewVideo: !this.state.previewVideo });
+
+		this.forceUpdate();
+	};
+
 	render() {
 		let avatar = null,
 			name = null;
+
+		if (this.props.message.tags && this.props.message.tags.includes("delete")) return null;
+
 		if (this.props.message.receiverType === CometChat.RECEIVER_TYPE.GROUP) {
 			avatar = (
-				<div css={messageThumbnailStyle()} className='message__thumbnail'>
+				<div css={messageThumbnailStyle()} className="message__thumbnail">
 					<CometChatAvatar user={this.props.message.sender} />
 				</div>
 			);
 
 			name = (
-				<div css={nameWrapperStyle(avatar)} className='message__name__wrapper'>
-					<span css={nameStyle(this.context)} className='message__name'>
+				<div css={nameWrapperStyle(avatar)} className="message__name__wrapper">
+					<span css={nameStyle(this.context)} className="message__name">
 						{this.props.message.sender.name}
 					</span>
 				</div>
@@ -85,16 +100,13 @@ class CometChatReceiverVideoMessageBubble extends React.Component {
 		}
 
 		let messageReactions = null;
-		const reactionsData = checkMessageForExtensionsData(
-			this.props.message,
-			"reactions"
-		);
+		const reactionsData = checkMessageForExtensionsData(this.props.message, "reactions");
 		if (reactionsData) {
 			if (Object.keys(reactionsData).length) {
 				messageReactions = (
 					<div
 						css={messageReactionsWrapperStyle()}
-						className='message__reaction__wrapper'
+						className="message__reaction__wrapper"
 					>
 						<CometChatMessageReactions
 							message={this.props.message}
@@ -111,42 +123,76 @@ class CometChatReceiverVideoMessageBubble extends React.Component {
 				<CometChatMessageActions
 					message={this.props.message}
 					actionGenerated={this.props.actionGenerated}
+					previewVideo={this.togglePreviewVieo}
 				/>
 			);
 		}
 
+		const isPreviewVideo =
+			this.state.previewVideo && this.props.message?.tags?.includes("unmoderated");
+
 		return (
 			<div
 				css={messageContainerStyle()}
-				className='receiver__message__container message__video'
+				className="receiver__message__container message__video"
 				onMouseEnter={this.handleMouseHover}
 				onMouseLeave={this.handleMouseHover}
 			>
-				<div css={messageWrapperStyle()} className='message__wrapper'>
+				<div css={messageWrapperStyle()} className="message__wrapper">
 					{avatar}
-					<div css={messageDetailStyle(name)} className='message__details'>
+					<div css={messageDetailStyle(name)} className="message__details">
 						{name}
 						{toolTipView}
+						{this.props.message.tags &&
+						this.props.message.tags.includes("unmoderated") ? (
+							<div css={messageWrapperStyle()} className="message__wrapper">
+								<div
+									className="message__txt__wrapper"
+									css={messageTxtWrapperStyle(this.context)}
+								>
+									<p
+										css={messageTxtStyle(false, 0, this.context)}
+										className="message__txt"
+									>
+										[Video detected. It is currently under moderation.]
+									</p>
+								</div>
+							</div>
+						) : (
+							<div
+								css={messageVideoContainerStyle()}
+								className="message__video__container"
+							>
+								<div
+									css={messageVideoWrapperStyle()}
+									className="message__video__wrapper"
+								>
+									<video controls>
+										<source src={this.props.message.data.attachments[0].url} />
+									</video>
+								</div>
+							</div>
+						)}
+
+						{/* Preview */}
 						<div
 							css={messageVideoContainerStyle()}
-							className='message__video__container'
+							className="message__video__container"
+							style={{
+								display: isPreviewVideo ? "block" : "none",
+							}}
 						>
 							<div
 								css={messageVideoWrapperStyle()}
-								className='message__video__wrapper'
+								className="message__video__wrapper"
 							>
 								<video controls>
 									<source src={this.props.message.data.attachments[0].url} />
 								</video>
 							</div>
 						</div>
-
 						{messageReactions}
-
-						<div
-							css={messageInfoWrapperStyle()}
-							className='message__info__wrapper'
-						>
+						<div css={messageInfoWrapperStyle()} className="message__info__wrapper">
 							<CometChatReadReceipt message={this.props.message} />
 							<CometChatThreadedMessageReplyCount
 								message={this.props.message}

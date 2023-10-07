@@ -594,6 +594,15 @@ class CometChatMessageComposer extends React.PureComponent {
 		mediaMessage._composedAt = getUnixTimestamp();
 		mediaMessage._id = ID();
 
+		if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
+			if (
+				messageType === CometChat.MESSAGE_TYPE.AUDIO ||
+				messageType === CometChat.MESSAGE_TYPE.VIDEO
+			) {
+				mediaMessage.setTags(["unmoderated"]);
+			}
+		}
+
 		SoundManager.play(enums.CONSTANTS.AUDIO["OUTGOING_MESSAGE"], this.context);
 		this.props.actionGenerated(enums.ACTIONS["MESSAGE_COMPOSED"], [mediaMessage]);
 
@@ -1487,7 +1496,7 @@ class CometChatMessageComposer extends React.PureComponent {
 								{stickerBtn}
 								{emojiBtn}
 								{sendBtn}
-								{liveReactionBtn}
+								{/* {liveReactionBtn} */}
 							</div>
 						</div>
 					</div>

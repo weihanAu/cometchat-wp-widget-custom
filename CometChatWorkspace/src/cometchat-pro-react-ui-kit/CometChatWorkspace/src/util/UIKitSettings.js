@@ -32,8 +32,7 @@ export class UIKitSettings {
 		this.chatWindow = window;
 
 		this.userListMode = UIKitSettings.userListFilterOptions["ALL"];
-		this.groupInMode =
-			UIKitSettings.groupListFilterOptions["PUBLIC_AND_PASSWORD"];
+		this.groupInMode = UIKitSettings.groupListFilterOptions["PUBLIC_AND_PASSWORD"];
 		this.chatListMode = UIKitSettings.chatListFilterOptions["USERS_AND_GROUPS"];
 
 		this.chats = true;
@@ -179,8 +178,7 @@ export class UIKitSettings {
 			option
 		);
 		if (chatListFilterKey) {
-			this.chatListMode =
-				UIKitSettings.chatListFilterOptions[chatListFilterKey];
+			this.chatListMode = UIKitSettings.chatListFilterOptions[chatListFilterKey];
 		}
 	};
 
@@ -194,8 +192,7 @@ export class UIKitSettings {
 			option
 		);
 		if (userListFilterKey) {
-			this.userListMode =
-				UIKitSettings.userListFilterOptions[userListFilterKey];
+			this.userListMode = UIKitSettings.userListFilterOptions[userListFilterKey];
 		}
 	};
 
@@ -389,11 +386,8 @@ export class UIKitSettings {
 		this.passwordGroup = passwordGroup;
 	};
 
-	setAllowModeratorToDeleteMemberMessages = (
-		allowModeratorToDeleteMemberMessages
-	) => {
-		this.allowModeratorToDeleteMemberMessages =
-			allowModeratorToDeleteMemberMessages;
+	setAllowModeratorToDeleteMemberMessages = (allowModeratorToDeleteMemberMessages) => {
+		this.allowModeratorToDeleteMemberMessages = allowModeratorToDeleteMemberMessages;
 	};
 
 	setUnreadCount = (unreadCount) => {

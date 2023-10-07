@@ -31,6 +31,11 @@ import {
 	messageReactionsWrapperStyle,
 } from "./style";
 
+import {
+	messageTxtWrapperStyle,
+	messageTxtStyle,
+} from "../CometChatReceiverTextMessageBubble/style";
+
 class CometChatReceiverAudioMessageBubble extends React.Component {
 	static contextType = CometChatContext;
 
@@ -39,6 +44,7 @@ class CometChatReceiverAudioMessageBubble extends React.Component {
 
 		this.state = {
 			isHovering: false,
+			previewAudio: false,
 		};
 	}
 
@@ -65,19 +71,29 @@ class CometChatReceiverAudioMessageBubble extends React.Component {
 		};
 	};
 
+	togglePreviewAudio = () => {
+		this.setState({
+			previewAudio: !this.state.previewAudio,
+		});
+
+		this.forceUpdate();
+	};
+
 	render() {
+		if (this.props.message.tags && this.props.message.tags.includes("delete")) return null;
+
 		let avatar = null,
 			name = null;
 		if (this.props.message.receiverType === CometChat.RECEIVER_TYPE.GROUP) {
 			avatar = (
-				<div css={messageThumbnailStyle()} className='message__thumbnail'>
+				<div css={messageThumbnailStyle()} className="message__thumbnail">
 					<CometChatAvatar user={this.props.message.sender} />
 				</div>
 			);
 
 			name = (
-				<div css={nameWrapperStyle(avatar)} className='message__name__wrapper'>
-					<span css={nameStyle(this.context)} className='message__name'>
+				<div css={nameWrapperStyle(avatar)} className="message__name__wrapper">
+					<span css={nameStyle(this.context)} className="message__name">
 						{this.props.message.sender.name}
 					</span>
 				</div>
@@ -85,16 +101,13 @@ class CometChatReceiverAudioMessageBubble extends React.Component {
 		}
 
 		let messageReactions = null;
-		const reactionsData = checkMessageForExtensionsData(
-			this.props.message,
-			"reactions"
-		);
+		const reactionsData = checkMessageForExtensionsData(this.props.message, "reactions");
 		if (reactionsData) {
 			if (Object.keys(reactionsData).length) {
 				messageReactions = (
 					<div
 						css={messageReactionsWrapperStyle()}
-						className='message__reaction__wrapper'
+						className="message__reaction__wrapper"
 					>
 						<CometChatMessageReactions
 							message={this.props.message}
@@ -111,29 +124,65 @@ class CometChatReceiverAudioMessageBubble extends React.Component {
 				<CometChatMessageActions
 					message={this.props.message}
 					actionGenerated={this.props.actionGenerated}
+					previewAudio={this.togglePreviewAudio}
 				/>
 			);
 		}
 
+		const isPreviewAudio =
+			this.state.previewAudio && this.props.message?.tags?.includes("unmoderated");
+
 		return (
 			<div
 				css={messageContainerStyle()}
-				className='receiver__message__container message__audio'
+				className="receiver__message__container message__audio"
 				onMouseEnter={this.handleMouseHover}
 				onMouseLeave={this.handleMouseHover}
 			>
-				<div css={messageWrapperStyle()} className='message__wrapper'>
+				<div css={messageWrapperStyle()} className="message__wrapper">
 					{avatar}
-					<div css={messageDetailStyle()} className='message__details'>
+					<div css={messageDetailStyle()} className="message__details">
 						{name}
 						{toolTipView}
+						{this.props.message.tags &&
+						this.props.message.tags.includes("unmoderated") ? (
+							<div css={messageWrapperStyle()} className="message__wrapper">
+								<div
+									className="message__txt__wrapper"
+									css={messageTxtWrapperStyle(this.context)}
+								>
+									<p
+										css={messageTxtStyle(false, 0, this.context)}
+										className="message__txt"
+									>
+										[Video detected. It is currently under moderation.]
+									</p>
+								</div>
+							</div>
+						) : (
+							<div
+								css={messageAudioContainerStyle()}
+								className="message__audio__container"
+							>
+								<div
+									css={messageAudioWrapperStyle()}
+									className="message__audio__wrapper"
+								>
+									<audio controls>
+										<source src={this.props.message.data.attachments[0].url} />
+									</audio>
+								</div>
+							</div>
+						)}
+						{/* Preview */}
 						<div
 							css={messageAudioContainerStyle()}
-							className='message__audio__container'
+							className="message__audio__container"
+							style={{ display: isPreviewAudio ? "block" : "none" }}
 						>
 							<div
 								css={messageAudioWrapperStyle()}
-								className='message__audio__wrapper'
+								className="message__audio__wrapper"
 							>
 								<audio controls>
 									<source src={this.props.message.data.attachments[0].url} />
@@ -143,10 +192,7 @@ class CometChatReceiverAudioMessageBubble extends React.Component {
 
 						{messageReactions}
 
-						<div
-							css={messageInfoWrapperStyle()}
-							className='message__info__wrapper'
-						>
+						<div css={messageInfoWrapperStyle()} className="message__info__wrapper">
 							<CometChatReadReceipt message={this.props.message} />
 							<CometChatThreadedMessageReplyCount
 								message={this.props.message}

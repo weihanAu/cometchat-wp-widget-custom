@@ -123,8 +123,9 @@ export const messageInfoWrapperStyle = () => {
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
-    height: "25px",
+    height: "fit-content",
     padding: "4px 8px",
+    flexWrap: "wrap",
   };
 };
 

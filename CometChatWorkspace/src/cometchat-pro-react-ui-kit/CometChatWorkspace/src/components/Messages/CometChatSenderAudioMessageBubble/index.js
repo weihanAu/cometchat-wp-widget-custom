@@ -11,10 +11,7 @@ import {
 } from "../";
 import { CometChatMessageReactions } from "../Extensions";
 
-import {
-	checkMessageForExtensionsData,
-	getMessageFileMetadata,
-} from "../../../util/common";
+import { checkMessageForExtensionsData, getMessageFileMetadata } from "../../../util/common";
 import * as enums from "../../../util/enums.js";
 
 import { theme } from "../../../resources/theme";
@@ -26,14 +23,19 @@ import {
 	messageInfoWrapperStyle,
 	messageReactionsWrapperStyle,
 } from "./style";
+import { messageTxtStyle, messageTxtWrapperStyle } from "../CometChatSenderTextMessageBubble/style";
+import { CometChatContext } from "../../../util/CometChatContext";
 
 class CometChatSenderAudioMessageBubble extends React.Component {
+	static contextType = CometChatContext;
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			isHovering: false,
 			fileData: {},
+			previewAudio: false,
 		};
 	}
 
@@ -74,10 +76,7 @@ class CometChatSenderAudioMessageBubble extends React.Component {
 
 	getFileData = () => {
 		const metadataKey = enums.CONSTANTS["FILE_METADATA"];
-		const fileMetadata = getMessageFileMetadata(
-			this.props.message,
-			metadataKey
-		);
+		const fileMetadata = getMessageFileMetadata(this.props.message, metadataKey);
 
 		if (fileMetadata instanceof Blob) {
 			return { fileName: fileMetadata["name"] };
@@ -102,22 +101,31 @@ class CometChatSenderAudioMessageBubble extends React.Component {
 		};
 	};
 
+	togglePreviewAudio = () => {
+		this.setState({
+			previewAudio: !this.state.previewAudio,
+		});
+
+		this.forceUpdate();
+	};
+
 	render() {
-		if (!Object.keys(this.state.fileData).length) {
-			return null;
+		if (this.props.message.tags && this.props.message.tags.includes("delete")) return null;
+
+		if (this.state.fileData) {
+			if (!Object.keys(this.state.fileData).length) {
+				return null;
+			}
 		}
 
 		let messageReactions = null;
-		const reactionsData = checkMessageForExtensionsData(
-			this.props.message,
-			"reactions"
-		);
+		const reactionsData = checkMessageForExtensionsData(this.props.message, "reactions");
 		if (reactionsData) {
 			if (Object.keys(reactionsData).length) {
 				messageReactions = (
 					<div
 						css={messageReactionsWrapperStyle()}
-						className='message__reaction__wrapper'
+						className="message__reaction__wrapper"
 					>
 						<CometChatMessageReactions
 							message={this.props.message}
@@ -134,30 +142,54 @@ class CometChatSenderAudioMessageBubble extends React.Component {
 				<CometChatMessageActions
 					message={this.props.message}
 					actionGenerated={this.props.actionGenerated}
+					previewAudio={this.togglePreviewAudio}
 				/>
 			);
 		}
 
+		const isPreviewAudio =
+			this.state.previewAudio && this.props.message?.tags?.includes("unmoderated");
+
 		return (
 			<div
 				css={messageContainerStyle()}
-				className='sender__message__container message__audio'
+				className="sender__message__container message__audio"
 				onMouseEnter={this.handleMouseHover}
 				onMouseLeave={this.handleMouseHover}
 			>
 				{toolTipView}
-				<div css={messageWrapperStyle()} className='message__wrapper'>
-					<div
-						css={messageAudioWrapperStyle()}
-						className='message__audio__wrapper'
-					>
+				{this.props.message.tags && this.props.message.tags.includes("unmoderated") ? (
+					<div css={messageWrapperStyle()} className="message__wrapper">
+						<div
+							className="message__txt__wrapper"
+							css={messageTxtWrapperStyle(this.context)}
+						>
+							<p css={messageTxtStyle(this.props, false, 0)} className="message__txt">
+								[Audio detected. It is currently under moderation.]
+							</p>
+						</div>
+					</div>
+				) : (
+					<div css={messageWrapperStyle()} className="message__wrapper">
+						<div css={messageAudioWrapperStyle()} className="message__audio__wrapper">
+							<audio controls src={this.state.fileData?.fileUrl}></audio>
+						</div>
+					</div>
+				)}
+
+				<div
+					css={messageWrapperStyle()}
+					className="message__wrapper"
+					style={{ display: isPreviewAudio ? "block" : "none" }}
+				>
+					<div css={messageAudioWrapperStyle()} className="message__audio__wrapper">
 						<audio controls src={this.state.fileData?.fileUrl}></audio>
 					</div>
 				</div>
 
 				{messageReactions}
 
-				<div css={messageInfoWrapperStyle()} className='message__info__wrapper'>
+				<div css={messageInfoWrapperStyle()} className="message__info__wrapper">
 					<CometChatThreadedMessageReplyCount
 						message={this.props.message}
 						actionGenerated={this.props.actionGenerated}

@@ -11,7 +11,7 @@ import { CometChatContext } from "../../../util/CometChatContext";
 import Translator from "../../../resources/localization/translator";
 import { theme } from "../../../resources/theme";
 
-import { msgTimestampStyle, iconStyle } from "./style";
+import { msgTimestampStyle, iconStyle, errorMessageStyle } from "./style";
 
 import blueDoubleTick from "./resources/message-read.svg";
 import greyDoubleTick from "./resources/message-delivered.svg";
@@ -70,6 +70,19 @@ class CometChatReadReceipt extends React.PureComponent {
 			receiptText = null,
 			dateField = null,
 			color = null;
+
+		let errorMessage = null;
+
+		if (
+			this.props.message.error &&
+			this.props.message.error.code === "ERR_BLOCKED_BY_EXTENSION"
+		) {
+			errorMessage = (
+				<p css={errorMessageStyle()}>
+					We're sorry, but your message contains offensive or inappropriate language
+				</p>
+			);
+		}
 
 		if (this.props.message?.sender?.uid === this.loggedInUser?.uid) {
 			if (this.props.message.receiverType === CometChat.RECEIVER_TYPE.GROUP) {
@@ -144,6 +157,7 @@ class CometChatReadReceipt extends React.PureComponent {
 					{timestamp}
 				</span>
 				{receipt}
+				{errorMessage}
 			</React.Fragment>
 		);
 	}
