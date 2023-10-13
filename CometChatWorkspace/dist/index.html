@@ -1,11 +1,6 @@
 <html>
 	<head>
 		<style>
-			#cometchat__widget {
-				position: absolute;
-				top: 0;
-				left: 0;
-			}
 			.add_widget {
 				position: fixed;
 				bottom: 120px;
@@ -21,6 +16,8 @@
 
 	<body>
 		<div id="cometchat"></div>
+		<div id="cometchat2"></div>
+		<div id="cometchat3"></div>
 		<!-- <button class="add_widget">+</button> -->
 		<script defer type="module">
 			const widgets = [];
@@ -33,7 +30,7 @@
 
 				const UID = "1";
 
-				const init = () => {
+				const init = (id) => {
 					CometChatWidget.init({
 						appID: "242053eed084c85d",
 						appRegion: "us",
@@ -48,7 +45,7 @@
 								(response) => {
 									CometChatWidget.launch({
 										widgetID: "019886dc-0a20-400c-bf9b-f02c9a5325de",
-										target: "#cometchat",
+										target: "#"+ id,
 										roundedCorners: "true",
 										height: "37.5rem",
 										width: "37.5rem",
@@ -63,7 +60,7 @@
 									console.log("User login failed with error:", error);
 									//Check the reason for error and take appropriate action.
 								}
-							);
+							)
 						},
 						(error) => {
 							console.log("Initialization failed with error:", error);
@@ -72,7 +69,15 @@
 					);
 				};
 
-				init();
+				init('cometchat');
+
+				function closeChat(id){
+					//destory chat with id
+					//var chat = js.getElementById(id);
+					//destory chat child element
+					console.log('chat closed, id is: ', id);
+				};
+				window.closeChat=closeChat;
 
 				// document.querySelector('.add_widget').addEventListener('click', e=>{
 				//     init();

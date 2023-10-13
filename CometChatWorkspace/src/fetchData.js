@@ -1,6 +1,6 @@
 export const REGION = "us";
 
-export const APPID = "242053eed084c85d";
+export const APPID = "2420365c5054bcab";
 
 /**
  * @param {RequestInfo | URL} input
@@ -11,7 +11,7 @@ export function fetctData(input, init) {
 		...init,
 		headers: {
 			...init?.headers,
-			apikey: "76cdda8b9290ad8211e3c1abde81d5284de1861a",
+			apikey: "6457e05101696996d5952c4cb06c3aa5cf60e76f",
 			accept: "application/json",
 			"content-type": "application/json",
 		},
