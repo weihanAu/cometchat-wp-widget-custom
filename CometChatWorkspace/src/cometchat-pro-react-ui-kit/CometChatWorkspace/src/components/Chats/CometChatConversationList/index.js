@@ -1103,14 +1103,7 @@ class CometChatConversationList extends React.Component {
 
 		const minimumBtn = <i style={chatsHeaderMinimumStyle(dashIcon, theme)}></i>;
 
-		const disposeBtn = (
-			<i
-				style={chatsHeaderDisposeStyle(xIcon, theme)}
-				onClick={() => {
-					window.destoryChat();
-				}}
-			></i>
-		);
+		const disposeBtn = <i style={chatsHeaderDisposeStyle(xIcon, theme)} onClick={() => {}}></i>;
 
 		const chatList = (
 			<div css={chatsWrapperStyle(this.props, theme)} className="chats">

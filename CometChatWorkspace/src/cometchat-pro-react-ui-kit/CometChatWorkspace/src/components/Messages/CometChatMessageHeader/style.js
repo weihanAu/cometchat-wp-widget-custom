@@ -37,7 +37,7 @@ export const chatSideBarBtnStyle = (img, props, context) => {
 		height: "24px",
 		float: "left",
 		[`@media ${mq[1]}, ${mq[2]}`]: {
-			display: window.onlyGroup ? "none" : "block",
+			display: "block",
 		},
 		...displayValue,
 	};
