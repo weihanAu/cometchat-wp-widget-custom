@@ -57,6 +57,7 @@ export class CometChatContextProvider extends React.Component {
 				),
 			},
 			targetElement: null,
+			minimum: false,
 			getLoggedinUser: this.getLoggedinUser,
 			setGroupMembers: this.setGroupMembers,
 			updateGroupMembers: this.updateGroupMembers,
@@ -81,6 +82,7 @@ export class CometChatContextProvider extends React.Component {
 			getActiveCallSessionID: this.getActiveCallSessionID,
 			hasKeyValue: this.hasKeyValue,
 			setRoles: this.setRoles,
+			setMinimun: this.setMinimun,
 		};
 
 		this.toastRef = React.createRef();
@@ -446,6 +448,10 @@ export class CometChatContextProvider extends React.Component {
 		this.setState({
 			targetElement: el,
 		});
+	};
+
+	setMinimun = () => {
+		this.setState({ minimum: !this.state.minimum });
 	};
 
 	render() {

@@ -995,6 +995,10 @@ class CometChatConversationList extends React.Component {
 		}
 	};
 
+	minimumCometChatWindow = () => {
+		this.context.setMinimun();
+	};
+
 	duplicateCometChatWindow = () => {
 		if (window.CometChatWidgetCount >= 3) {
 			this.toastRef.setError("Can't Open CometChat Widget More Than Three");
@@ -1126,7 +1130,12 @@ class CometChatConversationList extends React.Component {
 			);
 		}
 
-		const minimumBtn = <i style={chatsHeaderMinimumStyle(dashIcon, theme)}></i>;
+		const minimumBtn = (
+			<i
+				style={chatsHeaderMinimumStyle(this.context.minimum ? upIcon : dashIcon, theme)}
+				onClick={this.minimumCometChatWindow}
+			></i>
+		);
 		const disposeBtn = (
 			<i
 				style={chatsHeaderDisposeStyle(xIcon, theme)}

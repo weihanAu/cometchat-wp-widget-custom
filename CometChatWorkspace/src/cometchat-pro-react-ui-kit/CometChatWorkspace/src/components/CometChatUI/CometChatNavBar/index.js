@@ -16,13 +16,7 @@ import Translator from "../../../resources/localization/translator";
 import { theme } from "../../../resources/theme";
 import tabs from "../../../resources/tabs.json";
 
-import {
-	footerStyle,
-	navbarStyle,
-	itemStyle,
-	itemLinkStyle,
-	itemLinkTextStyle,
-} from "./style";
+import { footerStyle, navbarStyle, itemStyle, itemLinkStyle, itemLinkTextStyle } from "./style";
 
 import chatGreyIcon from "./resources/chats.svg";
 import contactGreyIcon from "./resources/users.svg";
@@ -126,14 +120,10 @@ export class CometChatNavBar extends React.Component {
 					<CometChatUserList
 						theme={this.props.theme}
 						lang={this.context.language}
-						_parent='unified'
+						_parent="unified"
 						actionGenerated={this.props.actionGenerated}
 						onItemClick={(item, type) =>
-							this.props.actionGenerated(
-								enums.ACTIONS["ITEM_CLICKED"],
-								type,
-								item
-							)
+							this.props.actionGenerated(enums.ACTIONS["ITEM_CLICKED"], type, item)
 						}
 					/>
 				);
@@ -144,14 +134,10 @@ export class CometChatNavBar extends React.Component {
 					<CometChatConversationList
 						theme={this.props.theme}
 						lang={this.context.language}
-						_parent='unified'
+						_parent="unified"
 						actionGenerated={this.props.actionGenerated}
 						onItemClick={(item, type) =>
-							this.props.actionGenerated(
-								enums.ACTIONS["ITEM_CLICKED"],
-								type,
-								item
-							)
+							this.props.actionGenerated(enums.ACTIONS["ITEM_CLICKED"], type, item)
 						}
 					/>
 				);
@@ -160,14 +146,10 @@ export class CometChatNavBar extends React.Component {
 					<CometChatGroupList
 						theme={this.props.theme}
 						lang={this.context.language}
-						_parent='unified'
+						_parent="unified"
 						actionGenerated={this.props.actionGenerated}
 						onItemClick={(item, type) =>
-							this.props.actionGenerated(
-								enums.ACTIONS["ITEM_CLICKED"],
-								type,
-								item
-							)
+							this.props.actionGenerated(enums.ACTIONS["ITEM_CLICKED"], type, item)
 						}
 					/>
 				);
@@ -177,11 +159,7 @@ export class CometChatNavBar extends React.Component {
 						theme={this.props.theme}
 						lang={this.context.language}
 						onItemClick={(item, type) =>
-							this.props.actionGenerated(
-								enums.ACTIONS["ITEM_CLICKED"],
-								type,
-								item
-							)
+							this.props.actionGenerated(enums.ACTIONS["ITEM_CLICKED"], type, item)
 						}
 					/>
 				);
@@ -191,14 +169,10 @@ export class CometChatNavBar extends React.Component {
 	};
 
 	getTabList = () => {
-		const chatsTabActive =
-			this.state.activeTab === "SIDEBAR_CHATS" ? true : false;
-		const userTabActive =
-			this.state.activeTab === "SIDEBAR_USERS" ? true : false;
-		const groupsTabActive =
-			this.state.activeTab === "SIDEBAR_GROUPS" ? true : false;
-		const moreTabActive =
-			this.state.activeTab === "SIDEBAR_MOREINFO" ? true : false;
+		const chatsTabActive = this.state.activeTab === "SIDEBAR_CHATS" ? true : false;
+		const userTabActive = this.state.activeTab === "SIDEBAR_USERS" ? true : false;
+		const groupsTabActive = this.state.activeTab === "SIDEBAR_GROUPS" ? true : false;
+		const moreTabActive = this.state.activeTab === "SIDEBAR_MOREINFO" ? true : false;
 
 		const tabList = [...this.state.tabList];
 
@@ -209,17 +183,17 @@ export class CometChatNavBar extends React.Component {
 						<div
 							key={tab}
 							css={itemStyle(this.props)}
-							className='navbar__item'
+							className="navbar__item"
 							onClick={() => this.tabChanged("SIDEBAR_CHATS")}
 						>
 							<div
 								css={itemLinkStyle(chatGreyIcon, chatsTabActive, this.context)}
-								className='item__link item__link__chats'
+								className="item__link item__link__chats"
 								title={Translator.translate("CHATS", this.context.language)}
 							></div>
 							<div
 								css={itemLinkTextStyle(chatsTabActive, this.context)}
-								className='item__label'
+								className="item__label"
 							>
 								{Translator.translate("CHATS", this.context.language)}
 							</div>
@@ -230,21 +204,17 @@ export class CometChatNavBar extends React.Component {
 						<div
 							key={tab}
 							css={itemStyle(this.props)}
-							className='navbar__item'
+							className="navbar__item"
 							onClick={() => this.tabChanged("SIDEBAR_USERS")}
 						>
 							<div
-								css={itemLinkStyle(
-									contactGreyIcon,
-									userTabActive,
-									this.context
-								)}
-								className='item__link item__link__contacts'
+								css={itemLinkStyle(contactGreyIcon, userTabActive, this.context)}
+								className="item__link item__link__contacts"
 								title={Translator.translate("USERS", this.context.language)}
 							></div>
 							<div
 								css={itemLinkTextStyle(userTabActive, this.context)}
-								className='item__label'
+								className="item__label"
 							>
 								{Translator.translate("USERS", this.context.language)}
 							</div>
@@ -255,21 +225,17 @@ export class CometChatNavBar extends React.Component {
 						<div
 							key={tab}
 							css={itemStyle(this.props)}
-							className='navbar__item'
+							className="navbar__item"
 							onClick={() => this.tabChanged("SIDEBAR_GROUPS")}
 						>
 							<div
-								css={itemLinkStyle(
-									groupGreyIcon,
-									groupsTabActive,
-									this.context
-								)}
-								className='item__link item__link__groups'
+								css={itemLinkStyle(groupGreyIcon, groupsTabActive, this.context)}
+								className="item__link item__link__groups"
 								title={Translator.translate("GROUPS", this.context.language)}
 							></div>
 							<div
 								css={itemLinkTextStyle(groupsTabActive, this.context)}
-								className='item__label'
+								className="item__label"
 							>
 								{Translator.translate("GROUPS", this.context.language)}
 							</div>
@@ -280,17 +246,17 @@ export class CometChatNavBar extends React.Component {
 						<div
 							key={tab}
 							css={itemStyle(this.props)}
-							className='navbar__item'
+							className="navbar__item"
 							onClick={() => this.tabChanged("SIDEBAR_MOREINFO")}
 						>
 							<div
 								css={itemLinkStyle(moreGreyIcon, moreTabActive, this.context)}
-								className='item__link item__link__info'
+								className="item__link item__link__info"
 								title={Translator.translate("MORE", this.context.language)}
 							></div>
 							<div
 								css={itemLinkTextStyle(moreTabActive, this.context)}
-								className='item__label'
+								className="item__label"
 							>
 								{Translator.translate("MORE", this.context.language)}
 							</div>
@@ -306,8 +272,12 @@ export class CometChatNavBar extends React.Component {
 		return (
 			<React.Fragment>
 				{this.getActiveTab()}
-				<div css={footerStyle()} className='sidebar__footer'>
-					<div css={navbarStyle()} className='footer__navbar'>
+				<div
+					css={footerStyle(this.context)}
+					className="sidebar__footer"
+					style={{ display: this.context.minimum ? "none" : "block" }}
+				>
+					<div css={navbarStyle()} className="footer__navbar">
 						{this.getTabList()}
 					</div>
 				</div>
