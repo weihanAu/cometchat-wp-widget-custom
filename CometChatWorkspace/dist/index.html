@@ -16,11 +16,10 @@
 
 	<body>
 		<div id="cometchat"></div>
-		<div id="cometchat2"></div>
-		<div id="cometchat3"></div>
 		<!-- <button class="add_widget">+</button> -->
 		<script defer type="module">
 			const widgets = [];
+
 			window.addEventListener("DOMContentLoaded", async (event) => {
 				const { default: CometChatWidget } = await import("./index.js");
 
@@ -30,7 +29,7 @@
 
 				const UID = "1";
 
-				const init = (id) => {
+				const init = () => {
 					CometChatWidget.init({
 						appID: "242053eed084c85d",
 						appRegion: "us",
@@ -45,22 +44,26 @@
 								(response) => {
 									CometChatWidget.launch({
 										widgetID: "019886dc-0a20-400c-bf9b-f02c9a5325de",
-										target: "#"+ id,
+										target: "#cometchat",
 										roundedCorners: "true",
 										height: "37.5rem",
 										width: "37.5rem",
 										defaultID: UID, //default UID (user) or GUID (group) to show,
 										defaultType: "user", //user or group,
 										docked: false,
-									});
+									}).then((widget) => {
+										widgets.push(response);
 
-									widgets.push(response);
+										setTimeout(() => {}, 2000);
+
+										console.log(response);
+									});
 								},
 								(error) => {
 									console.log("User login failed with error:", error);
 									//Check the reason for error and take appropriate action.
 								}
-							)
+							);
 						},
 						(error) => {
 							console.log("Initialization failed with error:", error);
@@ -69,15 +72,18 @@
 					);
 				};
 
-				init('cometchat');
+				init();
 
-				function closeChat(id){
+				window.initCometChat = init;
+
+				function closeChat(id) {
 					//destory chat with id
 					//var chat = js.getElementById(id);
 					//destory chat child element
-					console.log('chat closed, id is: ', id);
-				};
-				window.closeChat=closeChat;
+					console.log("chat closed, id is: ", id);
+				}
+
+				window.closeChat = closeChat;
 
 				// document.querySelector('.add_widget').addEventListener('click', e=>{
 				//     init();

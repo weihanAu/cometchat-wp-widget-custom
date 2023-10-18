@@ -31,6 +31,7 @@ import {
 	chatsHeaderMinimumStyle,
 	chatsHeaderDisposeStyle,
 	stateCollapseStyle,
+	chatsHeaderDuplicateStyle,
 } from "./style";
 
 import navigateIcon from "./resources/back.svg";
@@ -38,6 +39,7 @@ import settingIcon from "./resources/gear.svg";
 import dashIcon from "./resources/dash.svg";
 import xIcon from "./resources/x.svg";
 import upIcon from "./resources/up.svg";
+import copyIcon from "./resources/copy.svg";
 
 import { toggleUserState } from "./api/toggleUserState";
 
@@ -993,6 +995,14 @@ class CometChatConversationList extends React.Component {
 		}
 	};
 
+	duplicateCometChatWindow = () => {
+		window.initCometChat();
+	};
+
+	disposeCometChatWindow = () => {
+		console.log(this.context);
+	};
+
 	render() {
 		const conversationList = this.state.conversationlist.map((conversation, key) => {
 			return (
@@ -1102,8 +1112,19 @@ class CometChatConversationList extends React.Component {
 		}
 
 		const minimumBtn = <i style={chatsHeaderMinimumStyle(dashIcon, theme)}></i>;
+		const disposeBtn = (
+			<i
+				style={chatsHeaderDisposeStyle(xIcon, theme)}
+				onClick={this.disposeCometChatWindow}
+			></i>
+		);
 
-		const disposeBtn = <i style={chatsHeaderDisposeStyle(xIcon, theme)} onClick={() => {}}></i>;
+		const duplicateBtn = (
+			<i
+				style={chatsHeaderDuplicateStyle(copyIcon, theme)}
+				onClick={this.duplicateCometChatWindow}
+			></i>
+		);
 
 		const chatList = (
 			<div css={chatsWrapperStyle(this.props, theme)} className="chats">
@@ -1118,13 +1139,7 @@ class CometChatConversationList extends React.Component {
 						{Translator.translate("LW chat", this.props.lang)}
 					</h4>
 					{minimumBtn}
-					<button
-						onClick={() => {
-							window.init(false);
-						}}
-					>
-						copy
-					</button>
+					{duplicateBtn}
 					{disposeBtn}
 					{this.state.isOpenUserState && stateCollapse}
 				</div>
