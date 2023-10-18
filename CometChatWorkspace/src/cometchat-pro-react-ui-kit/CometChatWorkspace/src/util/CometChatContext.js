@@ -56,6 +56,7 @@ export class CometChatContextProvider extends React.Component {
 					props.language
 				),
 			},
+			targetElement: null,
 			getLoggedinUser: this.getLoggedinUser,
 			setGroupMembers: this.setGroupMembers,
 			updateGroupMembers: this.updateGroupMembers,
@@ -96,9 +97,7 @@ export class CometChatContextProvider extends React.Component {
 				})
 				.catch((error) => {
 					const errorCode =
-						error && error.hasOwnProperty("code")
-							? error.code
-							: "uid not available";
+						error && error.hasOwnProperty("code") ? error.code : "uid not available";
 					this.toastRef.setError(errorCode);
 				});
 		} else if (this.props.group.trim().length) {
@@ -109,9 +108,7 @@ export class CometChatContextProvider extends React.Component {
 				})
 				.catch((error) => {
 					const errorCode =
-						error && error.hasOwnProperty("code")
-							? error.code
-							: "guid not available";
+						error && error.hasOwnProperty("code") ? error.code : "guid not available";
 					this.toastRef.setError(errorCode);
 				});
 		} else if (
@@ -135,15 +132,10 @@ export class CometChatContextProvider extends React.Component {
 				})
 				.catch((error) => {
 					const errorCode =
-						error && error.hasOwnProperty("code")
-							? error.code
-							: "uid not available";
+						error && error.hasOwnProperty("code") ? error.code : "uid not available";
 					this.toastRef.setError(errorCode);
 				});
-		} else if (
-			this.props.group.trim().length &&
-			prevProps.group !== this.props.group
-		) {
+		} else if (this.props.group.trim().length && prevProps.group !== this.props.group) {
 			this.getGroup(this.props.group)
 				.then((group) => {
 					//this.setType(CometChat.ACTION_TYPE.TYPE_GROUP);
@@ -153,9 +145,7 @@ export class CometChatContextProvider extends React.Component {
 				})
 				.catch((error) => {
 					const errorCode =
-						error && error.hasOwnProperty("code")
-							? error.code
-							: "guid not available";
+						error && error.hasOwnProperty("code") ? error.code : "guid not available";
 					this.toastRef.setError(errorCode);
 				});
 		}
@@ -412,9 +402,7 @@ export class CometChatContextProvider extends React.Component {
 			(this.state.callType === enums.CONSTANTS["INCOMING_DIRECT_CALLING"] ||
 				this.state.callType === enums.CONSTANTS["OUTGOING_DIRECT_CALLING"])
 		) {
-			if (
-				this.state.callInProgress.customData.sessionID === this.state.item.guid
-			) {
+			if (this.state.callInProgress.customData.sessionID === this.state.item.guid) {
 				output = enums.CONSTANTS.CALLS["ONGOING_CALL_SAME_GROUP"];
 			} else {
 				output = enums.CONSTANTS.CALLS["ONGOING_CALL_DIFF_GROUP"];
@@ -447,15 +435,17 @@ export class CometChatContextProvider extends React.Component {
 	};
 
 	hasKeyValue = (data, key) => {
-		if (
-			data.hasOwnProperty(key) === false ||
-			data[key] === null ||
-			data[key] === undefined
-		) {
+		if (data.hasOwnProperty(key) === false || data[key] === null || data[key] === undefined) {
 			return false;
 		}
 
 		return true;
+	};
+
+	setTargetElement = (el) => {
+		this.setState({
+			targetElement: el,
+		});
 	};
 
 	render() {

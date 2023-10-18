@@ -996,11 +996,26 @@ class CometChatConversationList extends React.Component {
 	};
 
 	duplicateCometChatWindow = () => {
+		if (window.CometChatWidgetCount >= 3) {
+			this.toastRef.setError("Can't Open CometChat Widget More Than Three");
+
+			return;
+		}
+
 		window.initCometChat();
 	};
 
 	disposeCometChatWindow = () => {
-		console.log(this.context);
+		if (!this.context.targetElement) return;
+
+		if (window.CometChatWidgetCount <= 1) {
+			this.toastRef.setError("Can't Close CometChat Widget Less Than One");
+			return;
+		}
+
+		this.context.targetElement.remove();
+
+		window.CometChatWidgetCount--;
 	};
 
 	render() {

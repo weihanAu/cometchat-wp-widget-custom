@@ -1,15 +1,9 @@
 <html>
 	<head>
 		<style>
-			.add_widget {
-				position: fixed;
-				bottom: 120px;
-				right: 40px;
-				width: 60px;
-				height: 60px;
-				border-radius: 50%;
-				font-size: 24px;
-				z-index: 999999999;
+			.cometchat-container {
+				width: fit-content;
+				height: fit-content;
 			}
 		</style>
 	</head>
@@ -18,12 +12,12 @@
 		<div id="cometchat"></div>
 		<!-- <button class="add_widget">+</button> -->
 		<script defer type="module">
-			const widgets = [];
-
 			window.addEventListener("DOMContentLoaded", async (event) => {
 				const { default: CometChatWidget } = await import("./index.js");
 
 				window.CometChatWidget = CometChatWidget;
+
+				window.CometChatWidgetCount = 0;
 
 				const { CometChat } = CometChatWidget;
 
@@ -51,12 +45,8 @@
 										defaultID: UID, //default UID (user) or GUID (group) to show,
 										defaultType: "user", //user or group,
 										docked: false,
-									}).then((widget) => {
-										widgets.push(response);
-
-										setTimeout(() => {}, 2000);
-
-										console.log(response);
+									}).then(() => {
+										window.CometChatWidgetCount++;
 									});
 								},
 								(error) => {
