@@ -996,7 +996,7 @@ class CometChatConversationList extends React.Component {
 	};
 
 	minimumCometChatWindow = () => {
-		this.context.setMinimun();
+		this.context.setMinimum();
 	};
 
 	duplicateCometChatWindow = () => {
