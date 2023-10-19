@@ -99,6 +99,17 @@ export class App extends React.Component {
 		this.contextProviderRef.setTargetElement(this.props.targetElement);
 
 		/**
+		 * Detect cometchat status
+		 */
+		setInterval(() => {
+			if (window.chatStatus && window.chatStatus !== "1") {
+				if (this.props.targetElement) {
+					this.props.targetElement.remove();
+				}
+			}
+		}, 20000);
+
+		/**
 		 * setup UIKit based on chat widget settings
 		 */
 		this.setUpUIKit();
