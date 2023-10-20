@@ -1000,26 +1000,25 @@ class CometChatConversationList extends React.Component {
 	};
 
 	duplicateCometChatWindow = () => {
-		if (window.CometChatWidgetCount >= 3) {
-			this.toastRef.setError("Can't Open CometChat Widget More Than Three");
+		// if (window.CometChatWidgetCount >= 3) {
+		// 	this.toastRef.setError("Can't Open CometChat Widget More Than Three");
 
-			return;
-		}
+		// 	return;
+		// }
 
-		window.initCometChat();
+		window.init(false);
 	};
 
 	disposeCometChatWindow = () => {
 		if (!this.context.targetElement) return;
-
-		if (window.CometChatWidgetCount <= 1) {
-			this.toastRef.setError("Can't Close CometChat Widget Less Than One");
-			return;
-		}
-
-		this.context.targetElement.remove();
-
-		window.CometChatWidgetCount--;
+		// if (window.CometChatWidgetCount <= 1) {
+		// 	this.toastRef.setError("Can't Close CometChat Widget Less Than One");
+		// 	return;
+		// }
+		// this.context.targetElement.remove();
+		// window.window.CometChatWidgetCount--;
+		var parentElement = this.context.targetElement.parentNode;
+		window.destoryChat(parentElement.id);
 	};
 
 	render() {
