@@ -98,7 +98,6 @@ export default class CometChatWidgetLaunch {
 		const env = "";
 		const region = this.options.appRegion;
 		const widgetid = this.options.widgetID;
-
 		let apiUrl = `https://widget${env}-${region}.cometchat.io/v2/widget?id=${widgetid}`;
 
 		return fetch(apiUrl);

@@ -97,7 +97,7 @@ export class App extends React.Component {
 		this.contextProviderRef.setTypeAndItem(this.props.type, this.props.user);
 
 		this.contextProviderRef.setTargetElement(this.props.targetElement);
-
+		this.contextProviderRef.setIsLiveStream(this.props.isLiveStream);
 		/**
 		 * Detect cometchat status
 		 */

@@ -57,6 +57,7 @@ export class CometChatContextProvider extends React.Component {
 				),
 			},
 			targetElement: null,
+			isLiveStream: false,
 			minimum: false,
 			getLoggedinUser: this.getLoggedinUser,
 			setGroupMembers: this.setGroupMembers,
@@ -447,6 +448,12 @@ export class CometChatContextProvider extends React.Component {
 	setTargetElement = (el) => {
 		this.setState({
 			targetElement: el,
+		});
+	};
+
+	setIsLiveStream = (payload) => {
+		this.setState({
+			isLiveStream: payload,
 		});
 	};
 
