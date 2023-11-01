@@ -1151,21 +1151,24 @@ class CometChatConversationList extends React.Component {
 
 		const chatList = (
 			<div css={chatsWrapperStyle(this.props, theme)} className="chats">
-				<div css={chatsHeaderStyle(theme)} className="chats__header">
-					{closeBtn}
-					{statusBtn}
-					<h4
-						css={chatsHeaderTitleStyle(this.props)}
-						className="header__title"
-						dir={Translator.getDirection(this.props.lang)}
-					>
-						{Translator.translate("LW chat", this.props.lang)}
-					</h4>
-					{minimumBtn}
-					{duplicateBtn}
-					{disposeBtn}
-					{this.state.isOpenUserState && stateCollapse}
-				</div>
+				{this.context.isLiveStream ? null : (
+					<div css={chatsHeaderStyle(theme)} className="chats__header">
+						{closeBtn}
+						{statusBtn}
+						<h4
+							css={chatsHeaderTitleStyle(this.props)}
+							className="header__title"
+							dir={Translator.getDirection(this.props.lang)}
+						>
+							{Translator.translate("LW chat", this.props.lang)}
+						</h4>
+						{minimumBtn}
+						{duplicateBtn}
+						{disposeBtn}
+						{this.state.isOpenUserState && stateCollapse}
+					</div>
+				)}
+
 				{messageContainer}
 				<div
 					css={chatsListStyle()}
