@@ -319,7 +319,7 @@ class CometChatMessageActions extends React.PureComponent {
 
 		const textMessage = new CometChat.TextMessage(
 			receiverId,
-			`[Delete] ${this.props.message.text}`,
+			`[Deleted] ${this.props.message.text}`,
 			receiverType
 		);
 
