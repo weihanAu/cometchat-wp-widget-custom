@@ -784,8 +784,6 @@ class CometChatMessageHeader extends React.Component {
 			status = null;
 		}
 
-		if (this.context.isLiveStream) return null;
-
 		return (
 			<div css={chatHeaderStyle(this.context)} className="chat__header">
 				<div css={chatDetailStyle()} className="chat__details">

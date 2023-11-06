@@ -1129,46 +1129,49 @@ class CometChatConversationList extends React.Component {
 			);
 		}
 
-		const minimumBtn = (
+		let minimumBtn = (
 			<i
 				style={chatsHeaderMinimumStyle(this.context.minimum ? upIcon : dashIcon, theme)}
 				onClick={this.minimumCometChatWindow}
 			></i>
 		);
-		const disposeBtn = (
+		let disposeBtn = (
 			<i
 				style={chatsHeaderDisposeStyle(xIcon, theme)}
 				onClick={this.disposeCometChatWindow}
 			></i>
 		);
 
-		const duplicateBtn = (
+		let duplicateBtn = (
 			<i
 				style={chatsHeaderDuplicateStyle(copyIcon, theme)}
 				onClick={this.duplicateCometChatWindow}
 			></i>
 		);
 
+		if (this.context.isLiveStream) {
+			minimumBtn = null;
+			duplicateBtn = null;
+			disposeBtn = null;
+		}
+
 		const chatList = (
 			<div css={chatsWrapperStyle(this.props, theme)} className="chats">
-				{this.context.isLiveStream ? null : (
-					<div css={chatsHeaderStyle(theme)} className="chats__header">
-						{closeBtn}
-						{statusBtn}
-						<h4
-							css={chatsHeaderTitleStyle(this.props)}
-							className="header__title"
-							dir={Translator.getDirection(this.props.lang)}
-						>
-							{Translator.translate("LW chat", this.props.lang)}
-						</h4>
-						{minimumBtn}
-						{duplicateBtn}
-						{disposeBtn}
-						{this.state.isOpenUserState && stateCollapse}
-					</div>
-				)}
-
+				<div css={chatsHeaderStyle(theme)} className="chats__header">
+					{closeBtn}
+					{statusBtn}
+					<h4
+						css={chatsHeaderTitleStyle(this.props)}
+						className="header__title"
+						dir={Translator.getDirection(this.props.lang)}
+					>
+						{Translator.translate("LW chat", this.props.lang)}
+					</h4>
+					{minimumBtn}
+					{duplicateBtn}
+					{disposeBtn}
+					{this.state.isOpenUserState && stateCollapse}
+				</div>
 				{messageContainer}
 				<div
 					css={chatsListStyle()}
