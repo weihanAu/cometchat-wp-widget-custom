@@ -10,10 +10,7 @@ import { GroupListManager } from "./controller";
 import { CometChatCreateGroup, CometChatGroupListItem } from "../../Groups";
 import { CometChatToastNotification } from "../../Shared";
 
-import {
-	CometChatContextProvider,
-	CometChatContext,
-} from "../../../util/CometChatContext";
+import { CometChatContextProvider, CometChatContext } from "../../../util/CometChatContext";
 import * as enums from "../../../util/enums.js";
 
 import { theme } from "../../../resources/theme";
@@ -31,11 +28,18 @@ import {
 	groupMsgStyle,
 	groupMsgTxtStyle,
 	groupListStyle,
+	chatsHeaderDisposeStyle,
+	chatsHeaderDuplicateStyle,
+	chatsHeaderMinimumStyle,
 } from "./style";
 
 import searchIcon from "./resources/search.svg";
 import navigateIcon from "./resources/back.svg";
 import addIcon from "./resources/create.svg";
+import dashIcon from "./resources/dash.svg";
+import xIcon from "./resources/x.svg";
+import upIcon from "./resources/up.svg";
+import copyIcon from "./resources/copy.svg";
 
 class CometChatGroupList extends React.PureComponent {
 	item;
@@ -94,9 +98,7 @@ class CometChatGroupList extends React.PureComponent {
 		) {
 			const groups = [...this.state.grouplist];
 
-			let groupKey = groups.findIndex(
-				(group) => group.guid === this.getContext().item.guid
-			);
+			let groupKey = groups.findIndex((group) => group.guid === this.getContext().item.guid);
 			if (groupKey > -1) {
 				const groupObj = groups[groupKey];
 				let newGroupObj = Object.assign({}, groupObj, {
@@ -330,9 +332,7 @@ class CometChatGroupList extends React.PureComponent {
 
 			let password = "";
 			if (group.type === CometChat.GROUP_TYPE.PASSWORD) {
-				password = prompt(
-					Translator.translate("ENTER_YOUR_PASSWORD", this.props.lang)
-				);
+				password = prompt(Translator.translate("ENTER_YOUR_PASSWORD", this.props.lang));
 			}
 
 			const guid = group.guid;
@@ -353,10 +353,7 @@ class CometChatGroupList extends React.PureComponent {
 							groups.splice(groupKey, 1, newGroupObj);
 							this.setState({ grouplist: groups });
 
-							this.props.onItemClick(
-								newGroupObj,
-								CometChat.ACTION_TYPE.TYPE_GROUP
-							);
+							this.props.onItemClick(newGroupObj, CometChat.ACTION_TYPE.TYPE_GROUP);
 						}
 					} else {
 						this.toastRef.setError("SOMETHING_WRONG");
@@ -424,10 +421,7 @@ class CometChatGroupList extends React.PureComponent {
 			})
 			.catch((error) =>
 				this.setState({
-					decoratorMessage: Translator.translate(
-						"SOMETHING_WRONG",
-						this.props.lang
-					),
+					decoratorMessage: Translator.translate("SOMETHING_WRONG", this.props.lang),
 				})
 			);
 	};
@@ -455,13 +449,39 @@ class CometChatGroupList extends React.PureComponent {
 		}
 	};
 
+	minimumCometChatWindow = () => {
+		this.context.setMinimum();
+	};
+
+	duplicateCometChatWindow = () => {
+		// if (window.CometChatWidgetCount >= 3) {
+		// 	this.toastRef.setError("Can't Open CometChat Widget More Than Three");
+
+		// 	return;
+		// }
+
+		window.init(false);
+	};
+
+	disposeCometChatWindow = () => {
+		if (!this.context.targetElement) return;
+		// if (window.CometChatWidgetCount <= 1) {
+		// 	this.toastRef.setError("Can't Close CometChat Widget Less Than One");
+		// 	return;
+		// }
+		// this.context.targetElement.remove();
+		// window.window.CometChatWidgetCount--;
+		var parentElement = this.context.targetElement.parentNode;
+		window.destoryChat(parentElement.id);
+	};
+
 	render() {
 		let messageContainer = null;
 
 		if (this.state.decoratorMessage.length !== 0) {
 			messageContainer = (
-				<div css={groupMsgStyle()} className='groups__decorator-message'>
-					<p css={groupMsgTxtStyle(theme)} className='decorator-message'>
+				<div css={groupMsgStyle()} className="groups__decorator-message">
+					<p css={groupMsgTxtStyle(theme)} className="decorator-message">
 						{this.state.decoratorMessage}
 					</p>
 				</div>
@@ -503,7 +523,7 @@ class CometChatGroupList extends React.PureComponent {
 		let closeBtn = (
 			<div
 				css={groupHeaderCloseStyle(navigateIcon, theme)}
-				className='header__close'
+				className="header__close"
 				onClick={this.handleMenuClose}
 			></div>
 		);
@@ -514,17 +534,17 @@ class CometChatGroupList extends React.PureComponent {
 		let searchGroup = null;
 		if (this.state.enableSearchGroup) {
 			searchGroup = (
-				<div css={groupSearchStyle()} className='groups__search'>
+				<div css={groupSearchStyle()} className="groups__search">
 					<button
-						type='button'
-						className='search__button'
+						type="button"
+						className="search__button"
 						css={groupSearchButtonStyle(searchIcon, this.getContext())}
 					/>
 					<input
-						type='text'
-						autoComplete='off'
+						type="text"
+						autoComplete="off"
 						css={groupSearchInputStyle(this.props)}
-						className='search__input'
+						className="search__input"
 						placeholder={Translator.translate("SEARCH", this.props.lang)}
 						onChange={this.searchGroup}
 					/>
@@ -543,25 +563,54 @@ class CometChatGroupList extends React.PureComponent {
 			);
 		}
 
+		let minimumBtn = (
+			<i
+				style={chatsHeaderMinimumStyle(this.context.minimum ? upIcon : dashIcon, theme)}
+				onClick={this.minimumCometChatWindow}
+			></i>
+		);
+		let disposeBtn = (
+			<i
+				style={chatsHeaderDisposeStyle(xIcon, theme)}
+				onClick={this.disposeCometChatWindow}
+			></i>
+		);
+
+		let duplicateBtn = (
+			<i
+				style={chatsHeaderDuplicateStyle(copyIcon, theme)}
+				onClick={this.duplicateCometChatWindow}
+			></i>
+		);
+
+		if (this.context.isLiveStream) {
+			minimumBtn = null;
+			duplicateBtn = null;
+			disposeBtn = null;
+		}
+
 		const groupListTemplate = (
 			<React.Fragment>
-				<div css={groupWrapperStyle(this.props, theme)} className='groups'>
-					<div css={groupHeaderStyle(theme)} className='groups__header'>
+				<div css={groupWrapperStyle(this.props, theme)} className="groups">
+					<div css={groupHeaderStyle(theme)} className="groups__header">
 						{closeBtn}
 						<h4
 							css={groupHeaderTitleStyle(this.props)}
-							className='header__title'
+							className="header__title"
 							dir={Translator.getDirection(this.props.lang)}
 						>
 							{Translator.translate("GROUPS", this.props.lang)}
 						</h4>
+						{minimumBtn}
+						{duplicateBtn}
+						{disposeBtn}
 						{createGroupBtn}
 					</div>
 					{searchGroup}
 					{messageContainer}
 					<div
 						css={groupListStyle()}
-						className='groups__list'
+						className="groups__list"
 						onScroll={this.handleScroll}
 						ref={(el) => (this.groupListRef = el)}
 					>

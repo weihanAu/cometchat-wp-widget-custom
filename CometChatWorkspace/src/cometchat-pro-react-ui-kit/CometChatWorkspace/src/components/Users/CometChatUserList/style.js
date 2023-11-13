@@ -167,3 +167,51 @@ export const contactAlphabetStyle = (props) => {
 		color: `${props.theme.color.tertiary}`,
 	};
 };
+
+export const chatsHeaderMinimumStyle = (img, theme) => {
+	const mq = [...theme.breakPoints];
+
+	return {
+		cursor: "pointer",
+		display: "block",
+		background: `url(${img}) no-repeat bottom`,
+		width: "24px",
+		height: "24px",
+		margin: "0 0 0 8px",
+		[`@media ${mq[0]}`]: {
+			display: "block!important",
+		},
+	};
+};
+
+export const chatsHeaderDisposeStyle = (img, theme) => {
+	const mq = [...theme.breakPoints];
+
+	return {
+		cursor: "pointer",
+		display: "block",
+		background: `url(${img}) no-repeat center`,
+		width: "24px",
+		height: "24px",
+		margin: "0 0 0 8px",
+		[`@media ${mq[0]}`]: {
+			display: "block!important",
+		},
+	};
+};
+
+export const chatsHeaderDuplicateStyle = (img, theme) => {
+	const mq = [...theme.breakPoints];
+
+	return {
+		cursor: "pointer",
+		display: "block",
+		background: `url(${img}) no-repeat center`,
+		width: "24px",
+		height: "24px",
+		margin: "0 0 0 8px",
+		[`@media ${mq[0]}`]: {
+			display: "block!important",
+		},
+	};
+};

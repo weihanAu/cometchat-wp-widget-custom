@@ -9,10 +9,7 @@ import { UserListManager } from "./controller";
 
 import { CometChatUserListItem } from "../../Users";
 
-import {
-	CometChatContextProvider,
-	CometChatContext,
-} from "../../../util/CometChatContext";
+import { CometChatContextProvider, CometChatContext } from "../../../util/CometChatContext";
 import * as enums from "../../../util/enums.js";
 
 import { theme } from "../../../resources/theme";
@@ -30,8 +27,15 @@ import {
 	contactMsgTxtStyle,
 	contactListStyle,
 	contactAlphabetStyle,
+	chatsHeaderDisposeStyle,
+	chatsHeaderDuplicateStyle,
+	chatsHeaderMinimumStyle,
 } from "./style";
 
+import dashIcon from "./resources/dash.svg";
+import xIcon from "./resources/x.svg";
+import upIcon from "./resources/up.svg";
+import copyIcon from "./resources/copy.svg";
 import searchIcon from "./resources/search.svg";
 import navigateIcon from "./resources/back.svg";
 
@@ -56,10 +60,7 @@ class CometChatUserList extends React.PureComponent {
 			.then((user) => (this.loggedInUser = user))
 			.catch((error) =>
 				this.setState({
-					decoratorMessage: Translator.translate(
-						"SOMETHING_WRONG",
-						this.props.lang
-					),
+					decoratorMessage: Translator.translate("SOMETHING_WRONG", this.props.lang),
 				})
 			);
 	}
@@ -79,10 +80,7 @@ class CometChatUserList extends React.PureComponent {
 			})
 			.catch((error) =>
 				this.setState({
-					decoratorMessage: Translator.translate(
-						"SOMETHING_WRONG",
-						this.props.lang
-					),
+					decoratorMessage: Translator.translate("SOMETHING_WRONG", this.props.lang),
 				})
 			);
 	}
@@ -99,9 +97,7 @@ class CometChatUserList extends React.PureComponent {
 			let userlist = [...this.state.userlist];
 
 			//search for user
-			let userKey = userlist.findIndex(
-				(u) => u.uid === this.getContext().item.uid
-			);
+			let userKey = userlist.findIndex((u) => u.uid === this.getContext().item.uid);
 			if (userKey > -1) {
 				let userObject = { ...userlist[userKey] };
 				let newUserObject = Object.assign({}, userObject, {
@@ -193,10 +189,7 @@ class CometChatUserList extends React.PureComponent {
 					this.setState(
 						{
 							userlist: [],
-							decoratorMessage: Translator.translate(
-								"LOADING",
-								this.props.lang
-							),
+							decoratorMessage: Translator.translate("LOADING", this.props.lang),
 						},
 						() => this.getUsers()
 					);
@@ -204,10 +197,7 @@ class CometChatUserList extends React.PureComponent {
 			})
 			.catch((error) =>
 				this.setState({
-					decoratorMessage: Translator.translate(
-						"SOMETHING_WRONG",
-						this.props.lang
-					),
+					decoratorMessage: Translator.translate("SOMETHING_WRONG", this.props.lang),
 				})
 			);
 	};
@@ -233,10 +223,7 @@ class CometChatUserList extends React.PureComponent {
 			})
 			.catch((error) =>
 				this.setState({
-					decoratorMessage: Translator.translate(
-						"SOMETHING_WRONG",
-						this.props.lang
-					),
+					decoratorMessage: Translator.translate("SOMETHING_WRONG", this.props.lang),
 				})
 			);
 	};
@@ -249,12 +236,38 @@ class CometChatUserList extends React.PureComponent {
 		}
 	};
 
+	minimumCometChatWindow = () => {
+		this.context.setMinimum();
+	};
+
+	duplicateCometChatWindow = () => {
+		// if (window.CometChatWidgetCount >= 3) {
+		// 	this.toastRef.setError("Can't Open CometChat Widget More Than Three");
+
+		// 	return;
+		// }
+
+		window.init(false);
+	};
+
+	disposeCometChatWindow = () => {
+		if (!this.context.targetElement) return;
+		// if (window.CometChatWidgetCount <= 1) {
+		// 	this.toastRef.setError("Can't Close CometChat Widget Less Than One");
+		// 	return;
+		// }
+		// this.context.targetElement.remove();
+		// window.window.CometChatWidgetCount--;
+		var parentElement = this.context.targetElement.parentNode;
+		window.destoryChat(parentElement.id);
+	};
+
 	render() {
 		let messageContainer = null;
 		if (this.state.decoratorMessage.length !== 0) {
 			messageContainer = (
-				<div css={contactMsgStyle()} className='contacts__decorator-message'>
-					<p css={contactMsgTxtStyle(theme)} className='decorator-message'>
+				<div css={contactMsgStyle()} className="contacts__decorator-message">
+					<p css={contactMsgTxtStyle(theme)} className="decorator-message">
 						{this.state.decoratorMessage}
 					</p>
 				</div>
@@ -272,7 +285,7 @@ class CometChatUserList extends React.PureComponent {
 				firstChar = (
 					<div
 						css={contactAlphabetStyle(this.props)}
-						className='contacts__list__alphabet-filter'
+						className="contacts__list__alphabet-filter"
 					>
 						{currentLetter}
 					</div>
@@ -302,7 +315,7 @@ class CometChatUserList extends React.PureComponent {
 		let closeBtn = (
 			<div
 				css={contactHeaderCloseStyle(navigateIcon, theme)}
-				className='header__close'
+				className="header__close"
 				onClick={this.handleMenuClose}
 			></div>
 		);
@@ -313,17 +326,17 @@ class CometChatUserList extends React.PureComponent {
 		let searchUser = null;
 		if (this.state.enableSearchUser) {
 			searchUser = (
-				<div css={contactSearchStyle()} className='contacts__search'>
+				<div css={contactSearchStyle()} className="contacts__search">
 					<button
-						type='button'
-						className='search__button'
+						type="button"
+						className="search__button"
 						css={contactSearchButtonStyle(searchIcon, theme)}
 					/>
 					<input
-						type='text'
-						autoComplete='off'
+						type="text"
+						autoComplete="off"
 						css={contactSearchInputStyle(this.props)}
-						className='search__input'
+						className="search__input"
 						placeholder={Translator.translate("SEARCH", this.props.lang)}
 						onChange={this.searchUsers}
 					/>
@@ -331,24 +344,54 @@ class CometChatUserList extends React.PureComponent {
 			);
 		}
 
+		let minimumBtn = (
+			<i
+				style={chatsHeaderMinimumStyle(this.context.minimum ? upIcon : dashIcon, theme)}
+				onClick={this.minimumCometChatWindow}
+			></i>
+		);
+		let disposeBtn = (
+			<i
+				style={chatsHeaderDisposeStyle(xIcon, theme)}
+				onClick={this.disposeCometChatWindow}
+			></i>
+		);
+
+		let duplicateBtn = (
+			<i
+				style={chatsHeaderDuplicateStyle(copyIcon, theme)}
+				onClick={this.duplicateCometChatWindow}
+			></i>
+		);
+
+		if (this.context.isLiveStream) {
+			minimumBtn = null;
+			duplicateBtn = null;
+			disposeBtn = null;
+		}
+
 		const userListTemplate = (
-			<div css={contactWrapperStyle(this.props, theme)} className='contacts'>
-				<div css={contactHeaderStyle(theme)} className='contacts__header'>
+			<div css={contactWrapperStyle(this.props, theme)} className="contacts">
+				<div css={contactHeaderStyle(theme)} className="contacts__header">
 					{closeBtn}
 					<h4
 						css={contactHeaderTitleStyle(this.props)}
-						className='header__title'
+						className="header__title"
 						dir={Translator.getDirection(this.props.lang)}
 					>
 						{Translator.translate("USERS", this.props.lang)}
 					</h4>
-					<div></div>
+					<div style={{ display: "flex", flexFlow: "row nowrap" }}>
+						{minimumBtn}
+						{duplicateBtn}
+						{disposeBtn}
+					</div>
 				</div>
 				{searchUser}
 				{messageContainer}
 				<div
 					css={contactListStyle()}
-					className='contacts__list'
+					className="contacts__list"
 					onScroll={this.handleScroll}
 					ref={(el) => (this.userListRef = el)}
 				>
