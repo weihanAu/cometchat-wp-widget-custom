@@ -12,8 +12,13 @@ export async function deactivateUser(option, props, context) {
 			method: "DELETE",
 			body: JSON.stringify({ uidsToDeactivate: [uid] }),
 		});
-
-		if (res.status === 200 && res.ok) {
+		// call wordpress
+		const wp_url = `https://livewiredev.wpengine.com/wp-json/cometchat/deactivate-permanently?user_id=${uid}`;
+		const wp_res = await fetch(wp_url, {
+			headers: { Authorization: `basic bGl2ZXdpcmVkZXY6MTY5MGIyNTk=` },
+		});
+		if (res.status === 200 && wp_res.status === 200 && res.ok) {
+			//tell users that user is deactivated permanently
 		}
 	}
 
@@ -21,6 +26,14 @@ export async function deactivateUser(option, props, context) {
 	 * @todo
 	 */
 	if (option === "DEACTIVATE 15 MINUTE") {
+		// call wordpress
+		const wp_url = `https://livewiredev.wpengine.com/wp-json/cometchat/deactivate-temporarily?user_id=${uid}`;
+		const wp_res = await fetch(wp_url, {
+			headers: { Authorization: `basic bGl2ZXdpcmVkZXY6MTY5MGIyNTk=` },
+		});
+		if (wp_res.status === 200) {
+			//tell users that user is deactivated for 15 minutes
+		}
 	}
 
 	const groupmembers = [...context.groupMembers];

@@ -170,7 +170,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 						<a
 							className="dropdown-item"
 							href="#"
-							onClick={() => {
+							onClick={async () => {
 								deactivateUser("DEACTIVATE PERMANENTLY", this.props, this.context);
 							}}
 						>
