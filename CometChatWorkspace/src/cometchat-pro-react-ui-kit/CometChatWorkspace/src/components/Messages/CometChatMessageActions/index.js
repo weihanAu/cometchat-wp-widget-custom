@@ -213,6 +213,9 @@ class CometChatMessageActions extends React.PureComponent {
 	};
 
 	deleteMessage = () => {
+		this.markDelete();
+
+		return;
 		this.props.actionGenerated(enums.ACTIONS["DELETE_MESSAGE"], this.props.message);
 	};
 
