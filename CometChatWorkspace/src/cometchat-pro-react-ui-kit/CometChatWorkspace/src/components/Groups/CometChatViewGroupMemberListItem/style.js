@@ -44,6 +44,7 @@ export const nameColumnStyle = (context, participantView) => {
 		flexDirection: "row",
 		justifyContent: "flex-start",
 		alignItems: "center",
+		position: "relative",
 		...widthProp,
 	};
 };
@@ -91,7 +92,10 @@ export const nameStyle = (context, participantView) => {
 		: {
 				display: "inline",
 				[mq[1]]: {
-					display: "none",
+					display: "inline",
+					position: "absolute",
+					bottom: "-16px",
+					width: "fit-content",
 				},
 		  };
 

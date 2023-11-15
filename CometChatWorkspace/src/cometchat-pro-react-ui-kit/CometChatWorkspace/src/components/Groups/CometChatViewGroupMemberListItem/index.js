@@ -152,7 +152,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 								);
 							}}
 						>
-							BAN({this.props.member.name})
+							BAN
 						</a>
 					</li>
 					<li>
@@ -163,7 +163,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 								deactivateUser("DEACTIVATE PERMANENTLY", this.props, this.context);
 							}}
 						>
-							DEACTIVATE({this.props.member.name})
+							DEACTIVATE
 						</a>
 					</li>
 					<li>
@@ -174,7 +174,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 								deactivateUser("DEACTIVATE PERMANENTLY", this.props, this.context);
 							}}
 						>
-							TIME OUT({this.props.member.name})
+							TIME OUT
 						</a>
 					</li>
 				</ul>
