@@ -1,4 +1,12 @@
 export const modalRowStyle = (context) => {
+	const mq = context.theme.breakPoints.map((x) => `@media ${x}`);
+
+	const paddingProps = {
+		[mq[1]]: {
+			paddingBottom: "16px",
+		},
+	};
+
 	return {
 		borderLeft: `1px solid ${context.theme.borderColor.primary}`,
 		borderRight: `1px solid ${context.theme.borderColor.primary}`,
@@ -10,6 +18,7 @@ export const modalRowStyle = (context) => {
 		justifyContent: "flex-start",
 		alignItems: "center",
 		padding: "8px",
+		...paddingProps,
 	};
 };
 
@@ -94,7 +103,7 @@ export const nameStyle = (context, participantView) => {
 				[mq[1]]: {
 					display: "inline",
 					position: "absolute",
-					bottom: "-16px",
+					bottom: "-24px",
 					width: "fit-content",
 				},
 		  };
