@@ -1153,7 +1153,7 @@ class CometChatMessageComposer extends React.PureComponent {
 						ref={this.videoUploaderRef}
 					/>
 				</div>
-				<div
+				{/* <div
 					title={audioText}
 					css={fileItemStyle(audioIcon, this.context)}
 					className="filelist__item item__audio"
@@ -1168,7 +1168,7 @@ class CometChatMessageComposer extends React.PureComponent {
 						type="file"
 						ref={this.audioUploaderRef}
 					/>
-				</div>
+				</div> */}
 				<div
 					title={imageText}
 					css={fileItemStyle(imageIcon, this.context)}
