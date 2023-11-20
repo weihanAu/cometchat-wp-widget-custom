@@ -11,6 +11,7 @@ import { CometChatContext } from "../../../util/CometChatContext";
 import * as enums from "../../../util/enums.js";
 
 import Translator from "../../../resources/localization/translator";
+import { CometChatToastNotification } from "../../Shared";
 
 import {
 	modalRowStyle,
@@ -56,6 +57,8 @@ class CometChatViewGroupMemberListItem extends React.Component {
 		};
 
 		this.roles = context.roles;
+
+		this.toastRef = React.createRef();
 	}
 
 	toggleChangeScope = (flag) => {
@@ -160,7 +163,12 @@ class CometChatViewGroupMemberListItem extends React.Component {
 							className="dropdown-item"
 							href="#"
 							onClick={() => {
-								deactivateUser("DEACTIVATE PERMANENTLY", this.props, this.context);
+								deactivateUser(
+									"DEACTIVATE PERMANENTLY",
+									this.props,
+									this.context,
+									this.toastRef
+								);
 							}}
 						>
 							DEACTIVATE
@@ -171,7 +179,12 @@ class CometChatViewGroupMemberListItem extends React.Component {
 							className="dropdown-item"
 							href="#"
 							onClick={async () => {
-								deactivateUser("DEACTIVATE PERMANENTLY", this.props, this.context);
+								deactivateUser(
+									"DEACTIVATE PERMANENTLY",
+									this.props,
+									this.context,
+									this.toastRef
+								);
 							}}
 						>
 							TIME OUT
@@ -350,6 +363,12 @@ class CometChatViewGroupMemberListItem extends React.Component {
 
 		return (
 			<div css={modalRowStyle(this.context)} className="content__row">
+				<CometChatToastNotification
+					ref={(el) => {
+						this.toastRef = el;
+					}}
+					lang={this.props.lang}
+				/>
 				<div css={nameColumnStyle(this.context, editClassName)} className="userinfo">
 					<div
 						css={avatarStyle(this.context, editClassName)}

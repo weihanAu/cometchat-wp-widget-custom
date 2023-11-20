@@ -1,6 +1,6 @@
 import { APPID, REGION, fetctData } from "../../../../../../../fetchData";
 
-export async function deactivateUser(option, props, context) {
+export async function deactivateUser(option, props, context, toastRef) {
 	const { member } = props;
 
 	const { uid } = member;
@@ -19,6 +19,7 @@ export async function deactivateUser(option, props, context) {
 		});
 		if (res.status === 200 && wp_res.status === 200 && res.ok) {
 			//tell users that user is deactivated permanently
+			toastRef.setSuccess("user is deactivated permanently");
 		}
 	}
 
@@ -33,6 +34,7 @@ export async function deactivateUser(option, props, context) {
 		});
 		if (wp_res.status === 200) {
 			//tell users that user is deactivated for 15 minutes
+			toastRef.setSuccess("user is deactivated for 15 minutes");
 		}
 	}
 
