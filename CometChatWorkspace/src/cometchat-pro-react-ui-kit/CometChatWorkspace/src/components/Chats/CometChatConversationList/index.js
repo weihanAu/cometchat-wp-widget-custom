@@ -7,7 +7,11 @@ import { CometChat } from "@cometchat-pro/chat";
 
 import { ConversationListManager } from "./controller";
 
-import { CometChatConfirmDialog, CometChatToastNotification } from "../../Shared";
+import {
+	CometChatConfirmDialog,
+	CometChatToastNotification,
+	CometchatWindowButtons,
+} from "../../Shared";
 import { CometChatConversationListItem } from "../";
 
 import { CometChatContextProvider, CometChatContext } from "../../../util/CometChatContext";
@@ -1167,6 +1171,7 @@ class CometChatConversationList extends React.Component {
 					>
 						{Translator.translate("LW chat", this.props.lang)}
 					</h4>
+					<CometchatWindowButtons context={this.context} />
 					{minimumBtn}
 					{duplicateBtn}
 					{disposeBtn}

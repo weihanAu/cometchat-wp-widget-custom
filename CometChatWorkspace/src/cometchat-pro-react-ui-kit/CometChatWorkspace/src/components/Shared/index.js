@@ -5,3 +5,4 @@ export { CometChatUserPresence } from "./CometChatUserPresence";
 export { CometChatToastNotification } from "./CometChatToastNotification";
 export { CometChatConfirmDialog } from "./CometChatConfirmDialog";
 export { CometChatListItem } from "./CometChatListItem";
+export { CometchatWindowButtons } from "./CometchatWindowButtons";

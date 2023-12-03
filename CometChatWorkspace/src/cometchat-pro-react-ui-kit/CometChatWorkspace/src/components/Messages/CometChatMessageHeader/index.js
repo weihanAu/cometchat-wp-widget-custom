@@ -35,10 +35,6 @@ import menuIcon from "./resources/menu.svg";
 import audioCallIcon from "./resources/audio-call.svg";
 import videoCallIcon from "./resources/video-call.svg";
 import detailPaneIcon from "./resources/info.svg";
-import dashIcon from "./resources/dash.svg";
-import xIcon from "./resources/x.svg";
-import upIcon from "./resources/up.svg";
-import copyIcon from "./resources/copy.svg";
 
 class CometChatMessageHeader extends React.Component {
 	item;
@@ -594,32 +590,6 @@ class CometChatMessageHeader extends React.Component {
 		this.props.actionGenerated(enums.ACTIONS["VIEW_DETAIL"]);
 	};
 
-	minimumCometChatWindow = () => {
-		this.context.setMinimum();
-	};
-
-	duplicateCometChatWindow = () => {
-		// if (window.CometChatWidgetCount >= 3) {
-		// 	this.toastRef.setError("Can't Open CometChat Widget More Than Three");
-
-		// 	return;
-		// }
-
-		window.init(false);
-	};
-
-	disposeCometChatWindow = () => {
-		if (!this.context.targetElement) return;
-		// if (window.CometChatWidgetCount <= 1) {
-		// 	this.toastRef.setError("Can't Close CometChat Widget Less Than One");
-		// 	return;
-		// }
-		// this.context.targetElement.remove();
-		// window.window.CometChatWidgetCount--;
-		var parentElement = this.context.targetElement.parentNode;
-		window.destoryChat(parentElement.id);
-	};
-
 	render() {
 		let avatar, presence;
 		let videoCallClassName = "option__videocall-user";
@@ -817,32 +787,6 @@ class CometChatMessageHeader extends React.Component {
 			status = null;
 		}
 
-		let minimumBtn = (
-			<i
-				style={chatsHeaderMinimumStyle(this.context.minimum ? upIcon : dashIcon, theme)}
-				onClick={this.minimumCometChatWindow}
-			></i>
-		);
-		let disposeBtn = (
-			<i
-				style={chatsHeaderDisposeStyle(xIcon, theme)}
-				onClick={this.disposeCometChatWindow}
-			></i>
-		);
-
-		let duplicateBtn = (
-			<i
-				style={chatsHeaderDuplicateStyle(copyIcon, theme)}
-				onClick={this.duplicateCometChatWindow}
-			></i>
-		);
-
-		if (this.context.isLiveStream) {
-			minimumBtn = null;
-			duplicateBtn = null;
-			disposeBtn = null;
-		}
-
 		return (
 			<div css={chatHeaderStyle(this.context)} className="chat__header">
 				<div css={chatDetailStyle()} className="chat__details">
@@ -868,9 +812,6 @@ class CometChatMessageHeader extends React.Component {
 					</div>
 				</div>
 				<div css={chatOptionWrapStyle()} className="chat__options">
-					{minimumBtn}
-					{duplicateBtn}
-					{disposeBtn}
 					{videoCallBtn}
 					{audioCallBtn}
 					{viewDetailBtn}
