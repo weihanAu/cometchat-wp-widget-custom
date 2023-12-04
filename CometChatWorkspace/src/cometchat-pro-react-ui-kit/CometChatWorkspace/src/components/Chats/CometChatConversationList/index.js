@@ -32,18 +32,11 @@ import {
 	chatsMsgTxtStyle,
 	chatsListStyle,
 	chatsHeaderSettingStyle,
-	chatsHeaderMinimumStyle,
-	chatsHeaderDisposeStyle,
 	stateCollapseStyle,
-	chatsHeaderDuplicateStyle,
 } from "./style";
 
 import navigateIcon from "./resources/back.svg";
 import settingIcon from "./resources/gear.svg";
-import dashIcon from "./resources/dash.svg";
-import xIcon from "./resources/x.svg";
-import upIcon from "./resources/up.svg";
-import copyIcon from "./resources/copy.svg";
 
 import { toggleUserState } from "./api/toggleUserState";
 
@@ -999,32 +992,6 @@ class CometChatConversationList extends React.Component {
 		}
 	};
 
-	minimumCometChatWindow = () => {
-		this.context.setMinimum();
-	};
-
-	duplicateCometChatWindow = () => {
-		// if (window.CometChatWidgetCount >= 3) {
-		// 	this.toastRef.setError("Can't Open CometChat Widget More Than Three");
-
-		// 	return;
-		// }
-
-		window.init(false);
-	};
-
-	disposeCometChatWindow = () => {
-		if (!this.context.targetElement) return;
-		// if (window.CometChatWidgetCount <= 1) {
-		// 	this.toastRef.setError("Can't Close CometChat Widget Less Than One");
-		// 	return;
-		// }
-		// this.context.targetElement.remove();
-		// window.window.CometChatWidgetCount--;
-		var parentElement = this.context.targetElement.parentNode;
-		window.destoryChat(parentElement.id);
-	};
-
 	render() {
 		const conversationList = this.state.conversationlist.map((conversation, key) => {
 			return (
@@ -1133,32 +1100,6 @@ class CometChatConversationList extends React.Component {
 			);
 		}
 
-		let minimumBtn = (
-			<i
-				style={chatsHeaderMinimumStyle(this.context.minimum ? upIcon : dashIcon, theme)}
-				onClick={this.minimumCometChatWindow}
-			></i>
-		);
-		let disposeBtn = (
-			<i
-				style={chatsHeaderDisposeStyle(xIcon, theme)}
-				onClick={this.disposeCometChatWindow}
-			></i>
-		);
-
-		let duplicateBtn = (
-			<i
-				style={chatsHeaderDuplicateStyle(copyIcon, theme)}
-				onClick={this.duplicateCometChatWindow}
-			></i>
-		);
-
-		if (this.context.isLiveStream) {
-			minimumBtn = null;
-			duplicateBtn = null;
-			disposeBtn = null;
-		}
-
 		const chatList = (
 			<div css={chatsWrapperStyle(this.props, theme)} className="chats">
 				<div css={chatsHeaderStyle(theme)} className="chats__header">
@@ -1171,10 +1112,7 @@ class CometChatConversationList extends React.Component {
 					>
 						{Translator.translate("LW chat", this.props.lang)}
 					</h4>
-					<CometchatWindowButtons context={this.context} />
-					{minimumBtn}
-					{duplicateBtn}
-					{disposeBtn}
+					<CometchatWindowButtons />
 					{this.state.isOpenUserState && stateCollapse}
 				</div>
 				{messageContainer}

@@ -32,12 +32,9 @@ import {
 	chatsHeaderMinimumStyle,
 } from "./style";
 
-import dashIcon from "./resources/dash.svg";
-import xIcon from "./resources/x.svg";
-import upIcon from "./resources/up.svg";
-import copyIcon from "./resources/copy.svg";
 import searchIcon from "./resources/search.svg";
 import navigateIcon from "./resources/back.svg";
+import { CometchatWindowButtons } from "../../Shared/index.js";
 
 class CometChatUserList extends React.PureComponent {
 	item;
@@ -236,32 +233,6 @@ class CometChatUserList extends React.PureComponent {
 		}
 	};
 
-	minimumCometChatWindow = () => {
-		this.context.setMinimum();
-	};
-
-	duplicateCometChatWindow = () => {
-		// if (window.CometChatWidgetCount >= 3) {
-		// 	this.toastRef.setError("Can't Open CometChat Widget More Than Three");
-
-		// 	return;
-		// }
-
-		window.init(false);
-	};
-
-	disposeCometChatWindow = () => {
-		if (!this.context.targetElement) return;
-		// if (window.CometChatWidgetCount <= 1) {
-		// 	this.toastRef.setError("Can't Close CometChat Widget Less Than One");
-		// 	return;
-		// }
-		// this.context.targetElement.remove();
-		// window.window.CometChatWidgetCount--;
-		var parentElement = this.context.targetElement.parentNode;
-		window.destoryChat(parentElement.id);
-	};
-
 	render() {
 		let messageContainer = null;
 		if (this.state.decoratorMessage.length !== 0) {
@@ -344,32 +315,6 @@ class CometChatUserList extends React.PureComponent {
 			);
 		}
 
-		let minimumBtn = (
-			<i
-				style={chatsHeaderMinimumStyle(this.context.minimum ? upIcon : dashIcon, theme)}
-				onClick={this.minimumCometChatWindow}
-			></i>
-		);
-		let disposeBtn = (
-			<i
-				style={chatsHeaderDisposeStyle(xIcon, theme)}
-				onClick={this.disposeCometChatWindow}
-			></i>
-		);
-
-		let duplicateBtn = (
-			<i
-				style={chatsHeaderDuplicateStyle(copyIcon, theme)}
-				onClick={this.duplicateCometChatWindow}
-			></i>
-		);
-
-		if (this.context.isLiveStream) {
-			minimumBtn = null;
-			duplicateBtn = null;
-			disposeBtn = null;
-		}
-
 		const userListTemplate = (
 			<div css={contactWrapperStyle(this.props, theme)} className="contacts">
 				<div css={contactHeaderStyle(theme)} className="contacts__header">
@@ -381,11 +326,7 @@ class CometChatUserList extends React.PureComponent {
 					>
 						{Translator.translate("USERS", this.props.lang)}
 					</h4>
-					<div style={{ display: "flex", flexFlow: "row nowrap" }}>
-						{minimumBtn}
-						{duplicateBtn}
-						{disposeBtn}
-					</div>
+					<CometchatWindowButtons />
 				</div>
 				{searchUser}
 				{messageContainer}

@@ -42,3 +42,18 @@ export const chatsHeaderDuplicateStyle = (img, theme) => {
 		},
 	};
 };
+
+export const chatsHeaderToggleButtonStyle = (img, theme) => {
+	const mq = [...theme.breakPoints];
+
+	return {
+		cursor: "pointer",
+		display: "block",
+		background: `url(${img}) no-repeat center`,
+		width: "36px",
+		height: "36px",
+		[`@media ${mq[0]}`]: {
+			display: "block!important",
+		},
+	};
+};

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { createRef } from "react";
+import ReactDOM from "react-dom";
 import { CometChatContext } from "../../../util/CometChatContext";
 import dashIcon from "./resources/dash.svg";
 import xIcon from "./resources/x.svg";
@@ -8,76 +9,112 @@ import {
 	chatsHeaderDisposeStyle,
 	chatsHeaderDuplicateStyle,
 	chatsHeaderMinimumStyle,
+	chatsHeaderToggleButtonStyle,
 } from "./style";
 import { theme } from "../../../resources/theme";
-
+import { CometChatToastNotification } from "../CometChatToastNotification";
+import dotsIcon from "./resources/three-dots.svg";
 export class CometchatWindowButtons extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.toastRef = createRef();
 	}
 
-	minimumCometChatWindow = () => {
-		this.props.context.setMinimum();
-	};
-
-	duplicateCometChatWindow = () => {
-		// if (window.CometChatWidgetCount >= 3) {
-		// 	this.toastRef.setError("Can't Open CometChat Widget More Than Three");
-
-		// 	return;
-		// }
-
-		window.init(false);
-	};
-
-	disposeCometChatWindow = () => {
-		if (!this.props.context.targetElement) return;
-		// if (window.CometChatWidgetCount <= 1) {
-		// 	this.toastRef.setError("Can't Close CometChat Widget Less Than One");
-		// 	return;
-		// }
-		// this.props.context.targetElement.remove();
-		// window.window.CometChatWidgetCount--;
-		var parentElement = this.props.context.targetElement.parentNode;
-		window.destoryChat(parentElement.id);
-	};
-
 	render() {
-		let minimumBtn = (
-			<i
-				style={chatsHeaderMinimumStyle(
-					this.props.context.minimum ? upIcon : dashIcon,
-					theme
-				)}
-				onClick={this.minimumCometChatWindow}
-			></i>
-		);
-		let disposeBtn = (
-			<i
-				style={chatsHeaderDisposeStyle(xIcon, theme)}
-				onClick={this.disposeCometChatWindow}
-			></i>
-		);
-
-		let duplicateBtn = (
-			<i
-				style={chatsHeaderDuplicateStyle(copyIcon, theme)}
-				onClick={this.duplicateCometChatWindow}
-			></i>
-		);
-
-		if (this.props.context.isLiveStream) {
-			minimumBtn = null;
-			duplicateBtn = null;
-			disposeBtn = null;
-		}
-
 		return (
-			<>
-				{minimumBtn}
-				{duplicateBtn}
-				{disposeBtn}
-			</>
+			<CometChatContext.Consumer>
+				{(context) => {
+					const minimumCometChatWindow = () => {
+						context.setMinimum();
+					};
+
+					const duplicateCometChatWindow = () => {
+						// if (window.CometChatWidgetCount >= 3) {
+						// 	this.toastRef.setError("Can't Open CometChat Widget More Than Three");
+
+						// 	return;
+						// }
+
+						window.init(false);
+					};
+
+					const disposeCometChatWindow = () => {
+						if (!context.targetElement) return;
+						// if (window.CometChatWidgetCount <= 1) {
+						// 	this.toastRef.setError("Can't Close CometChat Widget Less Than One");
+						// 	return;
+						// }
+						// context.targetElement.remove();
+						// window.window.CometChatWidgetCount--;
+						var parentElement = context.targetElement.parentNode;
+						window.destoryChat(parentElement.id);
+					};
+
+					let minimumBtn = (
+						<i
+							style={chatsHeaderMinimumStyle(
+								context.minimum ? upIcon : dashIcon,
+								theme
+							)}
+							onClick={minimumCometChatWindow}
+						></i>
+					);
+					let disposeBtn = (
+						<i
+							style={chatsHeaderDisposeStyle(xIcon, theme)}
+							onClick={disposeCometChatWindow}
+						></i>
+					);
+
+					let duplicateBtn = (
+						<i
+							style={chatsHeaderDuplicateStyle(copyIcon, theme)}
+							onClick={duplicateCometChatWindow}
+						></i>
+					);
+
+					if (context.isLiveStream) {
+						minimumBtn = null;
+						duplicateBtn = null;
+						disposeBtn = null;
+					}
+
+					const btn = (
+						<div class={`dropdown${context.minimum ? " dropstart" : ""}`}>
+							<i
+								style={chatsHeaderToggleButtonStyle(dotsIcon, theme)}
+								type="button"
+								data-bs-toggle="dropdown"
+								aria-expanded="false"
+							></i>
+							<ul class="dropdown-menu">
+								<li>
+									<button class="dropdown-item" type="button">
+										{minimumBtn}
+									</button>
+								</li>
+								<li>
+									<button class="dropdown-item" type="button">
+										{duplicateBtn}
+									</button>
+								</li>
+							</ul>
+						</div>
+					);
+
+					return (
+						<>
+							{btn}
+							{disposeBtn}
+							<CometChatToastNotification
+								ref={(el) => (this.toastRef = el)}
+								lang={this.props.lang}
+							/>
+						</>
+					);
+				}}
+			</CometChatContext.Consumer>
 		);
 	}
 }

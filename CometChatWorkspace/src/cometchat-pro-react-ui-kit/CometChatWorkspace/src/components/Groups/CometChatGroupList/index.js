@@ -8,7 +8,7 @@ import { CometChat } from "@cometchat-pro/chat";
 import { GroupListManager } from "./controller";
 
 import { CometChatCreateGroup, CometChatGroupListItem } from "../../Groups";
-import { CometChatToastNotification } from "../../Shared";
+import { CometChatToastNotification, CometchatWindowButtons } from "../../Shared";
 
 import { CometChatContextProvider, CometChatContext } from "../../../util/CometChatContext";
 import * as enums from "../../../util/enums.js";
@@ -28,18 +28,11 @@ import {
 	groupMsgStyle,
 	groupMsgTxtStyle,
 	groupListStyle,
-	chatsHeaderDisposeStyle,
-	chatsHeaderDuplicateStyle,
-	chatsHeaderMinimumStyle,
 } from "./style";
 
 import searchIcon from "./resources/search.svg";
 import navigateIcon from "./resources/back.svg";
 import addIcon from "./resources/create.svg";
-import dashIcon from "./resources/dash.svg";
-import xIcon from "./resources/x.svg";
-import upIcon from "./resources/up.svg";
-import copyIcon from "./resources/copy.svg";
 
 class CometChatGroupList extends React.PureComponent {
 	item;
@@ -449,32 +442,6 @@ class CometChatGroupList extends React.PureComponent {
 		}
 	};
 
-	minimumCometChatWindow = () => {
-		this.context.setMinimum();
-	};
-
-	duplicateCometChatWindow = () => {
-		// if (window.CometChatWidgetCount >= 3) {
-		// 	this.toastRef.setError("Can't Open CometChat Widget More Than Three");
-
-		// 	return;
-		// }
-
-		window.init(false);
-	};
-
-	disposeCometChatWindow = () => {
-		if (!this.context.targetElement) return;
-		// if (window.CometChatWidgetCount <= 1) {
-		// 	this.toastRef.setError("Can't Close CometChat Widget Less Than One");
-		// 	return;
-		// }
-		// this.context.targetElement.remove();
-		// window.window.CometChatWidgetCount--;
-		var parentElement = this.context.targetElement.parentNode;
-		window.destoryChat(parentElement.id);
-	};
-
 	render() {
 		let messageContainer = null;
 
@@ -563,32 +530,6 @@ class CometChatGroupList extends React.PureComponent {
 			);
 		}
 
-		let minimumBtn = (
-			<i
-				style={chatsHeaderMinimumStyle(this.context.minimum ? upIcon : dashIcon, theme)}
-				onClick={this.minimumCometChatWindow}
-			></i>
-		);
-		let disposeBtn = (
-			<i
-				style={chatsHeaderDisposeStyle(xIcon, theme)}
-				onClick={this.disposeCometChatWindow}
-			></i>
-		);
-
-		let duplicateBtn = (
-			<i
-				style={chatsHeaderDuplicateStyle(copyIcon, theme)}
-				onClick={this.duplicateCometChatWindow}
-			></i>
-		);
-
-		if (this.context.isLiveStream) {
-			minimumBtn = null;
-			duplicateBtn = null;
-			disposeBtn = null;
-		}
-
 		const groupListTemplate = (
 			<React.Fragment>
 				<div css={groupWrapperStyle(this.props, theme)} className="groups">
@@ -601,9 +542,7 @@ class CometChatGroupList extends React.PureComponent {
 						>
 							{Translator.translate("GROUPS", this.props.lang)}
 						</h4>
-						{minimumBtn}
-						{duplicateBtn}
-						{disposeBtn}
+						<CometchatWindowButtons />
 						{createGroupBtn}
 					</div>
 					{searchGroup}
