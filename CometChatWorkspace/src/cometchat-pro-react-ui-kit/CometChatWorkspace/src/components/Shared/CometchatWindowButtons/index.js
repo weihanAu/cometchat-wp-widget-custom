@@ -8,12 +8,15 @@ import copyIcon from "./resources/copy.svg";
 import {
 	chatsHeaderDisposeStyle,
 	chatsHeaderDuplicateStyle,
+	chatsHeaderFullScreenStyle,
 	chatsHeaderMinimumStyle,
 	chatsHeaderToggleButtonStyle,
 } from "./style";
 import { theme } from "../../../resources/theme";
 import { CometChatToastNotification } from "../CometChatToastNotification";
 import dotsIcon from "./resources/three-dots.svg";
+import fullscreenIcon from "./resources/fullscreen.svg";
+
 export class CometchatWindowButtons extends React.Component {
 	constructor(props) {
 		super(props);
@@ -74,6 +77,13 @@ export class CometchatWindowButtons extends React.Component {
 						></i>
 					);
 
+					let fullscreen = (
+						<i
+							style={chatsHeaderFullScreenStyle(fullscreenIcon, theme)}
+							onClick={() => {}}
+						></i>
+					);
+
 					if (context.isLiveStream) {
 						minimumBtn = null;
 						duplicateBtn = null;
@@ -97,6 +107,11 @@ export class CometchatWindowButtons extends React.Component {
 								<li>
 									<button className="dropdown-item" type="button">
 										{duplicateBtn}
+									</button>
+								</li>
+								<li>
+									<button className="dropdown-item" type="button">
+										{fullscreen}
 									</button>
 								</li>
 							</ul>
