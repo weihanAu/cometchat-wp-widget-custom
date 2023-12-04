@@ -81,21 +81,21 @@ export class CometchatWindowButtons extends React.Component {
 					}
 
 					const btn = (
-						<div class={`dropdown${context.minimum ? " dropstart" : ""}`}>
+						<div className={`dropdown${context.minimum ? " dropstart" : ""}`}>
 							<i
 								style={chatsHeaderToggleButtonStyle(dotsIcon, theme)}
 								type="button"
 								data-bs-toggle="dropdown"
 								aria-expanded="false"
 							></i>
-							<ul class="dropdown-menu">
+							<ul className="dropdown-menu">
 								<li>
-									<button class="dropdown-item" type="button">
+									<button className="dropdown-item" type="button">
 										{minimumBtn}
 									</button>
 								</li>
 								<li>
-									<button class="dropdown-item" type="button">
+									<button className="dropdown-item" type="button">
 										{duplicateBtn}
 									</button>
 								</li>

@@ -14,6 +14,7 @@ export const listItem = (props, context) => {
 		cursor: "pointer",
 		width: "100%",
 		padding: "8px 16px",
+		position: "relative",
 		...selectedState,
 		"&:hover": {
 			backgroundColor: `${context.theme.backgroundColor.primary}`,
@@ -60,5 +61,13 @@ export const itemDescStyle = (context) => {
 	return {
 		marginTop: "10px",
 		borderBottom: `1px solid ${context.theme.borderColor.primary}`,
+	};
+};
+
+export const itemOptions = () => {
+	return {
+		position: "absolute",
+		right: "24px",
+		top: "20%",
 	};
 };
