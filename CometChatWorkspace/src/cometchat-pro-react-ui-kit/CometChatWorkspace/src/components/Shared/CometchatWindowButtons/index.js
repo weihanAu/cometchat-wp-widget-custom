@@ -80,7 +80,9 @@ export class CometchatWindowButtons extends React.Component {
 					let fullscreen = (
 						<i
 							style={chatsHeaderFullScreenStyle(fullscreenIcon, theme)}
-							onClick={() => {}}
+							onClick={() => {
+								window.open(window.location.host + "live-chat", "_blank");
+							}}
 						></i>
 					);
 
