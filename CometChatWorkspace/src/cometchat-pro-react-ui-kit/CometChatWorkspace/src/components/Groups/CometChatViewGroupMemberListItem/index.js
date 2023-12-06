@@ -180,7 +180,7 @@ class CometChatViewGroupMemberListItem extends React.Component {
 							href="#"
 							onClick={async () => {
 								deactivateUser(
-									"DEACTIVATE PERMANENTLY",
+									"DEACTIVATE 15 MINUTE",
 									this.props,
 									this.context,
 									this.toastRef
