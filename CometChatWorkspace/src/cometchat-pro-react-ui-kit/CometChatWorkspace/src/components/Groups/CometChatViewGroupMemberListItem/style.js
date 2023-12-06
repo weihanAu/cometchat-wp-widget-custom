@@ -231,6 +231,5 @@ export const deactivateIconStyle = (img, context) => {
 		display: "inline-block",
 		cursor: "pointer",
 		background: `url(${img}) center center no-repeat`,
-		display: "none",
 	};
 };
