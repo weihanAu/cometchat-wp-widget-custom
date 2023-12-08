@@ -230,6 +230,16 @@ class CometChatViewGroupMemberList extends React.Component {
 
 		this.mq.addListener((editAccess) => this.setUserColumnTitle(editAccess));
 
+		if (this.props.loggedinuser.role == "livewire-admin") {
+			editAccess = (
+				<React.Fragment>
+					<div css={actionColumnStyle(this.context)} className="deactivate">
+						{Translator.translate("OPTIONS", this.context.language)}
+					</div>
+				</React.Fragment>
+			);
+		}
+
 		return (
 			<React.Fragment>
 				<CometChatBackdrop show={true} clicked={this.props.close} />

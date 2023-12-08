@@ -16,12 +16,8 @@ import {
 	itemDetailStyle,
 	itemNameStyle,
 	itemDescStyle,
-	itemOptions,
 } from "./style";
 import { useContext } from "react";
-
-import gearIcon from "../../Groups/CometChatViewGroupMemberListItem/resources/gear.svg";
-import { deactivateIconStyle } from "../../Groups/CometChatViewGroupMemberListItem/style";
 
 const CometChatUserListItem = (props) => {
 	const context = useContext(CometChatContext);
@@ -69,40 +65,6 @@ const CometChatUserListItem = (props) => {
 					{props.user.name}
 				</div>
 				<div css={itemDescStyle(context)} className="item__details__desc"></div>
-			</div>
-			<div css={itemOptions()} className="dropdown">
-				<i
-					id="dropdown-toggle"
-					data-bs-toggle="dropdown"
-					aria-expanded="false"
-					style={deactivateIconStyle(gearIcon)}
-					onClick={(e) => e.stopPropagation()}
-				></i>
-				<ul className="dropdown-menu">
-					<li>
-						<a
-							className="dropdown-item"
-							href="#"
-							onClick={(e) => {
-								e.stopPropagation();
-								console.log(props);
-							}}
-						>
-							DEACTIVATE
-						</a>
-					</li>
-					<li>
-						<a
-							className="dropdown-item"
-							href="#"
-							onClick={(e) => {
-								e.stopPropagation();
-							}}
-						>
-							TIME OUT
-						</a>
-					</li>
-				</ul>
 			</div>
 		</div>
 	);
