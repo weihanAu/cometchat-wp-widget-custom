@@ -1,20 +1,10 @@
 <html>
 	<head>
 		<style>
-			#cometchat__widget {
-				position: absolute;
-				top: 0;
-				left: 0;
-			}
-			.add_widget {
-				position: fixed;
-				bottom: 120px;
-				right: 40px;
-				width: 60px;
-				height: 60px;
-				border-radius: 50%;
-				font-size: 24px;
-				z-index: 999999999;
+			#cometchat {
+				display: flex;
+				flex-flow: row wrap;
+				gap: 12px;
 			}
 		</style>
 	</head>
@@ -23,35 +13,30 @@
 		<div id="cometchat"></div>
 		<!-- <button class="add_widget">+</button> -->
 		<script defer type="module">
-			const widgets = [];
 			window.addEventListener("DOMContentLoaded", async (event) => {
 				const { default: CometChatWidget } = await import("./index.js");
 
+				const UID = "208";
+
+				const appID = "2420365c5054bcab";
+
+				const appRegion = "us";
+
 				window.CometChatWidget = CometChatWidget;
+
+				window.CometChatWidgetCount = 0;
+
+				window.COMETCHAT_APPID = appID;
+
+				window.COMETCHAT_APP_GEGION = appRegion;
 
 				const { CometChat } = CometChatWidget;
 
-				const UID = "665";
-
-				CometChat.addUserListener(
-					UID,
-					new CometChat.UserListener({
-						onUserOnline: (onlineUser) => {
-							// 用户上线时触发
-							console.log("用户上线:", onlineUser);
-						},
-						onUserOffline: (offlineUser) => {
-							// 用户离线时触发
-							console.log("用户离线:", offlineUser);
-						},
-					})
-				);
-
 				const init = () => {
 					CometChatWidget.init({
-						appID: "242053eed084c85d",
-						appRegion: "us",
-						authKey: "3b23a44d08990491dd8ad335f585121465c8ba02",
+						appID,
+						appRegion,
+						authKey: "578347ad7aa6361c4c841afb4035aaf8c8bec0d5",
 					}).then(
 						(response) => {
 							console.log("Initialization completed successfully");
@@ -61,17 +46,18 @@
 							}).then(
 								(response) => {
 									CometChatWidget.launch({
-										widgetID: "019886dc-0a20-400c-bf9b-f02c9a5325de",
+										widgetID: "07c981b3-b87b-4d8f-9e2d-bcdb92c698cf",
 										target: "#cometchat",
 										roundedCorners: "true",
 										height: "37.5rem",
-										width: "37.5rem",
-										defaultID: "superhero1", //default UID (user) or GUID (group) to show,
-										defaultType: "user", //user or group,
+										width: "350px",
+										defaultID: "new", //default UID (user) or GUID (group) to show,
+										// defaultType: "group", //user or group,
 										docked: false,
+										isLiveStream: false,
+									}).then(() => {
+										window.CometChatWidgetCount++;
 									});
-
-									widgets.push(response);
 								},
 								(error) => {
 									console.log("User login failed with error:", error);
@@ -87,6 +73,17 @@
 				};
 
 				init();
+
+				window.initCometChat = init;
+
+				function closeChat(id) {
+					//destory chat with id
+					//var chat = js.getElementById(id);
+					//destory chat child element
+					console.log("chat closed, id is: ", id);
+				}
+
+				window.closeChat = closeChat;
 
 				// document.querySelector('.add_widget').addEventListener('click', e=>{
 				//     init();

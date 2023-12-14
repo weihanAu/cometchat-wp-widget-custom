@@ -213,9 +213,9 @@ class CometChatMessageActions extends React.PureComponent {
 	};
 
 	deleteMessage = () => {
-		this.markDelete();
-
-		return;
+		/**
+		 * This props is in folder CometChatMessages
+		 */
 		this.props.actionGenerated(enums.ACTIONS["DELETE_MESSAGE"], this.props.message);
 	};
 
@@ -543,6 +543,8 @@ class CometChatMessageActions extends React.PureComponent {
 		if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
 			if (this.state.loggedInUser && this.state.loggedInUser.role === "livewire-admin") {
 				if (this.props.message.sender?.uid !== this.state.loggedInUser?.uid) {
+					deleteMessage = null;
+
 					markDeleteMessage = (
 						<li css={actionGroupStyle()} className="action__group">
 							<button
@@ -555,7 +557,7 @@ class CometChatMessageActions extends React.PureComponent {
 									"DELETE_MESSAGE",
 									this.context.language
 								)}
-								onClick={this.markDelete}
+								onClick={this.deleteMessage}
 							></button>
 						</li>
 					);

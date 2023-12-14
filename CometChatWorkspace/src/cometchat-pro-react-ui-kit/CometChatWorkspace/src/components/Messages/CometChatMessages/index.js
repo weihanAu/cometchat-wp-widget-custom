@@ -46,6 +46,7 @@ import {
 	iconArrowDownStyle,
 	chatContainerStyle,
 } from "./style";
+import { deleteGroupMemberMessages } from "./api/index.js";
 
 class CometChatMessages extends React.PureComponent {
 	static contextType = CometChatContext;
@@ -776,6 +777,36 @@ class CometChatMessages extends React.PureComponent {
 	};
 
 	deleteMessage = (message) => {
+		/**
+		 * CometChat API delete message
+		 */
+		deleteGroupMemberMessages(message)
+			.then((deletedMessage) => {
+				//remove edit preview when message is deleted
+				if (deletedMessage.id === this.state.messageToBeEdited.id) {
+					this.setState({ messageToBeEdited: "" });
+				}
+
+				const messageList = [...this.state.messageList];
+				let messageKey = messageList.findIndex((m) => m.id === message.id);
+
+				if (messageList.length - messageKey === 1 && !message.replyCount) {
+					CometChatEvent.triggerHandler("updateLastMessage", {
+						...deletedMessage,
+					});
+					//this.getContext().setLastMessage(deletedMessage);
+				}
+
+				this.removeMessages([deletedMessage]);
+				this.updateParentThreadedMessage(deletedMessage, "delete");
+			})
+			.catch((error) => this.errorHandler("SOMETHING_WRONG"));
+
+		return;
+
+		/**
+		 * CometChat origin delete message
+		 */
 		const messageId = message.id;
 		CometChat.deleteMessage(messageId)
 			.then((deletedMessage) => {

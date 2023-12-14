@@ -16,18 +16,30 @@
 			window.addEventListener("DOMContentLoaded", async (event) => {
 				const { default: CometChatWidget } = await import("./index.js");
 
+				const UID = "30";
+
+				const appID = "2420365c5054bcab";
+
+				const appRegion = "us";
+
+				const apiKey = "6457e05101696996d5952c4cb06c3aa5cf60e76f";
+
 				window.CometChatWidget = CometChatWidget;
 
 				window.CometChatWidgetCount = 0;
 
-				const { CometChat } = CometChatWidget;
+				window.COMETCHAT_APPID = appID;
 
-				const UID = "30";
+				window.COMETCHAT_APP_GEGION = appRegion;
+
+				window.COMETCHAT_APIKEY = apiKey;
+
+				const { CometChat } = CometChatWidget;
 
 				const init = () => {
 					CometChatWidget.init({
-						appID: "2420365c5054bcab",
-						appRegion: "us",
+						appID,
+						appRegion,
 						authKey: "578347ad7aa6361c4c841afb4035aaf8c8bec0d5",
 					}).then(
 						(response) => {
