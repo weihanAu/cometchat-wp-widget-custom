@@ -20,6 +20,7 @@ import reactIcon from "./resources/reactions.svg";
 import gearIcon from "./resources/gear.svg";
 import translateIcon from "./resources/message-translate.svg";
 import sendMessageInPrivateIcon from "./resources/send-message-in-private.svg";
+import { moderateGroupMemberMessage } from "./api/index.js";
 
 class CometChatMessageActions extends React.PureComponent {
 	static contextType = CometChatContext;
@@ -231,6 +232,18 @@ class CometChatMessageActions extends React.PureComponent {
 		const receiverId = this.context.item.guid;
 
 		const receiverType = CometChat.RECEIVER_TYPE.GROUP;
+
+		moderateGroupMemberMessage(this.props.message)
+			.then(() => {
+				this.props.actionGenerated(enums.ACTIONS["MESSAGE_EDITED"], {
+					...this.props.message,
+				});
+			})
+			.catch((error) =>
+				this.props.actionGenerated(enums.ACTIONS["ERROR"], [], "SOMETHING_WRONG")
+			);
+
+		return;
 
 		if (this.props.message.type === CometChat.MESSAGE_TYPE.TEXT) {
 			const textMessage = new CometChat.TextMessage(
