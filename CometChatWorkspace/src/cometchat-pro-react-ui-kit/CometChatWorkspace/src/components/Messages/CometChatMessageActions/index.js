@@ -233,6 +233,13 @@ class CometChatMessageActions extends React.PureComponent {
 
 		const receiverType = CometChat.RECEIVER_TYPE.GROUP;
 
+		if (
+			this.props.message instanceof CometChat.TextMessage ||
+			this.props.message instanceof CometChat.MediaMessage
+		) {
+			this.props.message.setTags(["approved"]);
+		}
+
 		moderateGroupMemberMessage(this.props.message)
 			.then(() => {
 				this.props.actionGenerated(enums.ACTIONS["MESSAGE_EDITED"], {
