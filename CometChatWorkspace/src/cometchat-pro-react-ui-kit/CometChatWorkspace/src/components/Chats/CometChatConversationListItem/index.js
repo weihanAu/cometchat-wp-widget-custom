@@ -611,7 +611,8 @@ class CometChatConversationListItem extends React.PureComponent {
 							onMouseEnter={(event) => this.toggleTooltip(event, true)}
 							onMouseLeave={(event) => this.toggleTooltip(event, false)}
 						>
-							{/(http|https|HTTPS|HTTP):\/+/g.test(this.state.lastMessage)
+							{/(http|https|HTTPS|HTTP):\/+/g.test(this.state.lastMessage) ||
+							/(www.)+/g.test(this.state.lastMessage)
 								? "LINK"
 								: /(joined|left)+/g.test(this.state.lastMessage)
 								? null
