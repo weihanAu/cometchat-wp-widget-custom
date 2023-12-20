@@ -361,7 +361,10 @@ class CometChatViewGroupMemberListItem extends React.Component {
 
 		let userPresence = <CometChatUserPresence status={this.props.member.status} />;
 
-		if (this.props.member.role == "livewire-admin") {
+		if (
+			this.props.loggedinuser.role == "livewire-admin" &&
+			this.props.loggedinuser.uid !== this.props.member.uid
+		) {
 			editAccess = (
 				<React.Fragment>
 					<div css={actionColumnStyle(this.context)} className="deactivate">
