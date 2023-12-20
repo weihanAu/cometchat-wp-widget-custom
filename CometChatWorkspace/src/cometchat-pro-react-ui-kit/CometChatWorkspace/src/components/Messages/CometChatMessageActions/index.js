@@ -420,19 +420,26 @@ class CometChatMessageActions extends React.PureComponent {
 				this.state.enableDeleteMessageForModerator &&
 				this.state.enableDeleteMessage)
 		) {
-			deleteMessage = (
-				<li css={actionGroupStyle()} className="action__group">
-					<button
-						type="button"
-						onMouseEnter={(event) => this.toggleTooltip(event, true)}
-						onMouseLeave={(event) => this.toggleTooltip(event, false)}
-						css={groupButtonStyle(deleteIcon, this.context, 1)}
-						className="group__button button__delete"
-						data-title={Translator.translate("DELETE_MESSAGE", this.context.language)}
-						onClick={this.deleteMessage}
-					></button>
-				</li>
-			);
+			if (this.state.loggedInUser.role === "livewire-admin") {
+				deleteMessage = (
+					<li css={actionGroupStyle()} className="action__group">
+						<button
+							type="button"
+							onMouseEnter={(event) => this.toggleTooltip(event, true)}
+							onMouseLeave={(event) => this.toggleTooltip(event, false)}
+							css={groupButtonStyle(deleteIcon, this.context, 1)}
+							className="group__button button__delete"
+							data-title={Translator.translate(
+								"DELETE_MESSAGE_WODE",
+								this.context.language
+							)}
+							onClick={this.deleteMessage}
+						></button>
+					</li>
+				);
+			} else {
+				deleteMessage = null;
+			}
 		}
 
 		let editMessage = null;
