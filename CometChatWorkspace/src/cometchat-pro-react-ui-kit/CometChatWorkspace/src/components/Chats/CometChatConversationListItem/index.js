@@ -614,7 +614,7 @@ class CometChatConversationListItem extends React.PureComponent {
 							{/(http|https|HTTPS|HTTP):\/+/g.test(this.state.lastMessage) ||
 							/(www.)+/g.test(this.state.lastMessage)
 								? "LINK"
-								: /(joined|left)+/g.test(this.state.lastMessage)
+								: /(joined|left|banned)+/g.test(this.state.lastMessage)
 								? null
 								: this.state.lastMessage}
 						</div>
