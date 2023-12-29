@@ -597,11 +597,14 @@ class CometChatMessageComposer extends React.PureComponent {
 		if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
 			if (
 				messageType === CometChat.MESSAGE_TYPE.AUDIO ||
-				messageType === CometChat.MESSAGE_TYPE.VIDEO
+				messageType === CometChat.MESSAGE_TYPE.VIDEO ||
+				messageType === CometChat.MESSAGE_TYPE.FILE
 			) {
 				mediaMessage.setTags(["unmoderated"]);
 			}
 		}
+
+		console.log(mediaMessage);
 
 		SoundManager.play(enums.CONSTANTS.AUDIO["OUTGOING_MESSAGE"], this.context);
 		this.props.actionGenerated(enums.ACTIONS["MESSAGE_COMPOSED"], [mediaMessage]);

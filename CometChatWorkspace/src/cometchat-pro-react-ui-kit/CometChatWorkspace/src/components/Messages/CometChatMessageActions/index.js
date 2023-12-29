@@ -333,6 +333,10 @@ class CometChatMessageActions extends React.PureComponent {
 		if (this.props.message.type === CometChat.MESSAGE_TYPE.AUDIO) {
 			this.props.previewAudio();
 		}
+
+		if (this.props.message.type === CometChat.MESSAGE_TYPE.FILE) {
+			this.props.previewFile();
+		}
 	};
 
 	markDelete = () => {

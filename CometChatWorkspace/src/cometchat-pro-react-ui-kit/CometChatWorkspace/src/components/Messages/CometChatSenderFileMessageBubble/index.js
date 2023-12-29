@@ -12,10 +12,7 @@ import {
 import { CometChatMessageReactions } from "../Extensions";
 
 import { CometChatContext } from "../../../util/CometChatContext";
-import {
-	checkMessageForExtensionsData,
-	getMessageFileMetadata,
-} from "../../../util/common";
+import { checkMessageForExtensionsData, getMessageFileMetadata } from "../../../util/common";
 import * as enums from "../../../util/enums.js";
 
 import { theme } from "../../../resources/theme";
@@ -29,6 +26,8 @@ import {
 	iconStyle,
 } from "./style";
 
+import { messageTxtStyle, messageTxtWrapperStyle } from "../CometChatSenderTextMessageBubble/style";
+
 import fileIcon from "./resources/file-upload.svg";
 
 class CometChatSenderFileMessageBubble extends React.Component {
@@ -40,6 +39,7 @@ class CometChatSenderFileMessageBubble extends React.Component {
 		this.state = {
 			isHovering: false,
 			fileData: {},
+			previewFile: false,
 		};
 	}
 
@@ -90,10 +90,7 @@ class CometChatSenderFileMessageBubble extends React.Component {
 
 	getFileData = () => {
 		const metadataKey = enums.CONSTANTS["FILE_METADATA"];
-		const fileMetadata = getMessageFileMetadata(
-			this.props.message,
-			metadataKey
-		);
+		const fileMetadata = getMessageFileMetadata(this.props.message, metadataKey);
 
 		if (fileMetadata instanceof Blob) {
 			return { fileName: fileMetadata["name"] };
@@ -109,22 +106,27 @@ class CometChatSenderFileMessageBubble extends React.Component {
 		}
 	};
 
+	togglePreviewFile = () => {
+		this.setState({
+			previewFile: !this.state.previewFile,
+		});
+
+		this.forceUpdate();
+	};
+
 	render() {
 		if (!Object.keys(this.state.fileData).length) {
 			return null;
 		}
 
 		let messageReactions = null;
-		const reactionsData = checkMessageForExtensionsData(
-			this.props.message,
-			"reactions"
-		);
+		const reactionsData = checkMessageForExtensionsData(this.props.message, "reactions");
 		if (reactionsData) {
 			if (Object.keys(reactionsData).length) {
 				messageReactions = (
 					<div
 						css={messageReactionsWrapperStyle()}
-						className='message__reaction__wrapper'
+						className="message__reaction__wrapper"
 					>
 						<CometChatMessageReactions
 							message={this.props.message}
@@ -141,6 +143,7 @@ class CometChatSenderFileMessageBubble extends React.Component {
 				<CometChatMessageActions
 					message={this.props.message}
 					actionGenerated={this.props.actionGenerated}
+					previewFile={this.togglePreviewFile}
 				/>
 			);
 		}
@@ -150,9 +153,9 @@ class CometChatSenderFileMessageBubble extends React.Component {
 			fileMessage = (
 				<a
 					href={this.state.fileData?.fileUrl}
-					target='_blank'
-					rel='noopener noreferrer'
-					className='message__file'
+					target="_blank"
+					rel="noopener noreferrer"
+					className="message__file"
 				>
 					<i css={iconStyle(fileIcon, this.context)}></i>
 					<p>{this.state.fileData?.fileName}</p>
@@ -167,27 +170,56 @@ class CometChatSenderFileMessageBubble extends React.Component {
 			);
 		}
 
+		const isPreviewFile =
+			this.state.previewFile && this.props.message?.tags?.includes("unmoderated");
+
 		return (
 			<div
 				css={messageContainerStyle()}
-				className='sender__message__container message__file'
+				className="sender__message__container message__file"
 				onMouseEnter={this.handleMouseHover}
 				onMouseLeave={this.handleMouseHover}
 			>
 				{toolTipView}
 
-				<div css={messageWrapperStyle()} className='message__wrapper'>
-					<div
-						css={messageFileWrapper(this.context)}
-						className='message__file__wrapper'
-					>
-						<div className='message__file'>{fileMessage}</div>
+				{this.props.message.tags.includes("unmoderated") ? (
+					<div css={messageWrapperStyle()} className="message__wrapper">
+						<div
+							className="message__txt__wrapper"
+							css={messageTxtWrapperStyle(this.context)}
+						>
+							<p
+								css={messageTxtStyle(false, 0, this.context)}
+								className="message__txt"
+							>
+								[File detected. It is currently under moderation.]
+							</p>
+						</div>
+					</div>
+				) : (
+					<div css={messageWrapperStyle()} className="message__wrapper">
+						<div
+							css={messageFileWrapper(this.context)}
+							className="message__file__wrapper"
+						>
+							<div className="message__file">{fileMessage}</div>
+						</div>
+					</div>
+				)}
+
+				<div
+					css={messageWrapperStyle()}
+					className="message__wrapper"
+					style={{ display: isPreviewFile ? "block" : "none" }}
+				>
+					<div css={messageFileWrapper(this.context)} className="message__file__wrapper">
+						<div className="message__file">{fileMessage}</div>
 					</div>
 				</div>
 
 				{messageReactions}
 
-				<div css={messageInfoWrapperStyle()} className='message__info__wrapper'>
+				<div css={messageInfoWrapperStyle()} className="message__info__wrapper">
 					<CometChatThreadedMessageReplyCount
 						message={this.props.message}
 						actionGenerated={this.props.actionGenerated}
