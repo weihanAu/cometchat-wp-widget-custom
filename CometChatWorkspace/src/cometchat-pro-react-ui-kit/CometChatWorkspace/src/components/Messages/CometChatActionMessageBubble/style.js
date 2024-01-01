@@ -4,6 +4,7 @@ export const actionMessageStyle = () => {
 		marginBottom: "16px",
 		textAlign: "center",
 		height: "36px",
+		display: "none",
 	};
 };
 
