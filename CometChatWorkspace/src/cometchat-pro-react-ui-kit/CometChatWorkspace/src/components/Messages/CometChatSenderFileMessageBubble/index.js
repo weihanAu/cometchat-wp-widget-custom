@@ -182,7 +182,7 @@ class CometChatSenderFileMessageBubble extends React.Component {
 			>
 				{toolTipView}
 
-				{this.props.message.tags.includes("unmoderated") ? (
+				{this.props.message?.tags?.includes("unmoderated") ? (
 					<div css={messageWrapperStyle()} className="message__wrapper">
 						<div
 							className="message__txt__wrapper"

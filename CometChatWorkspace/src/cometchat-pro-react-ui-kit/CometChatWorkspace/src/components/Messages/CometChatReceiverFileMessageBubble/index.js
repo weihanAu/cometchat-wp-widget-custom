@@ -133,6 +133,8 @@ class CometChatReceiverFileMessageBubble extends React.Component {
 		const isPreviewFile =
 			this.state.previewFile && this.props.message?.tags?.includes("unmoderated");
 
+		console.log(this.props.message);
+
 		return (
 			<div
 				css={messageContainerStyle()}
@@ -146,7 +148,7 @@ class CometChatReceiverFileMessageBubble extends React.Component {
 						{name}
 						{toolTipView}
 
-						{this.props.message.tags.includes("unmoderated") ? (
+						{this.props.message?.tags?.includes("unmoderated") ? (
 							<div css={messageWrapperStyle()} className="message__wrapper">
 								<div
 									className="message__txt__wrapper"
