@@ -424,7 +424,10 @@ class CometChatMessageActions extends React.PureComponent {
 				this.state.enableDeleteMessageForModerator &&
 				this.state.enableDeleteMessage)
 		) {
-			if (this.state.loggedInUser.role === "livewire-admin") {
+			if (
+				this.state.loggedInUser.role === "livewire-admin" &&
+				this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP
+			) {
 				deleteMessage = (
 					<li css={actionGroupStyle()} className="action__group">
 						<button
