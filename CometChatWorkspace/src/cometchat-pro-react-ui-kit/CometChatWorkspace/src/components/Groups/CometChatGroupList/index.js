@@ -543,7 +543,7 @@ class CometChatGroupList extends React.PureComponent {
 							{Translator.translate("GROUPS", this.props.lang)}
 						</h4>
 						<CometchatWindowButtons />
-						{createGroupBtn}
+						{this.loggedInUser?.role === "livewire-admin" && createGroupBtn}
 					</div>
 					{searchGroup}
 					{messageContainer}
