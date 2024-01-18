@@ -192,7 +192,7 @@ class CometChatSenderFileMessageBubble extends React.Component {
 								css={messageTxtStyle(false, 0, this.context)}
 								className="message__txt"
 							>
-								[File detected. It is currently under moderation.]
+								[File is being reviewed by a Livewire Facilitator.]
 							</p>
 						</div>
 					</div>
