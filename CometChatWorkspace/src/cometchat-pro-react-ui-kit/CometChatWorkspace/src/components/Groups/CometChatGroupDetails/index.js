@@ -38,6 +38,7 @@ import {
 
 import navigateIcon from "./resources/back.svg";
 import { ID, getUnixTimestamp } from "../../../util/common";
+import { updateGroup } from "./api.js";
 
 class CometChatGroupDetails extends React.Component {
 	item;
@@ -646,7 +647,11 @@ class CometChatGroupDetails extends React.Component {
 
 		group.setMetadata(groupMetadata);
 
-		await CometChat.updateGroup(group);
+		if (this.context.item.scope === "participant") {
+			await updateGroup(this.context.item.guid, timestamp);
+		} else {
+			await CometChat.updateGroup(group);
+		}
 
 		CometChat.sendMessage(textMessage)
 			.then((message) => {
