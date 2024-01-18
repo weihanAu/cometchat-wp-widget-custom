@@ -165,7 +165,7 @@ class CometChatSenderAudioMessageBubble extends React.Component {
 							css={messageTxtWrapperStyle(this.context)}
 						>
 							<p css={messageTxtStyle(this.props, false, 0)} className="message__txt">
-								[Audio detected. It is currently under moderation.]
+								[Audio is being reviewed by a Livewire Facilitator.]
 							</p>
 						</div>
 					</div>

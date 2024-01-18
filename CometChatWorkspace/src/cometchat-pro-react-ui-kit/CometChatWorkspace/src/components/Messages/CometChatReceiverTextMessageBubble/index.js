@@ -133,7 +133,7 @@ class CometChatReceiverTextMessageBubble extends React.Component {
 		let parsedMessage = parse(emojiParsedMessage);
 
 		if (this.props.message.tags && this.props.message.tags.includes("unmoderated")) {
-			parsedMessage = `[Links detected. It is currently under moderation.]`;
+			parsedMessage = `[Link is being reviewed by a Livewire Facilitator.]`;
 		}
 
 		let showVariation = true;

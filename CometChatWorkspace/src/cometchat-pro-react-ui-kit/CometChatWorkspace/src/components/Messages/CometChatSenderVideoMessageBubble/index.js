@@ -163,7 +163,7 @@ class CometChatSenderVideoMessageBubble extends React.Component {
 							css={messageTxtWrapperStyle(this.context)}
 						>
 							<p css={messageTxtStyle(this.props, false, 0)} className="message__txt">
-								[Video detected. It is currently under moderation.]
+								[Video is being reviewed by a Livewire Facilitator.]
 							</p>
 						</div>
 					</div>

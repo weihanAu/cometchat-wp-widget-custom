@@ -79,7 +79,8 @@ class CometChatReadReceipt extends React.PureComponent {
 		) {
 			errorMessage = (
 				<p css={errorMessageStyle()}>
-					We're sorry, but your message contains offensive or inappropriate language
+					Ooop, this message was not able to be sent. Check in with a facilitator if you
+					have questions.
 				</p>
 			);
 		}
