@@ -1076,7 +1076,7 @@ class CometChatConversationList extends React.Component {
 								name="userState"
 								defaultChecked={s === this.state.userState}
 							/>
-							<label htmlFor={s}>{s}</label>
+							<label htmlFor={s}>{s === "ACTIVE" ? "Active" : "Offline"}</label>
 						</div>
 					))}
 				</form>
