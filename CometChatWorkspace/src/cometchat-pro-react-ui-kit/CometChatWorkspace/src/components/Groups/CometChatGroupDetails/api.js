@@ -3,7 +3,9 @@ export async function updateGroup(group_id, time_stamp) {
 
 	formData.set("action", "lw_chat_update_group_meta");
 
-	formData.set("data", JSON.stringify({ group_id, time_stamp }));
+	formData.set("data[group_id]", group_id);
+
+	formData.set("data[time_stamp]", time_stamp);
 
 	const wp_res = await fetch(window.ajaxurl, {
 		method: "POST",
