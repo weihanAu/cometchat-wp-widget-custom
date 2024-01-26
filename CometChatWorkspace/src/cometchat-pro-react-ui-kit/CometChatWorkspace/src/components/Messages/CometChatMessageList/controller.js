@@ -26,7 +26,7 @@ export class MessageListManager {
 		this.parentMessageId = parentMessageId;
 		this.context = context;
 
-		if (this.item.metadata  && this.item.metadata.timestamp) {
+		if (this.item.metadata && this.item.metadata.timestamp) {
 			this.timestamp = this.item.metadata.timestamp + 10;
 		}
 	}
@@ -127,7 +127,6 @@ export class MessageListManager {
 	fetchPreviousMessages() {
 		if (this.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
 			if (this.item.metadata && this.item.metadata.timestamp) {
-				console.log(this.item)
 				return this.messageRequest.fetchNext();
 			} else {
 				return this.messageRequest.fetchPrevious();

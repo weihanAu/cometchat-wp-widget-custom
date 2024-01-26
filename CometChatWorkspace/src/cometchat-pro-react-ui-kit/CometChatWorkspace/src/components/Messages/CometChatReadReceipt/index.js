@@ -78,12 +78,27 @@ class CometChatReadReceipt extends React.PureComponent {
 			this.props.message.error.code === "ERR_BLOCKED_BY_EXTENSION"
 		) {
 			errorMessage = (
+				<p css={errorMessageStyle()}>Message not sent, contains filtered word/s</p>
+			);
+		}
+
+		if (this.props.message.error && this.props.message.error.code === "ERR_GUID_NOT_FOUND") {
+			errorMessage = <p css={errorMessageStyle()}>Message not sent, this chat has ended.</p>;
+		}
+
+		if (
+			this.props.message.error &&
+			this.props.message.error.code === "AUTH_ERR_AUTH_TOKEN_NOT_FOUND"
+		) {
+			errorMessage = (
 				<p css={errorMessageStyle()}>
-					Ooop, this message was not able to be sent. Check in with a facilitator if you
-					have questions.
+					"Chat is either closed or you do not have access to this feature right now, if
+					you have questions please email livewire@starlight.org.au"
 				</p>
 			);
 		}
+
+		console.log(this.props.message);
 
 		if (this.props.message?.sender?.uid === this.loggedInUser?.uid) {
 			if (this.props.message.receiverType === CometChat.RECEIVER_TYPE.GROUP) {

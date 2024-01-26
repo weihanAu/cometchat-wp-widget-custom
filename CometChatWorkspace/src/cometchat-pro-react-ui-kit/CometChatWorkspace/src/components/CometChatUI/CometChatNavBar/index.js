@@ -195,7 +195,7 @@ export class CometChatNavBar extends React.Component {
 								css={itemLinkTextStyle(chatsTabActive, this.context)}
 								className="item__label"
 							>
-								{Translator.translate("CHATS", this.context.language)}
+								{Translator.translate("My Chats", this.context.language)}
 							</div>
 						</div>
 					);
@@ -216,7 +216,7 @@ export class CometChatNavBar extends React.Component {
 								css={itemLinkTextStyle(userTabActive, this.context)}
 								className="item__label"
 							>
-								{Translator.translate("USERS", this.context.language)}
+								{Translator.translate("Members", this.context.language)}
 							</div>
 						</div>
 					);
@@ -237,7 +237,7 @@ export class CometChatNavBar extends React.Component {
 								css={itemLinkTextStyle(groupsTabActive, this.context)}
 								className="item__label"
 							>
-								{Translator.translate("GROUPS", this.context.language)}
+								{Translator.translate("Group Chats", this.context.language)}
 							</div>
 						</div>
 					);
