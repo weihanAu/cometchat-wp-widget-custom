@@ -78,7 +78,10 @@ class CometChatReadReceipt extends React.PureComponent {
 			this.props.message.error.code === "ERR_BLOCKED_BY_EXTENSION"
 		) {
 			errorMessage = (
-				<p css={errorMessageStyle()}>Message not sent, contains filtered word/s</p>
+				<p css={errorMessageStyle()}>
+					Ooop, this message was not able to be sent. Check in with a facilitator if you
+					have questions.
+				</p>
 			);
 		}
 
