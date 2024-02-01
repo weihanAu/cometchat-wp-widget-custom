@@ -78,15 +78,17 @@ class CometChatReadReceipt extends React.PureComponent {
 			this.props.message.error.code === "ERR_BLOCKED_BY_EXTENSION"
 		) {
 			errorMessage = (
-				<p css={errorMessageStyle()}>
-					Ooop, this message was not able to be sent. Check in with a facilitator if you
-					have questions.
-				</p>
+				<p css={errorMessageStyle()}>Message not sent, contains filtered word/s</p>
 			);
 		}
 
 		if (this.props.message.error && this.props.message.error.code === "ERR_GUID_NOT_FOUND") {
-			errorMessage = <p css={errorMessageStyle()}>Message not sent, this chat has ended.</p>;
+			errorMessage = (
+				<p css={errorMessageStyle()}>
+					Ooops, this message was not sent. Check in with a facilitator if you have
+					questions.
+				</p>
+			);
 		}
 
 		if (
@@ -95,8 +97,8 @@ class CometChatReadReceipt extends React.PureComponent {
 		) {
 			errorMessage = (
 				<p css={errorMessageStyle()}>
-					"Chat is either closed or you do not have access to this feature right now, if
-					you have questions please email livewire@starlight.org.au"
+					Ooops, this message was not sent. Check in with a facilitator if you have
+					questions.
 				</p>
 			);
 		}
