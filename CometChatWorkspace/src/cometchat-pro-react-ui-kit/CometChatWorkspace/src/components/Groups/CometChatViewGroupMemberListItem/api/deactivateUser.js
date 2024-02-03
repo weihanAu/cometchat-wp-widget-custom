@@ -13,7 +13,7 @@ export async function deactivateUser(option, props, context, toastRef) {
 			body: JSON.stringify({ uidsToDeactivate: [uid] }),
 		});
 		// call wordpress
-		const wp_url = `https://livewiredev.wpengine.com/wp-json/cometchat/deactivate-permanently?user_id=${uid}`;
+		const wp_url = `${window.location.href}wp-json/cometchat/deactivate-permanently?user_id=${uid}`;
 		const wp_res = await fetch(wp_url, {
 			headers: { Authorization: `basic bGl2ZXdpcmVkZXY6Wng4ZEZxIXNBOTVAKiY=` },
 		});
@@ -28,7 +28,7 @@ export async function deactivateUser(option, props, context, toastRef) {
 	 */
 	if (option === "DEACTIVATE 15 MINUTE") {
 		// call wordpress
-		const wp_url = `https://livewiredev.wpengine.com/wp-json/cometchat/deactivate-temporarily?user_id=${uid}`;
+		const wp_url = `${window.location.href}wp-json/cometchat/deactivate-temporarily?user_id=${uid}`;
 		const wp_res = await fetch(wp_url, {
 			headers: { Authorization: `basic bGl2ZXdpcmVkZXY6Wng4ZEZxIXNBOTVAKiY=` },
 		});
