@@ -856,6 +856,7 @@ class CometChatConversationList extends React.Component {
 	handleClick = (conversation) => {
 		if (!this.props.onItemClick) return;
 		this.props.onItemClick(conversation.conversationWith, conversation.conversationType);
+		console.log(conversation);
 	};
 
 	handleMenuClose = () => {

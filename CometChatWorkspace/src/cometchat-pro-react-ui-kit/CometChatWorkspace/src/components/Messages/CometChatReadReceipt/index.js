@@ -115,8 +115,6 @@ class CometChatReadReceipt extends React.PureComponent {
 			);
 		}
 
-		console.log(this.props.message);
-
 		if (this.props.message?.sender?.uid === this.loggedInUser?.uid) {
 			if (this.props.message.receiverType === CometChat.RECEIVER_TYPE.GROUP) {
 				if (this.props.message.hasOwnProperty("error")) {
