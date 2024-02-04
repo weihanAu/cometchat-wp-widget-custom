@@ -302,6 +302,7 @@ export class Embedded extends React.PureComponent {
 						lang={this.props.lang}
 						settings={this.props.settings}
 						actionGenerated={this.actionHandler}
+						sidebarview={this.state.sidebarview}
 					/>
 				</div>
 			);

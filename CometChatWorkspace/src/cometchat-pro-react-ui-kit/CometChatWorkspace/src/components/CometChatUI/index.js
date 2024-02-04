@@ -30,10 +30,7 @@ class CometChatUI extends React.Component {
 	}
 
 	componentDidMount() {
-		if (
-			this.props.chatWithUser.length === 0 &&
-			this.props.chatWithGroup.length === 0
-		) {
+		if (this.props.chatWithUser.length === 0 && this.props.chatWithGroup.length === 0) {
 			this.toggleSideBar();
 		}
 	}
@@ -84,8 +81,7 @@ class CometChatUI extends React.Component {
 			case enums.GROUP_MEMBER_BANNED:
 			case enums.GROUP_MEMBER_KICKED: {
 				if (
-					this.contextProviderRef.state.type ===
-						CometChat.ACTION_TYPE.TYPE_GROUP &&
+					this.contextProviderRef.state.type === CometChat.ACTION_TYPE.TYPE_GROUP &&
 					this.contextProviderRef.state.item.guid === group.guid &&
 					options.user.uid === this.loggedInUser.uid
 				) {
@@ -96,16 +92,13 @@ class CometChatUI extends React.Component {
 			}
 			case enums.GROUP_MEMBER_SCOPE_CHANGED: {
 				if (
-					this.contextProviderRef.state.type ===
-						CometChat.ACTION_TYPE.TYPE_GROUP &&
+					this.contextProviderRef.state.type === CometChat.ACTION_TYPE.TYPE_GROUP &&
 					this.contextProviderRef.state.item.guid === group.guid &&
 					options.user.uid === this.loggedInUser.uid
 				) {
-					const newObject = Object.assign(
-						{},
-						this.contextProviderRef.state.item,
-						{ scope: options["scope"] }
-					);
+					const newObject = Object.assign({}, this.contextProviderRef.state.item, {
+						scope: options["scope"],
+					});
 					this.contextProviderRef.setItem(newObject);
 					this.contextProviderRef.setType(CometChat.ACTION_TYPE.TYPE_GROUP);
 				}
@@ -121,7 +114,7 @@ class CometChatUI extends React.Component {
 			<CometChatMessages
 				theme={this.props.theme}
 				lang={this.props.lang}
-				_parent='unified'
+				_parent="unified"
 				actionGenerated={this.actionHandler}
 			/>
 		);
@@ -135,23 +128,21 @@ class CometChatUI extends React.Component {
 			>
 				<div
 					css={unifiedStyle(this.props)}
-					className='cometchat cometchat--unified'
+					className="cometchat cometchat--unified"
 					dir={Translator.getDirection(this.props.lang)}
 				>
 					<div
 						css={unifiedSidebarStyle(this.state, this.props)}
-						className='unified__sidebar'
+						className="unified__sidebar"
 					>
 						<CometChatNavBar
 							ref={(el) => (this.navBarRef = el)}
 							theme={this.props.theme}
 							actionGenerated={this.navBarAction}
+							sidebarview={this.state.sidebarview}
 						/>
 					</div>
-					<div
-						css={unifiedMainStyle(this.state, this.props)}
-						className='unified__main'
-					>
+					<div css={unifiedMainStyle(this.state, this.props)} className="unified__main">
 						{messageScreen}
 					</div>
 					<CometChatIncomingCall
