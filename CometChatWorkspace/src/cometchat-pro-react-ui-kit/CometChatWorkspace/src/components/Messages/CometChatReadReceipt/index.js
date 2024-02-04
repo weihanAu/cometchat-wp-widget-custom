@@ -103,6 +103,18 @@ class CometChatReadReceipt extends React.PureComponent {
 			);
 		}
 
+		if (
+			this.props.message.error &&
+			this.props.message.error.code === "AUTH_ERR_ACCESS_DENIED"
+		) {
+			errorMessage = (
+				<p css={errorMessageStyle()}>
+					Ooops, this message was not sent. Check in with a facilitator if you have
+					questions.
+				</p>
+			);
+		}
+
 		console.log(this.props.message);
 
 		if (this.props.message?.sender?.uid === this.loggedInUser?.uid) {

@@ -27,7 +27,7 @@ export class MessageListManager {
 		this.context = context;
 
 		if (this.item.metadata && this.item.metadata.timestamp) {
-			this.timestamp = this.item.metadata.timestamp + 10;
+			this.timestamp = this.item.metadata.timestamp;
 		}
 	}
 
