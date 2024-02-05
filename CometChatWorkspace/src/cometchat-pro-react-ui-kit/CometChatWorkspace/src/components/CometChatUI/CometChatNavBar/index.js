@@ -118,9 +118,9 @@ export class CometChatNavBar extends React.Component {
 			return (
 				<div
 					style={{
-						height: "calc(100% - 75px)",
 						widows: "100%",
 						overflow: "hidden",
+						height: "calc(100% - 75px)",
 					}}
 				></div>
 			);

@@ -27,7 +27,7 @@ export class MessageListManager {
 		this.context = context;
 
 		if (this.item.metadata && this.item.metadata.timestamp) {
-			this.timestamp = this.item.metadata.timestamp + 10;
+			this.timestamp = this.item.metadata.timestamp;
 		}
 	}
 
@@ -81,7 +81,7 @@ export class MessageListManager {
 									.withTags(true)
 									.hideDeletedMessages(hideDeletedMessages)
 									.setLimit(this.limit)
-									.setTimestamp(this.timestamp)
+									.setTimestamp(this.timestamp + 10)
 									.build();
 							} else {
 								this.messageRequest = new CometChat.MessagesRequestBuilder()
@@ -104,7 +104,7 @@ export class MessageListManager {
 									.withTags(true)
 									.hideDeletedMessages(hideDeletedMessages)
 									.setLimit(this.limit)
-									.setTimestamp(this.timestamp)
+									.setTimestamp(this.timestamp + 10)
 									.build();
 							} else {
 								this.messageRequest = new CometChat.MessagesRequestBuilder()
