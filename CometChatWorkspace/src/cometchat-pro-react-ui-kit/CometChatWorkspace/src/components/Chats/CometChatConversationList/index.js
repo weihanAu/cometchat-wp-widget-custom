@@ -377,6 +377,20 @@ class CometChatConversationList extends React.Component {
 		}
 	};
 
+	refetchConversationList = () => {
+		this._isMounted = false;
+		this.ConversationListManager.removeListeners();
+		this.ConversationListManager = null;
+
+		this._isMounted = true;
+
+		this.setState({ conversationlist: [] }, () => {
+			this.ConversationListManager = new ConversationListManager(this.getContext());
+			this.getConversations();
+			this.ConversationListManager.attachListeners(this.conversationCallback);
+		});
+	};
+
 	conversationUpdated = (key, message, options) => {
 		const chatListMode = this.getContext().UIKitSettings.chatListMode;
 		const chatListFilterOptions = UIKitSettings.chatListFilterOptions;
@@ -424,6 +438,10 @@ class CometChatConversationList extends React.Component {
 				break;
 			default:
 				break;
+		}
+
+		if (message?.metadata.hasOwnProperty("timestamp")) {
+			this.refetchConversationList();
 		}
 	};
 
@@ -856,7 +874,6 @@ class CometChatConversationList extends React.Component {
 	handleClick = (conversation) => {
 		if (!this.props.onItemClick) return;
 		this.props.onItemClick(conversation.conversationWith, conversation.conversationType);
-		console.log(conversation);
 	};
 
 	handleMenuClose = () => {
