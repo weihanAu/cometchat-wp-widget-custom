@@ -17,7 +17,7 @@ export async function deactivateUser(option, props, context, toastRef) {
 		const wp_res = await fetch(wp_url, {
 			headers: { Authorization: `basic bGl2ZXdpcmVkZXY6Wng4ZEZxIXNBOTVAKiY=` },
 		});
-		if (res.status === 200 && wp_res.status === 200 && res.ok) {
+		if (wp_res.status === 200 && res.ok) {
 			//tell users that user is deactivated permanently
 			toastRef.setSuccess("user is deactivated permanently");
 		}
