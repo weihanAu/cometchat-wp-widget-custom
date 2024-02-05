@@ -6,12 +6,12 @@ export async function deactivateUser(option, props, context, toastRef) {
 	const { uid } = member;
 
 	if (option === "DEACTIVATE PERMANENTLY") {
-		const url = `https://${APPID}.api-${REGION}.cometchat.io/v3/users`;
+		// const url = `https://${APPID}.api-${REGION}.cometchat.io/v3/users`;
 
-		const res = await fetctData(url, {
-			method: "DELETE",
-			body: JSON.stringify({ uidsToDeactivate: [uid] }),
-		});
+		// const res = await fetctData(url, {
+		// 	method: "DELETE",
+		// 	body: JSON.stringify({ uidsToDeactivate: [uid] }),
+		// });
 		// call wordpress
 		const wp_url = `${window.location.href}wp-json/cometchat/deactivate-permanently?user_id=${uid}`;
 		const wp_res = await fetch(wp_url, {
@@ -27,12 +27,12 @@ export async function deactivateUser(option, props, context, toastRef) {
 	 * @todo
 	 */
 	if (option === "DEACTIVATE 15 MINUTE") {
-		//call cometchat
-		const url = `https://${APPID}.api-${REGION}.cometchat.io/v3/users`;
-		const res = await fetctData(url, {
-			method: "DELETE",
-			body: JSON.stringify({ uidsToDeactivate: [uid] }),
-		});
+		// //call cometchat
+		// const url = `https://${APPID}.api-${REGION}.cometchat.io/v3/users`;
+		// const res = await fetctData(url, {
+		// 	method: "DELETE",
+		// 	body: JSON.stringify({ uidsToDeactivate: [uid] }),
+		// });
 		// call wordpress
 		const wp_url = `${window.location.href}wp-json/cometchat/deactivate-temporarily?user_id=${uid}`;
 		const wp_res = await fetch(wp_url, {
