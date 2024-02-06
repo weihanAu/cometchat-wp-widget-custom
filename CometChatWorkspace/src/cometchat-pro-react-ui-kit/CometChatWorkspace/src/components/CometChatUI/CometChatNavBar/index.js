@@ -114,18 +114,6 @@ export class CometChatNavBar extends React.Component {
 	};
 
 	getActiveTab = () => {
-		if (!this.props.sidebarview) {
-			return (
-				<div
-					style={{
-						widows: "100%",
-						overflow: "hidden",
-						height: "calc(100% - 75px)",
-					}}
-				></div>
-			);
-		}
-
 		switch (this.state.activeTab) {
 			case "SIDEBAR_USERS":
 				return (
