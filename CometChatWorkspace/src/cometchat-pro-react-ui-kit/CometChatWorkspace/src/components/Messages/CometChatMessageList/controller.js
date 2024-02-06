@@ -81,7 +81,7 @@ export class MessageListManager {
 									.withTags(true)
 									.hideDeletedMessages(hideDeletedMessages)
 									.setLimit(this.limit)
-									.setTimestamp(this.timestamp + 2)
+									.setTimestamp(this.timestamp)
 									.build();
 							} else {
 								this.messageRequest = new CometChat.MessagesRequestBuilder()
@@ -104,7 +104,7 @@ export class MessageListManager {
 									.withTags(true)
 									.hideDeletedMessages(hideDeletedMessages)
 									.setLimit(this.limit)
-									.setTimestamp(this.timestamp + 2)
+									.setTimestamp(this.timestamp)
 									.build();
 							} else {
 								this.messageRequest = new CometChat.MessagesRequestBuilder()

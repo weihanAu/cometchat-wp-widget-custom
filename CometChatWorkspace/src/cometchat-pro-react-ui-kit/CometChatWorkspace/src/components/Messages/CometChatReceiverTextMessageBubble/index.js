@@ -176,6 +176,14 @@ class CometChatReceiverTextMessageBubble extends React.Component {
 			return null;
 		}
 
+		if (
+			this.props.message &&
+			this.props.message.metadata &&
+			this.props.message.metadata.timestamp
+		) {
+			return null;
+		}
+
 		return messageText;
 	};
 
