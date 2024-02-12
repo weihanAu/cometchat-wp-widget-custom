@@ -39,6 +39,7 @@ import {
 import navigateIcon from "./resources/back.svg";
 import { ID, getUnixTimestamp } from "../../../util/common";
 import { updateGroup } from "./api.js";
+import { CometChatEvent } from "../../../util/CometChatEvent.js";
 
 class CometChatGroupDetails extends React.Component {
 	item;
@@ -670,6 +671,8 @@ class CometChatGroupDetails extends React.Component {
 			})
 			.finally(() => {
 				this.closeGroupDetail();
+
+				CometChatEvent.triggerHandler("CLEAR_MESSAGE");
 			});
 	};
 
