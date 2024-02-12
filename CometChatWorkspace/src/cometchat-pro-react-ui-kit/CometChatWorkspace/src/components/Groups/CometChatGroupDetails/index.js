@@ -672,7 +672,7 @@ class CometChatGroupDetails extends React.Component {
 			.finally(() => {
 				this.closeGroupDetail();
 
-				CometChatEvent.triggerHandler("CLEAR_MESSAGE");
+				CometChatEvent.triggerHandler("CLEAR_MESSAGES");
 			});
 	};
 
