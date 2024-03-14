@@ -600,11 +600,11 @@ class CometChatMessageComposer extends React.PureComponent {
 				messageType === CometChat.MESSAGE_TYPE.VIDEO ||
 				messageType === CometChat.MESSAGE_TYPE.FILE
 			) {
-				mediaMessage.setTags(["unmoderated"]);
+				if (this.loggedInUser.role !== "livewire-admin") {
+					mediaMessage.setTags(["unmoderated"]);
+				}
 			}
 		}
-
-		console.log(mediaMessage);
 
 		SoundManager.play(enums.CONSTANTS.AUDIO["OUTGOING_MESSAGE"], this.context);
 		this.props.actionGenerated(enums.ACTIONS["MESSAGE_COMPOSED"], [mediaMessage]);
@@ -662,11 +662,13 @@ class CometChatMessageComposer extends React.PureComponent {
 		textMessage._id = ID();
 
 		if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
-			if (/(http|https|HTTPS|HTTP):\/+/g.test(messageInput)) {
-				textMessage.setTags(["unmoderated"]);
-			}
-			if (/(www.)+/g.test(messageInput)) {
-				textMessage.setTags(["unmoderated"]);
+			if (this.loggedInUser.role !== "livewire-admin") {
+				if (/(http|https|HTTPS|HTTP):\/+/g.test(messageInput)) {
+					textMessage.setTags(["unmoderated"]);
+				}
+				if (/(www.)+/g.test(messageInput)) {
+					textMessage.setTags(["unmoderated"]);
+				}
 			}
 		}
 
