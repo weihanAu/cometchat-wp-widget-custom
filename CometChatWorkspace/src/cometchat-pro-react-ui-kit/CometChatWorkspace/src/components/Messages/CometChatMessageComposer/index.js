@@ -663,11 +663,13 @@ class CometChatMessageComposer extends React.PureComponent {
 
 		if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
 			if (this.loggedInUser.role !== "livewire-admin") {
-				if (/(http|https|HTTPS|HTTP):\/+/g.test(messageInput)) {
-					textMessage.setTags(["unmoderated"]);
-				}
-				if (/(www.)+/g.test(messageInput)) {
-					textMessage.setTags(["unmoderated"]);
+				if (!messageInput.includes("www.livewire.org.au")) {
+					if (/(http|https|HTTPS|HTTP):\/+/g.test(messageInput)) {
+						textMessage.setTags(["unmoderated"]);
+					}
+					if (/(www.)+/g.test(messageInput)) {
+						textMessage.setTags(["unmoderated"]);
+					}
 				}
 			}
 		}
