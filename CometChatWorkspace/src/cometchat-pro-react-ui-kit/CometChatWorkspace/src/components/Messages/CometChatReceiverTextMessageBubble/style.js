@@ -57,7 +57,8 @@ export const nameStyle = (context) => {
 	return {
 		fontSize: "11px",
 		// color: `${context.theme.color.search}`,
-		color: `${context.theme.color.black}`,
+		// color: `${context.theme.color.black}`,
+		color: "#192F7C"
 	};
 };
 
