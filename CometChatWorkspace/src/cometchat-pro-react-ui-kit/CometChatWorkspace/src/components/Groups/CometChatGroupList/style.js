@@ -40,6 +40,7 @@ export const groupHeaderStyle = (theme) => {
 		alignItems: "center",
 		borderBottom: `1px solid ${theme.borderColor.primary}`,
 		height: "70px",
+		paddingRight:'4rem'
 	};
 };
 

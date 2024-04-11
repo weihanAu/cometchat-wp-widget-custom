@@ -38,6 +38,7 @@ export const chatsHeaderStyle = (theme) => {
 		alignItems: "center",
 		borderBottom: `1px solid ${theme.borderColor.primary}`,
 		height: "69px",
+		paddingRight:'4em'
 	};
 };
 
