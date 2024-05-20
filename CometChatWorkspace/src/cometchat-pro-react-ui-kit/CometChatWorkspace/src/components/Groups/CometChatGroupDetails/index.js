@@ -627,54 +627,7 @@ class CometChatGroupDetails extends React.Component {
 		this.props.actionGenerated(enums.ACTIONS["CLOSE_GROUP_DETAIL"]);
 	};
 
-	clearMessages = async () => {
-		const receiverId = this.context.item.guid;
-
-		const receiverType = CometChat.RECEIVER_TYPE.GROUP;
-
-		const timestamp = getUnixTimestamp();
-
-		const textMessage = new CometChat.TextMessage(receiverId, "Clear Messages", receiverType);
-
-		textMessage.setId(ID());
-
-		textMessage.setMetadata({
-			timestamp,
-		});
-
-		const group = new CometChat.Group(receiverId);
-
-		const groupMetadata = { ...this.context.item.metadata, timestamp };
-
-		group.setMetadata(groupMetadata);
-
-		if (this.context.item.scope === "participant") {
-			await updateGroup(this.context.item.guid, timestamp);
-		} else {
-			await CometChat.updateGroup(group);
-		}
-
-		CometChat.sendMessage(textMessage)
-			.then((message) => {
-				const newMessageObj = { ...message, _id: textMessage._id };
-				this.props.actionGenerated(enums.ACTIONS["MESSAGE_SENT"], [newMessageObj]);
-			})
-			.catch((error) => {
-				const newMessageObj = { ...textMessage, error: error };
-				this.props.actionGenerated(enums.ACTIONS["ERROR_IN_SENDING_MESSAGE"], [
-					newMessageObj,
-				]);
-
-				if (error && error.hasOwnProperty("code") && error.code === "ERR_GUID_NOT_FOUND") {
-					//this.context.setDeletedGroupId(this.context.item.guid);
-				}
-			})
-			.finally(() => {
-				this.closeGroupDetail();
-
-				CometChatEvent.triggerHandler("CLEAR_MESSAGES");
-			});
-	};
+	clearMessages = async () => {};
 
 	render() {
 		if (this.state.loggedInUser === null) {
