@@ -5,7 +5,13 @@ export const presenceStyle = (props) => {
 		backgroundColor: "#C4C4C4",
 	};
 
-	if (props.status === "online" || props.status === "available") {
+	// if (props.status === "online" || props.status === "available") {
+	// 	presenceStatus = {
+	// 		backgroundColor: "#3BDF2F",
+	// 	};
+	// }
+
+	if (props.status === "online") {
 		presenceStatus = {
 			backgroundColor: "#3BDF2F",
 		};
