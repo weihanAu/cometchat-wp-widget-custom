@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import { CometChat } from "@cometchat-pro/chat";
 
 import { EVENTS, CONSTANTS } from "../../util/enums";
-
+import blueprintCSS from "@blueprintjs/core/lib/css/blueprint.css";
 import {
 	CometChatIncomingCall,
 	CometChatOutgoingCall,
@@ -629,6 +629,7 @@ export class App extends React.Component {
 		}
 
 		this.contextProviderRef.state.UIKitSettings.setCustomJS(bootstrap);
+		this.contextProviderRef.state.UIKitSettings.setCustomCSS(blueprintCSS);
 	};
 
 	chatWithUser = (args) => {

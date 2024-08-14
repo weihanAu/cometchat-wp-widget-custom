@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { CometChat } from "@cometchat-pro/chat";
 
 import { ConversationListManager } from "./controller";
-
+import { Button } from "@blueprintjs/core";
 import {
 	CometChatConfirmDialog,
 	CometChatToastNotification,
@@ -1122,6 +1122,7 @@ class CometChatConversationList extends React.Component {
 
 		const chatList = (
 			<div css={chatsWrapperStyle(this.props, theme)} className="chats">
+				<Button>Hello world</Button>
 				<div css={chatsHeaderStyle(theme)} className="chats__header">
 					{closeBtn}
 					{statusBtn}
