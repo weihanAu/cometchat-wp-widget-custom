@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 import { CometChat } from "@cometchat-pro/chat";
 
 import { EVENTS, CONSTANTS } from "../../util/enums";
-import blueprintCSS from "@blueprintjs/core/lib/css/blueprint.css";
 import {
 	CometChatIncomingCall,
 	CometChatOutgoingCall,
@@ -26,6 +25,8 @@ import { AppManager } from "./controller";
 
 import asyncComponent from "../../hoc/asyncComponent";
 import bootstrap from "./bootstrap.bundle.min.txt";
+
+import antdCSS from "antd/dist/antd.css";
 
 const DockedLauncher = asyncComponent("DockedLauncher", () => {
 	// Pass the component which you want to load dynamically.
@@ -629,7 +630,7 @@ export class App extends React.Component {
 		}
 
 		this.contextProviderRef.state.UIKitSettings.setCustomJS(bootstrap);
-		this.contextProviderRef.state.UIKitSettings.setCustomCSS(blueprintCSS);
+		this.contextProviderRef.state.UIKitSettings.setCustomCSS(antdCSS);
 	};
 
 	chatWithUser = (args) => {

@@ -950,4 +950,7 @@ html [type="button"],
 {
   display:block;
 }
+.ant-popover, .ant-dropdown{
+  opacity : 1 !important;
+}
 `;

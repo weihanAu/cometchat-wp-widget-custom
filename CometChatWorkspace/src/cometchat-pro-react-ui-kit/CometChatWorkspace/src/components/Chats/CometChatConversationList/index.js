@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import { CometChat } from "@cometchat-pro/chat";
 
 import { ConversationListManager } from "./controller";
-import { Button } from "@blueprintjs/core";
 import {
 	CometChatConfirmDialog,
 	CometChatToastNotification,
@@ -39,6 +38,9 @@ import navigateIcon from "./resources/back.svg";
 import settingIcon from "./resources/gear.svg";
 
 import { toggleUserState } from "./api/toggleUserState";
+
+import { Button } from "antd";
+import { SettingOutlined } from "@ant-design/icons";
 
 class CometChatConversationList extends React.Component {
 	loggedInUser = null;
@@ -1062,6 +1064,18 @@ class CometChatConversationList extends React.Component {
 			></i>
 		);
 
+		statusBtn = (
+			<Button
+				type="link"
+				icon={<SettingOutlined />}
+				onClick={() => {
+					this.setState({
+						isOpenUserState: !this.state.isOpenUserState,
+					});
+				}}
+			/>
+		);
+
 		const states = ["ACTIVE", "INVISIBLE"];
 
 		const stateCollapse = (
@@ -1122,7 +1136,6 @@ class CometChatConversationList extends React.Component {
 
 		const chatList = (
 			<div css={chatsWrapperStyle(this.props, theme)} className="chats">
-				<Button>Hello world</Button>
 				<div css={chatsHeaderStyle(theme)} className="chats__header">
 					{closeBtn}
 					{statusBtn}

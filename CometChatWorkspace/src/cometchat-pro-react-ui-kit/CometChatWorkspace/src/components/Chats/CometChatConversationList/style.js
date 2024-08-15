@@ -33,12 +33,17 @@ export const chatsWrapperStyle = (props, theme) => {
 
 export const chatsHeaderStyle = (theme) => {
 	return {
+		position: "relative",
 		padding: "16px",
 		display: "flex",
 		alignItems: "center",
 		borderBottom: `1px solid ${theme.borderColor.primary}`,
 		height: "69px",
-		paddingRight:'4em'
+		paddingRight: "4em",
+
+		"& button": {
+			flexShrink: "0",
+		},
 	};
 };
 

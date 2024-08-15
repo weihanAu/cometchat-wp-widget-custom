@@ -2,20 +2,28 @@ import React, { createRef } from "react";
 import ReactDOM from "react-dom";
 import { CometChatContext } from "../../../util/CometChatContext";
 import dashIcon from "./resources/dash.svg";
-import xIcon from "./resources/x.svg";
 import upIcon from "./resources/up.svg";
 import copyIcon from "./resources/copy.svg";
 import {
-	chatsHeaderDisposeStyle,
 	chatsHeaderDuplicateStyle,
 	chatsHeaderFullScreenStyle,
 	chatsHeaderMinimumStyle,
 	chatsHeaderToggleButtonStyle,
+	popoverContentStyle,
+	popoverStyle,
 } from "./style";
 import { theme } from "../../../resources/theme";
 import { CometChatToastNotification } from "../CometChatToastNotification";
 import dotsIcon from "./resources/three-dots.svg";
 import fullscreenIcon from "./resources/fullscreen.svg";
+import { Button, Dropdown, Popover } from "antd";
+import {
+	CloseOutlined,
+	EllipsisOutlined,
+	ExpandOutlined,
+	LineOutlined,
+	SwitcherOutlined,
+} from "@ant-design/icons";
 
 export class CometchatWindowButtons extends React.Component {
 	constructor(props) {
@@ -54,36 +62,36 @@ export class CometchatWindowButtons extends React.Component {
 						window.destoryChat(parentElement.id);
 					};
 
-					let minimumBtn = (
-						<i
-							style={chatsHeaderMinimumStyle(
-								context.minimum ? upIcon : dashIcon,
-								theme
-							)}
-							onClick={minimumCometChatWindow}
-						></i>
-					);
 					let disposeBtn = (
-						<i
-							style={chatsHeaderDisposeStyle(xIcon, theme)}
+						<Button
+							type="link"
 							onClick={disposeCometChatWindow}
-						></i>
+							icon={<CloseOutlined />}
+						/>
+					);
+
+					let minimumBtn = (
+						<Button
+							type="link"
+							icon={<LineOutlined />}
+							onClick={minimumCometChatWindow}
+						/>
 					);
 
 					let duplicateBtn = (
-						<i
-							style={chatsHeaderDuplicateStyle(copyIcon, theme)}
+						<Button
+							type="link"
+							icon={<SwitcherOutlined />}
 							onClick={duplicateCometChatWindow}
-						></i>
+						/>
 					);
 
 					let fullscreen = (
-						<i
-							style={chatsHeaderFullScreenStyle(fullscreenIcon, theme)}
-							onClick={() => {
-								window.open("/chat", "_blank");
-							}}
-						></i>
+						<Button
+							type="link"
+							icon={<ExpandOutlined />}
+							onClick={() => window.open("/chat", "_blank")}
+						/>
 					);
 
 					if (context.isLiveStream) {
@@ -92,37 +100,33 @@ export class CometchatWindowButtons extends React.Component {
 						disposeBtn = null;
 					}
 
-					const btn = (
-						<div className={`dropdown${context.minimum ? " dropstart" : ""}`}>
-							<i
-								style={chatsHeaderToggleButtonStyle(dotsIcon, theme)}
-								type="button"
-								data-bs-toggle="dropdown"
-								aria-expanded="false"
-							></i>
-							<ul className="dropdown-menu">
-								<li>
-									<button className="dropdown-item" type="button">
-										{minimumBtn}
-									</button>
-								</li>
-								<li>
-									<button className="dropdown-item" type="button">
-										{duplicateBtn}
-									</button>
-								</li>
-								<li>
-									<button className="dropdown-item" type="button">
-										{fullscreen}
-									</button>
-								</li>
-							</ul>
-						</div>
+					const { UIKitSettings } = context;
+
+					const { chatWindow } = UIKitSettings;
+
+					const node = chatWindow.document.querySelector(".chats__header");
+
+					const dropdown = (
+						<Popover
+							trigger={["click"]}
+							showArrow={false}
+							getPopupContainer={() => node}
+							overlayStyle={popoverStyle()}
+							content={
+								<div>
+									{minimumBtn}
+									{duplicateBtn}
+									{fullscreen}
+								</div>
+							}
+						>
+							<Button id="ellipsis-btn" type="link" icon={<EllipsisOutlined />} />
+						</Popover>
 					);
 
 					return (
 						<>
-							{btn}
+							{dropdown}
 							{disposeBtn}
 							<CometChatToastNotification
 								ref={(el) => (this.toastRef = el)}

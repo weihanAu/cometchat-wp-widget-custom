@@ -25,13 +25,14 @@
 		"webpack-merge": "^5.1.2"
 	},
 	"dependencies": {
-		"@blueprintjs/core": "^5.11.0",
+		"@ant-design/icons": "^5.4.0",
 		"@cometchat-pro/chat": "3.0.11",
 		"@emotion/cache": "^11.10.5",
 		"@emotion/react": "^11.0.0",
 		"@tanstack/react-query": "^4.35.3",
 		"@tanstack/react-query-devtools": "^4.35.3",
 		"@twemoji/api": "^14.1.0",
+		"antd": "^4.24.16",
 		"buffer": "^6.0.3",
 		"classnames": "^2.2.6",
 		"dateformat": "^4.0.0",
