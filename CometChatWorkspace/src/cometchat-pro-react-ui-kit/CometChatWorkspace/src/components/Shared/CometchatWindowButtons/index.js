@@ -1,22 +1,12 @@
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import { jsx } from "@emotion/react";
 import React, { createRef } from "react";
 import ReactDOM from "react-dom";
 import { CometChatContext } from "../../../util/CometChatContext";
-import dashIcon from "./resources/dash.svg";
-import upIcon from "./resources/up.svg";
-import copyIcon from "./resources/copy.svg";
-import {
-	chatsHeaderDuplicateStyle,
-	chatsHeaderFullScreenStyle,
-	chatsHeaderMinimumStyle,
-	chatsHeaderToggleButtonStyle,
-	popoverContentStyle,
-	popoverStyle,
-} from "./style";
-import { theme } from "../../../resources/theme";
+import { cometchatWindowButtonsStyle, popoverStyle } from "./style";
 import { CometChatToastNotification } from "../CometChatToastNotification";
-import dotsIcon from "./resources/three-dots.svg";
-import fullscreenIcon from "./resources/fullscreen.svg";
-import { Button, Dropdown, Popover } from "antd";
+import { Button, Popover } from "antd";
 import {
 	CloseOutlined,
 	EllipsisOutlined,
@@ -125,14 +115,14 @@ export class CometchatWindowButtons extends React.Component {
 					);
 
 					return (
-						<>
+						<div css={cometchatWindowButtonsStyle()}>
 							{dropdown}
 							{disposeBtn}
 							<CometChatToastNotification
 								ref={(el) => (this.toastRef = el)}
 								lang={this.props.lang}
 							/>
-						</>
+						</div>
 					);
 				}}
 			</CometChatContext.Consumer>

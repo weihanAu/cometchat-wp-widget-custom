@@ -32,6 +32,7 @@ import {
 	chatsListStyle,
 	chatsHeaderSettingStyle,
 	stateCollapseStyle,
+	statusPopoverStyle,
 } from "./style";
 
 import navigateIcon from "./resources/back.svg";
@@ -39,8 +40,10 @@ import settingIcon from "./resources/gear.svg";
 
 import { toggleUserState } from "./api/toggleUserState";
 
-import { Button } from "antd";
+import { Button, Menu, Popover, Radio, Typography } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
+
+const { Title } = Typography;
 
 class CometChatConversationList extends React.Component {
 	loggedInUser = null;
@@ -1064,16 +1067,41 @@ class CometChatConversationList extends React.Component {
 			></i>
 		);
 
+		console.log(this.state.userState);
+
 		statusBtn = (
-			<Button
-				type="link"
-				icon={<SettingOutlined />}
-				onClick={() => {
-					this.setState({
-						isOpenUserState: !this.state.isOpenUserState,
-					});
-				}}
-			/>
+			<Popover
+				trigger={["click"]}
+				title={
+					<Title level={3} style={{ margin: 6 }}>
+						YOUR STATUS
+					</Title>
+				}
+				placement="bottom"
+				overlayStyle={statusPopoverStyle()}
+				content={
+					<Radio.Group
+						defaultValue={"Active"}
+						size="large"
+						optionType="button"
+						buttonStyle="solid"
+						options={[
+							{ label: "Active", value: "Active" },
+							{ label: "Offline", value: "Offline" },
+						]}
+					/>
+				}
+			>
+				<Button
+					type="link"
+					icon={<SettingOutlined />}
+					onClick={() => {
+						this.setState({
+							isOpenUserState: !this.state.isOpenUserState,
+						});
+					}}
+				/>
+			</Popover>
 		);
 
 		const states = ["ACTIVE", "INVISIBLE"];

@@ -1,66 +1,19 @@
-export const chatsHeaderMinimumStyle = (img, theme) => {
-	const mq = [...theme.breakPoints];
-
+export function cometchatWindowButtonsStyle() {
 	return {
-		cursor: "pointer",
-		display: "block",
-		background: `url(${img}) no-repeat bottom`,
-		width: "36px",
-		height: "36px",
-		[`@media ${mq[0]}`]: {
-			display: "block!important",
+		display: "flex",
+		paddingTop: "4px",
+		fontSize: "22px",
+
+		"& button": {
+			flexShrink: 0,
+		},
+
+		"& span": {
+			fontSize: "22px",
 		},
 	};
-};
+}
 
-export const chatsHeaderDuplicateStyle = (img, theme) => {
-	const mq = [...theme.breakPoints];
-
-	return {
-		cursor: "pointer",
-		display: "block",
-		background: `url(${img}) no-repeat center`,
-		width: "36px",
-		height: "36px",
-		[`@media ${mq[0]}`]: {
-			display: "block!important",
-		},
-	};
-};
-
-export const chatsHeaderToggleButtonStyle = (img, theme) => {
-	const mq = [...theme.breakPoints];
-
-	return {
-		cursor: "pointer",
-		display: "block",
-		background: `url(${img}) no-repeat center`,
-		width: "36px",
-		height: "36px",
-		[`@media ${mq[0]}`]: {
-			display: "block!important",
-		},
-	};
-};
-
-export const chatsHeaderFullScreenStyle = (img, theme) => {
-	const mq = [...theme.breakPoints];
-
-	return {
-		cursor: "pointer",
-		display: "block",
-		background: `url(${img}) no-repeat center`,
-		width: "36px",
-		height: "36px",
-		[`@media ${mq[0]}`]: {
-			display: "block!important",
-		},
-	};
-};
-
-/**
- * @returns {import("@emotion/react").CSSObject}
- */
 export function popoverStyle() {
 	return {
 		position: "absolute",

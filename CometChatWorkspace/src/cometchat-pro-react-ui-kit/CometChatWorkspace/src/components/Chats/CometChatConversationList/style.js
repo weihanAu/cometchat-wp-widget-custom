@@ -43,6 +43,9 @@ export const chatsHeaderStyle = (theme) => {
 
 		"& button": {
 			flexShrink: "0",
+			"& span": {
+				fontSize: "22px",
+			},
 		},
 	};
 };
@@ -186,5 +189,14 @@ export const stateCollapseStyle = (theme) => {
 				},
 			},
 		},
+	};
+};
+
+export const statusPopoverStyle = () => {
+	return {
+		position: "abusolte",
+		left: 0,
+		right: 0,
+		top: "64px",
 	};
 };
