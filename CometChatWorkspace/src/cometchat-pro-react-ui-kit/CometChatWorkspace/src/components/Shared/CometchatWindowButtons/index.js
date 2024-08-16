@@ -104,7 +104,7 @@ export class CometchatWindowButtons extends React.Component {
 
 					const { chatWindow } = UIKitSettings;
 
-					const node = chatWindow.document.querySelector(".chats__header");
+					const node = chatWindow.document.querySelector("div[class*='__header']");
 
 					const dropdown = (
 						<Popover
