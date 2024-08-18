@@ -15,13 +15,12 @@ export const presenceStyle = (props) => {
 		presenceStatus = {
 			backgroundColor: "#3BDF2F",
 		};
-	}
-
-	if (user) {
-		if (user?.metadata?.userState === "INVISIBLE") {
-			presenceStatus = {
-				backgroundColor: "#C4C4C4",
-			};
+		if (user) {
+			if (user?.metadata?.userState === "INVISIBLE") {
+				presenceStatus = {
+					backgroundColor: "#C4C4C4",
+				};
+			}
 		}
 	}
 

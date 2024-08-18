@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
@@ -1081,26 +1081,26 @@ class CometChatConversationList extends React.Component {
 				overlayStyle={statusPopoverStyle()}
 				content={
 					<Radio.Group
-						defaultValue={"Active"}
+						value={this.state.userState}
+						onChange={(e) => {
+							const { value } = e.target;
+							this.setState({
+								...this.state,
+								userState: value,
+							});
+							toggleUserState(value, this.context);
+						}}
 						size="large"
 						optionType="button"
 						buttonStyle="solid"
 						options={[
-							{ label: "Active", value: "Active" },
-							{ label: "Offline", value: "Offline" },
+							{ label: "Active", value: "ACTIVE" },
+							{ label: "Offline", value: "INVISIBLE" },
 						]}
 					/>
 				}
 			>
-				<Button
-					type="link"
-					icon={<SettingOutlined />}
-					onClick={() => {
-						this.setState({
-							isOpenUserState: !this.state.isOpenUserState,
-						});
-					}}
-				/>
+				<Button type="link" icon={<SettingOutlined />} />
 			</Popover>
 		);
 
