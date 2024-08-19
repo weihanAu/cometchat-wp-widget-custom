@@ -26,7 +26,7 @@ import { AppManager } from "./controller";
 import asyncComponent from "../../hoc/asyncComponent";
 import bootstrap from "./bootstrap.bundle.min.txt";
 
-import antdCSS from "antd/dist/antd.css";
+import antdCSS from "./ant.css.txt";
 
 const DockedLauncher = asyncComponent("DockedLauncher", () => {
 	// Pass the component which you want to load dynamically.

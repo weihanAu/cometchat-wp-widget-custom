@@ -1067,8 +1067,6 @@ class CometChatConversationList extends React.Component {
 			></i>
 		);
 
-		console.log(this.state.userState);
-
 		statusBtn = (
 			<Popover
 				trigger={["click"]}
