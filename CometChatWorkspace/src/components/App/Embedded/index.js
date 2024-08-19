@@ -285,7 +285,6 @@ export class Embedded extends React.PureComponent {
 	//if custom css is added
 	getStyle = () => {
 		let customCss = "";
-		console.log(this.context.UIKitSettings);
 		if (this.context.UIKitSettings.customCSS.trim().length) {
 			customCss = this.context.UIKitSettings.customCSS;
 		}

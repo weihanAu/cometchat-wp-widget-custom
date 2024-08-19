@@ -361,6 +361,10 @@ class CometChatViewGroupMemberListItem extends React.Component {
 
 		let userPresence = <CometChatUserPresence status={this.props.member.status} />;
 
+		if (this.props.member?.metadata?.userState === "INVISIBLE") {
+			userPresence = <CometChatUserPresence status={"offline"} />;
+		}
+
 		if (
 			this.props.loggedinuser.role == "livewire-admin" &&
 			this.props.loggedinuser.uid !== this.props.member.uid

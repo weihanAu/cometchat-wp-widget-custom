@@ -150,7 +150,11 @@ class CometChatMessageHeader extends React.Component {
 		} else if (this.context.item.status === CometChat.USER_STATUS.OFFLINE) {
 			status = Translator.translate("OFFLINE", this.props.lang);
 		} else if (this.context.item.status === CometChat.USER_STATUS.ONLINE) {
-			status = Translator.translate("ONLINE", this.props.lang);
+			if (this.context.item?.metadata?.userState === "INVISIBLE") {
+				status = Translator.translate("OFFLINE", this.props.lang);
+			} else {
+				status = Translator.translate("ONLINE", this.props.lang);
+			}
 		}
 
 		this.setState({ status: status, presence: presence });

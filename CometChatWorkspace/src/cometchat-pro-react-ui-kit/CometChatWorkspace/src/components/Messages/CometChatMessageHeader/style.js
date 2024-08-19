@@ -90,7 +90,7 @@ export const chatStatusStyle = (state, context) => {
 			textTransform: "capitalize",
 		};
 
-		if (state.presence === "offline") {
+		if (state.presence === "offline" || state.status === "Offline") {
 			status = {
 				color: `${context.theme.color.helpText}`,
 				textTransform: "capitalize",
