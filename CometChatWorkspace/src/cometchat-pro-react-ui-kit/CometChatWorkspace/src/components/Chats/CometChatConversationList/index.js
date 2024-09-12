@@ -110,7 +110,8 @@ class CometChatConversationList extends React.Component {
 			this.clearUnreadCount(args)
 		);
 
-		CometChatEvent.on("CLEAR_MESSAGES", this.refetchConversationList);
+		//updating message after clear message
+		CometChatEvent.on(enums.EVENTS["CLEAR_MESSAGES"], this.refetchConversationList);
 	}
 
 	componentDidUpdate() {

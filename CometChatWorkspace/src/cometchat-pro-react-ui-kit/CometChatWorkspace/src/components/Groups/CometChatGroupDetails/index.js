@@ -37,8 +37,7 @@ import {
 } from "./style";
 
 import navigateIcon from "./resources/back.svg";
-import { ID, getUnixTimestamp } from "../../../util/common";
-import { updateGroup } from "./api.js";
+import { getUnixTimestamp, ID } from "../../../util/common";
 import { CometChatEvent } from "../../../util/CometChatEvent.js";
 
 class CometChatGroupDetails extends React.Component {
@@ -627,7 +626,57 @@ class CometChatGroupDetails extends React.Component {
 		this.props.actionGenerated(enums.ACTIONS["CLOSE_GROUP_DETAIL"]);
 	};
 
-	clearMessages = async () => {};
+	clearMessages = () => {
+		if (this.context.item.scope === CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT) {
+			this.toastRef?.setError("SORRY NO PERMISSIONS");
+			return;
+		}
+		const receiverId = this.context.item.guid;
+		const receiverType = CometChat.RECEIVER_TYPE.GROUP;
+		const timestamp = getUnixTimestamp();
+
+		const groupMetadata = {
+			...this.context.item.metadata,
+			group_clear_message_ts: timestamp,
+		};
+		const group = new CometChat.Group(receiverId);
+		group.setMetadata(groupMetadata);
+
+		const textMessage = new CometChat.TextMessage(receiverId, "CLEAR MESSAGE", receiverType);
+		textMessage.setId(ID());
+		textMessage.setMetadata({
+			group_clear_message_ts: timestamp,
+		});
+
+		CometChat.updateGroup(group)
+			.then(() => {
+				CometChat.sendMessage(textMessage)
+					.then((message) => {
+						const newMessageObj = { ...message, _id: textMessage._id };
+						this.props.actionGenerated(enums.ACTIONS["MESSAGE_SENT"], [newMessageObj]);
+					})
+					.catch((error) => {
+						const newMessageObj = { ...textMessage, error: error };
+						this.props.actionGenerated(enums.ACTIONS["ERROR_IN_SENDING_MESSAGE"], [
+							newMessageObj,
+						]);
+
+						if (
+							error &&
+							error.hasOwnProperty("code") &&
+							error.code === "ERR_GUID_NOT_FOUND"
+						) {
+							//this.context.setDeletedGroupId(this.context.item.guid);
+						}
+					})
+					.finally(() => {
+						this.closeGroupDetail();
+
+						CometChatEvent.triggerHandler(enums.EVENTS["CLEAR_MESSAGES"]);
+					});
+			})
+			.catch((error) => this.toastRef.setError("SOMETHING_WRONG"));
+	};
 
 	render() {
 		if (this.state.loggedInUser === null) {
@@ -750,22 +799,14 @@ class CometChatGroupDetails extends React.Component {
 			sharedmediaView = null;
 		}
 
-		/**
-		 * Clear Message Button
-		 */
 		let clearMessagesBtn = null;
 
-		/**
-		 * @type {CometChat.Group}
-		 */
-		const group = this.context.item;
-
-		if (this.state.loggedInUser.role === "livewire-admin") {
+		if (this.context.item.scope !== CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT) {
 			clearMessagesBtn = (
 				<div css={contentItemStyle()} className="content__item">
 					<div
-						css={itemLinkStyle(this.context, 0)}
 						className="item__link"
+						css={itemLinkStyle(this.context, 0)}
 						onClick={this.clearMessages}
 					>
 						Clear Messages

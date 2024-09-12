@@ -294,8 +294,10 @@ class CometChatMessages extends React.PureComponent {
 
 					SoundManager.play(enums.CONSTANTS.AUDIO["INCOMING_MESSAGE"], this.getContext());
 
-					if (message?.metadata?.timestamp) {
-						this.messageListRef.reInitializeMessageBuilder(message.metadata.timestamp);
+					if (message?.metadata?.group_clear_message_ts) {
+						this.messageListRef.reInitializeMessageBuilder(
+							message.metadata.group_clear_message_ts
+						);
 					}
 				}
 				break;
@@ -316,8 +318,10 @@ class CometChatMessages extends React.PureComponent {
 
 				const message = messages[0];
 
-				if (message?.metadata?.timestamp) {
-					this.messageListRef.reInitializeMessageBuilder(message.metadata.timestamp);
+				if (message?.metadata?.group_clear_message_ts) {
+					this.messageListRef.reInitializeMessageBuilder(
+						message.metadata.group_clear_message_ts
+					);
 				}
 				//this.getContext().setLastMessage(messages[0]);
 				break;

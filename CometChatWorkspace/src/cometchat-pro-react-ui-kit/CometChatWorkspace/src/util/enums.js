@@ -150,6 +150,7 @@ export const ACTIONS = {
 export const EVENTS = {
 	NEW_MESSAGES: "newMessagesArrived",
 	CLEAR_UNREAD_MESSAGES: "clearUnreadMessages",
+	CLEAR_MESSAGES: "clearMessages",
 };
 
 export const KEYS = {
