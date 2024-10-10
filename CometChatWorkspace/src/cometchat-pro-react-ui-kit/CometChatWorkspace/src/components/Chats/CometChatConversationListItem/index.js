@@ -612,7 +612,7 @@ class CometChatConversationListItem extends React.PureComponent {
 							onMouseLeave={(event) => this.toggleTooltip(event, false)}
 						>
 							{/(http|https|HTTPS|HTTP):\/+/g.test(this.state.lastMessage) ||
-							/(www.)+/g.test(this.state.lastMessage)
+							/(www\.)+/g.test(this.state.lastMessage)
 								? "LINK"
 								: /(joined|left|banned)+/g.test(this.state.lastMessage)
 								? null

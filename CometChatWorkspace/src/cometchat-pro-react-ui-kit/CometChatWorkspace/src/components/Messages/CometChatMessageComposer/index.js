@@ -667,7 +667,7 @@ class CometChatMessageComposer extends React.PureComponent {
 					if (/(http|https|HTTPS|HTTP):\/+/g.test(messageInput)) {
 						textMessage.setTags(["unmoderated"]);
 					}
-					if (/(www.)+/g.test(messageInput)) {
+					if (/(www\.)+/g.test(messageInput)) {
 						textMessage.setTags(["unmoderated"]);
 					}
 				}
