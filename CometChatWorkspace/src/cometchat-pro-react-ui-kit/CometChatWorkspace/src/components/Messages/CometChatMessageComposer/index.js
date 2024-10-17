@@ -661,13 +661,13 @@ class CometChatMessageComposer extends React.PureComponent {
 		textMessage._composedAt = getUnixTimestamp();
 		textMessage._id = ID();
 
+		const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+		const regex = new RegExp(expression);
+
 		if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
 			if (this.loggedInUser.role !== "livewire-admin") {
 				if (!messageInput.includes("www.livewire.org.au")) {
-					if (/(http|https|HTTPS|HTTP):\/+/g.test(messageInput)) {
-						textMessage.setTags(["unmoderated"]);
-					}
-					if (/(www\.)+/g.test(messageInput)) {
+					if (messageInput.match(regex)) {
 						textMessage.setTags(["unmoderated"]);
 					}
 				}

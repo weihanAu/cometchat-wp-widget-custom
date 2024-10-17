@@ -347,8 +347,8 @@ class CometChatGroupDetails extends React.Component {
 	};
 
 	/*
-    Updating group members presence
-    */
+	Updating group members presence
+	*/
 	updateGroupMemberPresence = (member) => {
 		let memberlist = [...this.context.groupMembers];
 		//search for user
@@ -642,7 +642,9 @@ class CometChatGroupDetails extends React.Component {
 		const group = new CometChat.Group(receiverId);
 		group.setMetadata(groupMetadata);
 
-		const textMessage = new CometChat.TextMessage(receiverId, "CLEAR MESSAGE", receiverType);
+		const messageContent = `<strong>First! <span style="display: inline-block; width: 16px; height: 16px;">👀</span></strong>`;
+
+		const textMessage = new CometChat.TextMessage(receiverId, messageContent, receiverType);
 		textMessage.setId(ID());
 		textMessage.setMetadata({
 			group_clear_message_ts: timestamp,
@@ -804,6 +806,7 @@ class CometChatGroupDetails extends React.Component {
 		if (this.context.item.scope !== CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT) {
 			clearMessagesBtn = (
 				<div css={contentItemStyle()} className="content__item">
+				{/* <div style={{ display: 'none' }} className="content__item"> */}
 					<div
 						className="item__link"
 						css={itemLinkStyle(this.context, 0)}
