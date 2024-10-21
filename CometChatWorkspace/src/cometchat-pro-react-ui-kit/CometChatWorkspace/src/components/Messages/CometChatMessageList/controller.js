@@ -44,8 +44,6 @@ export class MessageListManager {
 				.then((typeList) => (types = Object.keys(typeList)))
 				.then(() => this.context.FeatureRestriction.isHideDeletedMessagesEnabled())
 				.then((hideDeletedMessages) => {
-					types.pop();
-
 					if (this.type === CometChat.ACTION_TYPE.TYPE_USER) {
 						if (this.parentMessageId) {
 							this.messageRequest = new CometChat.MessagesRequestBuilder()

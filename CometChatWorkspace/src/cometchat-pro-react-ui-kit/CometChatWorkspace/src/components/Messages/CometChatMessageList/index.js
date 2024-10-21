@@ -432,7 +432,7 @@ class CometChatMessageList extends React.PureComponent {
 		}
 
 		if (timestamp) {
-			this.MessageListManager.group_clear_message_ts = timestamp + 10;
+			this.MessageListManager.group_clear_message_ts = timestamp;
 		}
 
 		this.MessageListManager.initializeMessageRequest().then(() => {

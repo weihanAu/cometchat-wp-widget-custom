@@ -83,9 +83,9 @@ class CometChatConversationListItem extends React.PureComponent {
 				message =
 					this.props.loggedInUser.uid === lastMessage.sender.uid
 						? `${Translator.translate(
-							"YOU_DELETED_THIS_MESSAGE",
-							this.context.language
-						)}`
+								"YOU_DELETED_THIS_MESSAGE",
+								this.context.language
+						  )}`
 						: `${Translator.translate("THIS_MESSAGE_DELETED", this.context.language)}`;
 			}
 		} else {
@@ -418,7 +418,7 @@ class CometChatConversationListItem extends React.PureComponent {
 		const byString = byEntity.name;
 		const forString =
 			message.action !== CometChat.ACTION_TYPE.MEMBER_JOINED &&
-				message.action !== CometChat.ACTION_TYPE.MEMBER_LEFT
+			message.action !== CometChat.ACTION_TYPE.MEMBER_LEFT
 				? onEntity.name
 				: "";
 
@@ -576,7 +576,8 @@ class CometChatConversationListItem extends React.PureComponent {
 			);
 		}
 
-		const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+		const expression =
+			/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
 		const regex = new RegExp(expression);
 
 		return (
@@ -614,11 +615,7 @@ class CometChatConversationListItem extends React.PureComponent {
 							onMouseEnter={(event) => this.toggleTooltip(event, true)}
 							onMouseLeave={(event) => this.toggleTooltip(event, false)}
 						>
-							{this.state.lastMessage.match(regex)
-								? "LINK"
-								: /(joined|left|banned)+/g.test(this.state.lastMessage)
-									? null
-									: this.state.lastMessage}
+							{this.state.lastMessage.match(regex) ? "LINK" : this.state.lastMessage}
 						</div>
 						{unreadCount}
 					</div>
