@@ -37,7 +37,7 @@ import {
 import { getResponsiveData, minHeight, minWidth, smallScreenWidth } from "../utils";
 import CometChatWidget from "../../..";
 import CometChatWidgetEvent from "../../../CometChatWidgetEvent";
-
+import CometChatWidgetDebounce from "../../../CometChatWidgetDebounce";
 export class Embedded extends React.PureComponent {
 	parentNode = null;
 	static contextType = CometChatContext;
@@ -94,6 +94,8 @@ export class Embedded extends React.PureComponent {
 			CometChat.ACTION_TYPE.TYPE_USER
 				? this.context.item
 				: {};
+
+		this.CometChatWidgetDebounce = new CometChatWidgetDebounce();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -292,6 +294,13 @@ export class Embedded extends React.PureComponent {
 		return <style>{customCss}</style>;
 	};
 
+	keepUserTokenActive = () => {
+		const parentWindow = this.context.UIKitSettings.chatWindow;
+		this.CometChatWidgetDebounce.debounce(() => {
+			parentWindow.parent.keepwarm();
+		}, 500);
+	};
+
 	render() {
 		let sidebar = null;
 		if (this.props.isSidebarEnabled()) {
@@ -331,6 +340,8 @@ export class Embedded extends React.PureComponent {
 				style={{ height: this.context.minimum ? "72px" : this.props.height }}
 			>
 				<Frame
+					onKeyUp={this.keepUserTokenActive}
+					onClick={this.keepUserTokenActive}
 					css={embedFrameStyle()}
 					head={this.getStyle()}
 					allow="geolocation; microphone; camera; autoplay; fullscreen; midi; encrypted-media; display-capture;"
