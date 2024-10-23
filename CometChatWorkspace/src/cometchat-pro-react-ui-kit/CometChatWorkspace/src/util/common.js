@@ -33,10 +33,11 @@ const phoneNumPattern = new RegExp(
 );
 
 export const linkify = (message) => {
-	let outputStr = message.replace(
-		phoneNumPattern,
-		"<a target='blank' rel='noopener noreferrer' href='tel:$&'>$&</a>"
-	);
+	let outputStr = message;
+	// let outputStr = message.replace(
+	// 	phoneNumPattern,
+	// 	"<a target='blank' rel='noopener noreferrer' href='tel:$&'>$&</a>"
+	// );
 	outputStr = outputStr.replace(
 		emailPattern,
 		"<a target='blank' rel='noopener noreferrer' href='mailto:$&'>$&</a>"
