@@ -8,7 +8,7 @@ import { CometChat } from "@cometchat-pro/chat";
 
 import { MessageHeaderManager } from "./controller";
 
-import { CometChatAvatar, CometChatUserPresence } from "../../Shared";
+import { CometChatAvatar, CometChatUserPresence, CometchatWindowButtons } from "../../Shared";
 
 import { CometChatContext } from "../../../util/CometChatContext";
 import * as enums from "../../../util/enums.js";
@@ -815,6 +815,7 @@ class CometChatMessageHeader extends React.Component {
 						{typing ? typing : status}
 					</div>
 				</div>
+				<CometchatWindowButtons />
 				<div css={chatOptionWrapStyle()} className="chat__options">
 					{videoCallBtn}
 					{audioCallBtn}

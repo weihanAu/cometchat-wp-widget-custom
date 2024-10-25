@@ -14,6 +14,7 @@ import {
 	LineOutlined,
 	SwitcherOutlined,
 } from "@ant-design/icons";
+import { CometChat } from "@cometchat-pro/chat";
 
 export class CometchatWindowButtons extends React.Component {
 	constructor(props) {
@@ -94,7 +95,18 @@ export class CometchatWindowButtons extends React.Component {
 
 					const { chatWindow } = UIKitSettings;
 
-					const node = chatWindow.document.querySelector("div[class*='__header']");
+					let node = chatWindow.document.querySelector("div[class*='__header']");
+
+					if (
+						context.type === CometChat.ACTION_TYPE.TYPE_USER ||
+						context.type === CometChat.ACTION_TYPE.TYPE_GROUP
+					) {
+						node = chatWindow.document.querySelector(
+							"div[class*='main__chat'] > div[class*='__header']"
+						);
+
+						console.log(node);
+					}
 
 					const dropdown = (
 						<Popover
