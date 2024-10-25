@@ -642,9 +642,10 @@ class CometChatGroupDetails extends React.Component {
 		const group = new CometChat.Group(receiverId);
 		group.setMetadata(groupMetadata);
 
-		const messageContent = `<strong>First! <span style="display: inline-block; width: 16px; height: 16px;">👀</span></strong>`;
+		const textMessage = new CometChat.TextMessage(receiverId, "CLEAR MESSAGE", receiverType);
+		// const messageContent = `<strong>First! <span style="display: inline-block; width: 16px; height: 16px;">👀</span></strong>`;
 
-		const textMessage = new CometChat.TextMessage(receiverId, messageContent, receiverType);
+		// const textMessage = new CometChat.TextMessage(receiverId, messageContent, receiverType);
 		textMessage.setId(ID());
 		textMessage.setMetadata({
 			group_clear_message_ts: timestamp,
