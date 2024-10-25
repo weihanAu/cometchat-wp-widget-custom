@@ -806,7 +806,7 @@ class CometChatGroupDetails extends React.Component {
 		if (this.context.item.scope !== CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT) {
 			clearMessagesBtn = (
 				<div css={contentItemStyle()} className="content__item">
-				{/* <div style={{ display: 'none' }} className="content__item"> */}
+					{/* <div style={{ display: 'none' }} className="content__item"> */}
 					<div
 						className="item__link"
 						css={itemLinkStyle(this.context, 0)}
@@ -817,6 +817,8 @@ class CometChatGroupDetails extends React.Component {
 				</div>
 			);
 		}
+
+		clearMessagesBtn = null;
 
 		let members = (
 			<div css={sectionStyle()} className="section section__members">

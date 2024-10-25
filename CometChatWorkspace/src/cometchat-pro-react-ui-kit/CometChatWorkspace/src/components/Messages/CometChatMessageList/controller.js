@@ -78,7 +78,7 @@ export class MessageListManager {
 									.withTags(true)
 									.hideDeletedMessages(hideDeletedMessages)
 									.setLimit(this.limit)
-									.setTimestamp(this.group_clear_message_ts)
+									// .setTimestamp(this.group_clear_message_ts)
 									.build();
 							} else {
 								this.messageRequest = new CometChat.MessagesRequestBuilder()
@@ -101,7 +101,7 @@ export class MessageListManager {
 									.withTags(true)
 									.hideDeletedMessages(hideDeletedMessages)
 									.setLimit(this.limit)
-									.setTimestamp(this.group_clear_message_ts)
+									// .setTimestamp(this.group_clear_message_ts)
 									.build();
 							} else {
 								this.messageRequest = new CometChat.MessagesRequestBuilder()
@@ -122,13 +122,13 @@ export class MessageListManager {
 	};
 
 	fetchPreviousMessages() {
-		if (this.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
-			if (this.item?.metadata?.group_clear_message_ts) {
-				return this.messageRequest.fetchNext();
-			} else {
-				return this.messageRequest.fetchPrevious();
-			}
-		}
+		// if (this.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
+		// 	if (this.item?.metadata?.group_clear_message_ts) {
+		// 		return this.messageRequest.fetchNext();
+		// 	} else {
+		// 		return this.messageRequest.fetchPrevious();
+		// 	}
+		// }
 		return this.messageRequest.fetchPrevious();
 	}
 
