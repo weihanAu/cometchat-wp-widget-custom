@@ -104,8 +104,6 @@ export class CometchatWindowButtons extends React.Component {
 						node = chatWindow.document.querySelector(
 							"div[class*='main__chat'] > div[class*='__header']"
 						);
-
-						console.log(node);
 					}
 
 					const dropdown = (

@@ -448,7 +448,7 @@ class CometChatConversationList extends React.Component {
 				break;
 		}
 
-		if (message?.metadata.hasOwnProperty("timestamp")) {
+		if (message?.metadata.hasOwnProperty("group_clear_message_ts")) {
 			this.refetchConversationList();
 		}
 	};
