@@ -73,6 +73,7 @@ export class Embedded extends React.PureComponent {
 
 		setTimeout(() => {
 			this.applyCustomJS();
+			this.applyCustomMeta();
 		}, 1000);
 
 		const parentNode = ReactDOM.findDOMNode(this).parentNode;
@@ -201,6 +202,33 @@ export class Embedded extends React.PureComponent {
 				scriptElement.innerHTML = customJS;
 				iframeDocument.head.appendChild(scriptElement);
 			}
+		}
+	};
+
+	applyCustomMeta = () => {
+		const iframeEl = this.embedFrame.querySelector("iframe");
+
+		if (iframeEl) {
+			const iframeDocument = iframeEl.contentWindow
+				? iframeEl.contentWindow.document
+				: iframeEl.contentDocument;
+			const metaViewPort = document.createElement("meta");
+			metaViewPort.setAttribute("name", "viewport");
+			metaViewPort.setAttribute(
+				"content",
+				"width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+			);
+			const metaApplyMobile = document.createElement("meta");
+			metaApplyMobile.setAttribute("name", "apple-mobile-web-app-capable");
+			metaApplyMobile.setAttribute("content", "yes");
+
+			const metaMobile = document.createElement("meta");
+			metaMobile.setAttribute("name", "mobile-web-app-capable");
+			metaMobile.setAttribute("content", "yes");
+
+			iframeDocument.head.appendChild(metaViewPort);
+			iframeDocument.head.appendChild(metaApplyMobile);
+			iframeDocument.head.appendChild(metaMobile);
 		}
 	};
 
