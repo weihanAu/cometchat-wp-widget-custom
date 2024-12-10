@@ -93,8 +93,21 @@ class CometChatMessageComposer extends React.PureComponent {
 			enableEmojis: false,
 			enableCollaborativeDocument: false,
 			enableCollaborativeWhiteboard: false,
+			isEditable: false,
 		};
+		this.messageInputRef = React.createRef();
 	}
+
+	handleInputClick = () => {
+        this.setState({ isEditable: true }, () => {
+            this.messageInputRef.current.focus();
+        });
+    };
+
+    handleInputBlur = (event) => {
+        this.setState({ isEditable: false });
+        this.endTyping(event);
+    };
 
 	componentDidMount() {
 		CometChat.getLoggedinUser()
@@ -1101,6 +1114,7 @@ class CometChatMessageComposer extends React.PureComponent {
 	};
 
 	render() {
+		const { isEditable } = this.state;
 		let liveReactionBtn = null;
 		const liveReactionText = Translator.translate("LIVE_REACTION", this.context.language);
 		if (enums.CONSTANTS["LIVE_REACTIONS"].hasOwnProperty(this.props.reaction)) {
@@ -1483,14 +1497,16 @@ class CometChatMessageComposer extends React.PureComponent {
 						<div
 							css={messageInputStyle(disabledState)}
 							className="input__message-input"
-							contentEditable="true"
+							style={{ fontSize: "16px" }}
+							contentEditable={isEditable ? "true" : "false"}
 							placeholder={Translator.translate(
 								"ENTER_YOUR_MESSAGE_HERE",
 								this.context.language
 							)}
 							dir={Translator.getDirection(this.context.language)}
 							onInput={this.changeHandler}
-							onBlur={(event) => this.endTyping(event)}
+							onBlur={this.handleInputBlur}
+							onClick={this.handleInputClick}
 							onKeyDown={this.sendMessageOnEnter}
 							ref={this.messageInputRef}
 						></div>
