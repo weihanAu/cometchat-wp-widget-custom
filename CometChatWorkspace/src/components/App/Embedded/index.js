@@ -37,7 +37,7 @@ import {
 import { getResponsiveData, minHeight, minWidth, smallScreenWidth } from "../utils";
 import CometChatWidget from "../../..";
 import CometChatWidgetEvent from "../../../CometChatWidgetEvent";
-import CometChatWidgetDebounce from "../../../CometChatWidgetDebounce";
+// import CometChatWidgetDebounce from "../../../CometChatWidgetDebounce";
 export class Embedded extends React.PureComponent {
 	parentNode = null;
 	static contextType = CometChatContext;
@@ -95,7 +95,7 @@ export class Embedded extends React.PureComponent {
 				? this.context.item
 				: {};
 
-		this.CometChatWidgetDebounce = new CometChatWidgetDebounce();
+		// this.CometChatWidgetDebounce = new CometChatWidgetDebounce();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -294,12 +294,12 @@ export class Embedded extends React.PureComponent {
 		return <style>{customCss}</style>;
 	};
 
-	keepUserTokenActive = () => {
-		const parentWindow = this.context.UIKitSettings.chatWindow;
-		this.CometChatWidgetDebounce.debounce(() => {
-			parentWindow.parent.keepwarm();
-		}, 500);
-	};
+	// keepUserTokenActive = () => {
+	// 	const parentWindow = this.context.UIKitSettings.chatWindow;
+	// 	this.CometChatWidgetDebounce.debounce(() => {
+	// 		parentWindow.parent.keepwarm();
+	// 	}, 500);
+	// };
 
 	render() {
 		let sidebar = null;
@@ -340,8 +340,8 @@ export class Embedded extends React.PureComponent {
 				style={{ height: this.context.minimum ? "72px" : this.props.height }}
 			>
 				<Frame
-					onKeyUp={this.keepUserTokenActive}
-					onClick={this.keepUserTokenActive}
+					// onKeyUp={this.keepUserTokenActive}
+					// onClick={this.keepUserTokenActive}
 					css={embedFrameStyle()}
 					head={this.getStyle()}
 					allow="geolocation; microphone; camera; autoplay; fullscreen; midi; encrypted-media; display-capture;"
