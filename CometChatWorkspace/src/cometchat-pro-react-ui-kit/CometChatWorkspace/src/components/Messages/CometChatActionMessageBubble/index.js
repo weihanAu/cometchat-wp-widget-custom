@@ -22,6 +22,10 @@ class CometChatActionMessageBubble extends React.Component {
 		this.context.getLoggedinUser().then((user) => {
 			this.loggedInUser = { ...user };
 		});
+
+		this.state = {
+			hidden: false,
+		};
 	}
 
 	getCallActionMessage = (message) => {
@@ -242,7 +246,24 @@ class CometChatActionMessageBubble extends React.Component {
 		return actionMessage;
 	};
 
+	componentDidMount() {
+		const { message } = this.props;
+
+		// Joined username need to be hidden
+		const USERNAME = "Dev_Livewire";
+
+		if (message.action === CometChat.ACTION_TYPE.MEMBER_JOINED) {
+			if (message.actionBy.name === USERNAME) {
+				this.setState({
+					hidden: true,
+				});
+			}
+		}
+	}
+
 	render() {
+		if (this.state.hidden) return null;
+
 		return (
 			<div css={actionMessageStyle()} className="action__message">
 				<p css={actionMessageTxtStyle()}>{this.getMessage(this.props.message)}</p>
