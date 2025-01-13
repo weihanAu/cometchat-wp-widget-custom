@@ -69,51 +69,25 @@ export class MessageListManager {
 						resolve(this.messageRequest);
 					} else if (this.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
 						if (this.parentMessageId) {
-							if (this.item?.metadata?.group_clear_message_ts) {
-								this.messageRequest = new CometChat.MessagesRequestBuilder()
-									.setGUID(this.item.guid)
-									.setParentMessageId(this.parentMessageId)
-									.setCategories(categories)
-									.setTypes(types)
-									.withTags(true)
-									.hideDeletedMessages(hideDeletedMessages)
-									.setLimit(this.limit)
-									// .setTimestamp(this.group_clear_message_ts)
-									.build();
-							} else {
-								this.messageRequest = new CometChat.MessagesRequestBuilder()
-									.setGUID(this.item.guid)
-									.setParentMessageId(this.parentMessageId)
-									.setCategories(categories)
-									.setTypes(types)
-									.withTags(true)
-									.hideDeletedMessages(hideDeletedMessages)
-									.setLimit(this.limit)
-									.build();
-							}
+							this.messageRequest = new CometChat.MessagesRequestBuilder()
+								.setGUID(this.item.guid)
+								.setParentMessageId(this.parentMessageId)
+								.setCategories(categories)
+								.setTypes(types)
+								.withTags(true)
+								.hideDeletedMessages(hideDeletedMessages)
+								.setLimit(this.limit)
+								.build();
 						} else {
-							if (this.item?.metadata?.group_clear_message_ts) {
-								this.messageRequest = new CometChat.MessagesRequestBuilder()
-									.setGUID(this.item.guid)
-									.setCategories(categories)
-									.setTypes(types)
-									.hideReplies(true)
-									.withTags(true)
-									.hideDeletedMessages(hideDeletedMessages)
-									.setLimit(this.limit)
-									// .setTimestamp(this.group_clear_message_ts)
-									.build();
-							} else {
-								this.messageRequest = new CometChat.MessagesRequestBuilder()
-									.setGUID(this.item.guid)
-									.setCategories(categories)
-									.setTypes(types)
-									.hideReplies(true)
-									.withTags(true)
-									.hideDeletedMessages(hideDeletedMessages)
-									.setLimit(this.limit)
-									.build();
-							}
+							this.messageRequest = new CometChat.MessagesRequestBuilder()
+								.setGUID(this.item.guid)
+								.setCategories(categories)
+								.setTypes(types)
+								.hideReplies(true)
+								.withTags(true)
+								.hideDeletedMessages(hideDeletedMessages)
+								.setLimit(this.limit)
+								.build();
 						}
 						resolve(this.messageRequest);
 					}
