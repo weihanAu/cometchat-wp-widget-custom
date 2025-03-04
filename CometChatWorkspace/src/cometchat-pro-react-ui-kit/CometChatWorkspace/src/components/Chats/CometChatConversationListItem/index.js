@@ -576,10 +576,6 @@ class CometChatConversationListItem extends React.PureComponent {
 			);
 		}
 
-		const expression =
-			/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
-		const regex = new RegExp(expression);
-
 		return (
 			<div
 				css={listItem(this.props)}
@@ -615,9 +611,7 @@ class CometChatConversationListItem extends React.PureComponent {
 							onMouseEnter={(event) => this.toggleTooltip(event, true)}
 							onMouseLeave={(event) => this.toggleTooltip(event, false)}
 						>
-							{this.state?.lastMessage?.match(regex)
-								? "LINK"
-								: this.state.lastMessage}
+							<LastMessage message={this.state.lastMessage} />
 						</div>
 						{unreadCount}
 					</div>
@@ -626,6 +620,18 @@ class CometChatConversationListItem extends React.PureComponent {
 			</div>
 		);
 	}
+}
+
+function LastMessage(props) {
+	const expression =
+		/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+	const regex = new RegExp(expression);
+
+	if (props.message) {
+		return props.message.match(regex) ? "LINK" : props.message;
+	}
+
+	return "";
 }
 
 // Specifies the default values for props:
