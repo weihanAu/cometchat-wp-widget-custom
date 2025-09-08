@@ -457,9 +457,30 @@ class CometChatMessageList extends React.PureComponent {
 		}
 	};
 
+	markMessageAsUnmoderated = (message) => {
+		const expression =
+			/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+		const regex = new RegExp(expression);
+
+		if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
+			if (message.sender.role !== "livewire-admin") {
+				if (!message.text.includes("www.livewire.org.au")) {
+					if (message.text.match(regex)) {
+						if (!message.tags) {
+							console.log("Message has Link");
+							message.setTags(["unmoderated"]);
+						}
+					}
+				}
+			}
+		}
+	};
+
 	onMessageReceived = (message) => {
 		//mark the message as delivered
 		this.markMessageAsDelivered(message);
+		// mart the message if is link and unmoderated
+		this.markMessageAsUnmoderated(message);
 
 		/**
 		 * message receiver is chat window group
