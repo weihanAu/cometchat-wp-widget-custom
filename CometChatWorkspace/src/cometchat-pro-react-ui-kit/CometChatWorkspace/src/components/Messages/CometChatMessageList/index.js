@@ -462,17 +462,30 @@ class CometChatMessageList extends React.PureComponent {
 			/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
 		const regex = new RegExp(expression);
 
-		if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
-			if (message.sender.role !== "livewire-admin") {
-				if (!message.text.includes("www.livewire.org.au")) {
-					if (message.text.match(regex)) {
+		try {
+			if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
+				if (message.sender.role !== "livewire-admin") {
+					if (message.type === CometChat.MESSAGE_TYPE.TEXT) {
+						if (!message.text.includes("www.livewire.org.au")) {
+							if (message.text.match(regex)) {
+								if (!message.tags) {
+									message.setTags(["unmoderated"]);
+								}
+							}
+						}
+					} else if (
+						message.type === CometChat.MESSAGE_TYPE.AUDIO ||
+						message.type === CometChat.MESSAGE_TYPE.VIDEO ||
+						message.type === CometChat.MESSAGE_TYPE.FILE
+					) {
 						if (!message.tags) {
-							console.log("Message has Link");
 							message.setTags(["unmoderated"]);
 						}
 					}
 				}
 			}
+		} catch (e) {
+			console.error(e);
 		}
 	};
 
