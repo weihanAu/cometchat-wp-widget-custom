@@ -628,6 +628,7 @@ function LastMessage(props) {
 	const regex = new RegExp(expression);
 
 	if (props.message) {
+		if (props.message.includes("left")) return "";
 		return props.message.match(regex) ? "LINK" : props.message;
 	}
 
