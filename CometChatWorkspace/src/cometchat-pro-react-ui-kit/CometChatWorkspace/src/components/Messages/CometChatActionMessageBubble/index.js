@@ -269,6 +269,9 @@ class CometChatActionMessageBubble extends React.Component {
 			if (this.props.message.message.includes("left")) {
 				return null;
 			}
+			if (this.props.message.message.includes("banned")) {
+				return null;
+			}
 		}
 
 		return (
