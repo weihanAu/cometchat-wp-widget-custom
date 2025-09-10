@@ -621,7 +621,8 @@ class CometChatMessageActions extends React.PureComponent {
 			editMessage === null &&
 			reactToMessage === null &&
 			translateMessage === null &&
-			messageInPrivate === null
+			messageInPrivate === null &&
+			moderationMessage === null
 		) {
 			tooltip = null;
 		}
