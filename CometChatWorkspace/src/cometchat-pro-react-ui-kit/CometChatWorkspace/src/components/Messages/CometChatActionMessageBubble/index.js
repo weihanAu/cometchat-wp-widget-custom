@@ -266,9 +266,9 @@ class CometChatActionMessageBubble extends React.Component {
 
 		// Hide user left action message
 		if (this.props.message.type === "groupMember") {
-			if (this.props.message?.message?.includes("left")) {
-				return null;
-			}
+			// if (this.props.message?.message?.includes("left")) {
+			// 	return null;
+			// }
 			if (this.props.message?.message?.includes("banned")) {
 				return null;
 			}
