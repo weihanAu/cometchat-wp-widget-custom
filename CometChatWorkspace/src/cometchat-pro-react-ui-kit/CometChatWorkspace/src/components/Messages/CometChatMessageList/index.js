@@ -765,6 +765,13 @@ class CometChatMessageList extends React.PureComponent {
 	};
 
 	getReceiverMessageComponent = (message) => {
+		let pronouns = "";
+		if (message.sender?.metadata?.pronouns) {
+			pronouns = "(" + message.sender?.metadata?.pronouns + ")";
+		}
+
+		message.sender.name += pronouns;
+
 		let component;
 		const messageKey = message._id ? message._id : message.id;
 
