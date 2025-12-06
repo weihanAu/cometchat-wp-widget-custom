@@ -576,6 +576,11 @@ class CometChatConversationListItem extends React.PureComponent {
 			);
 		}
 
+		let pronouns = "";
+		if (this.props.conversation.conversationWith?.metadata?.pronouns) {
+			pronouns = `[${this.props.conversation.conversationWith?.metadata?.pronouns}]`;
+		}
+
 		return (
 			<div
 				css={listItem(this.props)}
@@ -601,6 +606,7 @@ class CometChatConversationListItem extends React.PureComponent {
 							onMouseLeave={(event) => this.toggleTooltip(event, false)}
 						>
 							{this.props.conversation.conversationWith.name}
+							{pronouns}
 						</div>
 						{lastMessageTimeStamp}
 					</div>

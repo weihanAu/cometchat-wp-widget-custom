@@ -41,6 +41,11 @@ const CometChatUserListItem = (props) => {
 		}
 	};
 
+	let pronouns = "";
+	if (props.user?.metadata?.pronouns) {
+		pronouns = `[${props.user?.metadata?.pronouns}]`;
+	}
+
 	return (
 		<div
 			css={listItem(props, context)}
@@ -63,6 +68,7 @@ const CometChatUserListItem = (props) => {
 					onMouseLeave={(event) => toggleTooltip(event, false)}
 				>
 					{props.user.name}
+					{pronouns}
 				</div>
 				<div css={itemDescStyle(context)} className="item__details__desc"></div>
 			</div>
