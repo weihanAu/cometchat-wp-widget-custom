@@ -356,6 +356,11 @@ class CometChatUserDetails extends React.Component {
 			sharedmediaView = null;
 		}
 
+		let pronouns = "";
+		if (this.context.item?.metadata?.pronouns) {
+			pronouns = `[${this.context.item?.metadata?.pronouns}]`;
+		}
+
 		return (
 			<div css={userDetailStyle(this.context)} className="detailpane detailpane--user">
 				<div css={headerStyle(this.context)} className="detailpane__header">
@@ -374,7 +379,7 @@ class CometChatUserDetails extends React.Component {
 							<CometChatAvatar user={this.context.item} />
 						</div>
 						<div css={userStatusStyle()} className="user__status">
-							<h6 css={userNameStyle()}>{this.context.item.name}</h6>
+							<h6 css={userNameStyle()}>{this.context.item.name + pronouns}</h6>
 							<span css={userPresenceStyle(this.context, this.state)}>
 								{this.state.status}
 							</span>

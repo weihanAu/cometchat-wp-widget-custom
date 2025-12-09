@@ -791,6 +791,11 @@ class CometChatMessageHeader extends React.Component {
 			status = null;
 		}
 
+		let pronouns = "";
+		if (this.context?.item?.metadata?.pronouns) {
+			pronouns = `[${this.context?.item?.metadata?.pronouns}]`;
+		}
+
 		return (
 			<div css={chatHeaderStyle(this.context)} className="chat__header">
 				<div css={chatDetailStyle()} className="chat__details">
@@ -810,7 +815,7 @@ class CometChatMessageHeader extends React.Component {
 							onMouseEnter={(event) => this.toggleTooltip(event, true)}
 							onMouseLeave={(event) => this.toggleTooltip(event, false)}
 						>
-							{this.context.item.name}
+							{this.context.item.name + pronouns}
 						</h6>
 						{typing ? typing : status}
 					</div>
