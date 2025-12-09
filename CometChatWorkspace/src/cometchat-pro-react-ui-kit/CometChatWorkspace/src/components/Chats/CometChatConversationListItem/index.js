@@ -240,10 +240,15 @@ class CometChatConversationListItem extends React.PureComponent {
 	};
 
 	getMessage = (lastMessage) => {
+		let pronouns = "";
+		if (lastMessage?.sender?.metadata?.pronouns) {
+			pronouns = `[${lastMessage?.sender?.metadata?.pronouns}]`;
+		}
+
 		let message = null;
 		const sender =
 			this.props?.loggedInUser?.uid !== lastMessage?.sender?.uid
-				? `${lastMessage?.sender?.name}: `
+				? `${lastMessage?.sender?.name + pronouns}: `
 				: ``;
 
 		switch (lastMessage.type) {
