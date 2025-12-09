@@ -91,7 +91,11 @@ class CometChatViewGroupMemberListItem extends React.Component {
 		}
 
 		if (flag) {
-			elem.setAttribute("title", this.props.member.name);
+			let pronouns = "";
+			if (this.props.member?.metadata?.pronouns) {
+				pronouns = `[${this.props.member?.metadata?.pronouns}]`;
+			}
+			elem.setAttribute("title", this.props.member.name + pronouns);
 		} else {
 			elem.removeAttribute("title");
 		}
@@ -101,8 +105,12 @@ class CometChatViewGroupMemberListItem extends React.Component {
 
 	render() {
 		let editClassName = "";
+		let pronouns = "";
+		if (this.props.member?.metadata?.pronouns) {
+			pronouns = `[${this.props.member?.metadata?.pronouns}]`;
+		}
 
-		let name = this.props.member.name;
+		let name = this.props.member.name + pronouns;
 		let scope = <span css={roleStyle()}>{this.context.roles[this.props.member.scope]}</span>;
 		let changescope = null;
 		let ban = (
