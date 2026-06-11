@@ -9,7 +9,11 @@ import { CometChatAvatar, CometChatBadgeCount, CometChatUserPresence } from "../
 import { CometChatConversationListActions } from "../CometChatConversationListActions";
 
 import * as enums from "../../../util/enums.js";
-import { checkMessageForExtensionsData, getTimeStampForLastMessage } from "../../../util/common";
+import {
+	checkMessageForExtensionsData,
+	getTimeStampForLastMessage,
+	textHasDisallowedLinks,
+} from "../../../util/common";
 import { CometChatContext } from "../../../util/CometChatContext";
 
 import { theme } from "../../../resources/theme";
@@ -77,7 +81,10 @@ class CometChatConversationListItem extends React.PureComponent {
 		const lastMessage = this.props.conversation.lastMessage;
 
 		if (lastMessage.hasOwnProperty("deletedAt")) {
-			if (this.state.enableHideDeletedMessages) {
+			const isModerationDecline =
+				lastMessage.tags && Array.isArray(lastMessage.tags) && lastMessage.tags.includes("unmoderated");
+
+			if (this.state.enableHideDeletedMessages && !isModerationDecline) {
 				message = "";
 			} else {
 				message =
@@ -611,7 +618,10 @@ class CometChatConversationListItem extends React.PureComponent {
 							onMouseEnter={(event) => this.toggleTooltip(event, true)}
 							onMouseLeave={(event) => this.toggleTooltip(event, false)}
 						>
-							<LastMessage message={this.state.lastMessage} />
+							<LastMessage
+								message={this.state.lastMessage}
+								rawMessage={this.props.conversation.lastMessage}
+							/>
 						</div>
 						{unreadCount}
 					</div>
@@ -623,16 +633,19 @@ class CometChatConversationListItem extends React.PureComponent {
 }
 
 function LastMessage(props) {
-	const expression =
-		/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
-	const regex = new RegExp(expression);
+	const rawMessage = props.rawMessage || {};
+	const tags = rawMessage.tags || [];
+	const isPendingModeration =
+		tags.includes("unmoderated") &&
+		!tags.includes("approved") &&
+		!rawMessage.deletedAt &&
+		textHasDisallowedLinks(rawMessage.text || props.message);
 
-	if (props.message) {
-		// if (props.message.includes("left") || props.message.includes("banned")) return "";
-		return props.message.match(regex) ? "LINK" : props.message;
+	if (!props.message) {
+		return "";
 	}
 
-	return "";
+	return isPendingModeration ? "LINK" : props.message;
 }
 
 // Specifies the default values for props:

@@ -31,6 +31,13 @@ const phoneNumPattern = new RegExp(
 		wordBoundary.end,
 	"gi"
 );
+const moderationUrlPattern =
+	/(https?:\/\/|www\.)[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{2,24}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+const livewireAllowedHosts = [
+	"www.livewire.org.au",
+	"livewire.org.au",
+	"livewiredev.wpengine.com",
+];
 
 export const linkify = (message) => {
 	let outputStr = message;
@@ -59,6 +66,47 @@ export const linkify = (message) => {
 		});
 
 	return outputStr;
+};
+
+export const getAllowedLinkHosts = () => {
+	const allowedHosts = new Set(livewireAllowedHosts);
+
+	if (typeof window !== "undefined" && window.location && window.location.hostname) {
+		allowedHosts.add(window.location.hostname.toLowerCase());
+	}
+
+	return allowedHosts;
+};
+
+export const textHasDisallowedLinks = (text) => {
+	if (!text || typeof text !== "string") {
+		return false;
+	}
+
+	const matches = text.match(moderationUrlPattern);
+	if (!matches || !matches.length) {
+		return false;
+	}
+
+	const allowedHosts = getAllowedLinkHosts();
+
+	for (let i = 0; i < matches.length; i++) {
+		let candidate = matches[i].trim();
+		if (candidate.startsWith("www.")) {
+			candidate = `https://${candidate}`;
+		}
+
+		try {
+			const parsedUrl = new URL(candidate);
+			if (!allowedHosts.has(parsedUrl.hostname.toLowerCase())) {
+				return true;
+			}
+		} catch (e) {
+			return true;
+		}
+	}
+
+	return false;
 };
 
 export const checkMessageForExtensionsData = (message, extensionKey) => {

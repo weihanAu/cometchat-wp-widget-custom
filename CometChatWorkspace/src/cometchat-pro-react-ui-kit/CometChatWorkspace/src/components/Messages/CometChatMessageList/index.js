@@ -38,7 +38,7 @@ import {
 
 import { CometChatContext } from "../../../util/CometChatContext";
 import * as enums from "../../../util/enums.js";
-import { getMessageDate, getUnixTimestamp } from "../../../util/common";
+import { getMessageDate, getUnixTimestamp, textHasDisallowedLinks } from "../../../util/common";
 
 import { theme } from "../../../resources/theme";
 import Translator from "../../../resources/localization/translator";
@@ -458,20 +458,13 @@ class CometChatMessageList extends React.PureComponent {
 	};
 
 	markMessageAsUnmoderated = (message) => {
-		const expression =
-			/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
-		const regex = new RegExp(expression);
 
 		try {
 			if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
 				if (message.sender.role !== "livewire-admin") {
 					if (message.type === CometChat.MESSAGE_TYPE.TEXT) {
-						if (!message.text.includes("www.livewire.org.au")) {
-							if (message.text.match(regex)) {
-								if (!message.tags) {
-									message.setTags(["unmoderated"]);
-								}
-							}
+						if (textHasDisallowedLinks(message.text) && !message.tags) {
+							message.setTags(["unmoderated"]);
 						}
 					} else if (
 						message.type === CometChat.MESSAGE_TYPE.AUDIO ||
