@@ -13,7 +13,12 @@ import {
 import { CometChatEmojiKeyboard } from "../";
 
 import { CometChatContext } from "../../../util/CometChatContext";
-import { checkMessageForExtensionsData, ID, getUnixTimestamp } from "../../../util/common";
+import {
+	checkMessageForExtensionsData,
+	ID,
+	getUnixTimestamp,
+	textHasDisallowedLinks,
+} from "../../../util/common";
 import * as enums from "../../../util/enums.js";
 import { SoundManager } from "../../../util/SoundManager";
 
@@ -674,15 +679,10 @@ class CometChatMessageComposer extends React.PureComponent {
 		textMessage._composedAt = getUnixTimestamp();
 		textMessage._id = ID();
 
-		const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
-		const regex = new RegExp(expression);
-
 		if (this.context.type === CometChat.ACTION_TYPE.TYPE_GROUP) {
 			if (this.loggedInUser.role !== "livewire-admin") {
-				if (!messageInput.includes("www.livewire.org.au")) {
-					if (messageInput.match(regex)) {
-						textMessage.setTags(["unmoderated"]);
-					}
+				if (textHasDisallowedLinks(messageInput)) {
+					textMessage.setTags(["unmoderated"]);
 				}
 			}
 		}
